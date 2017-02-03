@@ -25,6 +25,10 @@ import javax.swing.JRadioButton;
  * Throw exceptions
  * Should the client have access to the Hash Map?
  * 8 pin different?
+ * 
+ * Interfacing, having variable number of buttons
+ * Is the current simulator enough?
+ * BrailleCell takes RadioButtons as arguments.
  */
 
 public class BrailleCell {
@@ -69,6 +73,52 @@ public class BrailleCell {
 		alphabet.put(' ', "00000000");
 
 	}
+	
+//	public BrailleCell(JFrame frame)
+//	{
+//		this.initializeAlphabet();
+//		
+//		this.radio1x1 = new JRadioButton();
+//		radio1x1.setEnabled(true);
+//		
+//		this.radio1x2 = new JRadioButton();
+//		radio1x2.setEnabled(true);
+//		
+//		this.radio2x1 = new JRadioButton();
+//		radio2x1.setEnabled(true);
+//		
+//		this.radio2x2 = new JRadioButton();
+//		radio2x2.setEnabled(true);
+//		
+//		this.radio3x1 = new JRadioButton();
+//		radio3x1.setEnabled(true);
+//		
+//		this.radio3x2 = new JRadioButton();
+//		radio3x2.setEnabled(true);
+//		
+//		this.radio4x1 = new JRadioButton();
+//		radio4x1.setEnabled(true);
+//		
+//		this.radio4x2 = new JRadioButton();
+//		radio4x2.setEnabled(true);
+//		
+//		GridLayout grid = new GridLayout();
+//		panel = new JPanel(grid);
+//		grid.setRows(4);
+//		grid.setColumns(2);
+//		panel.setSize(100, 50);
+//		panel.add(radio1x1);
+//		panel.add(radio1x2);
+//		panel.add(radio2x1);
+//		panel.add(radio2x2);
+//		panel.add(radio3x1);
+//		panel.add(radio3x2);
+//		panel.add(radio4x1);
+//		panel.add(radio4x2);
+//		panel.setBorder(BorderFactory.createLineBorder(Color.black));
+//		panel.setVisible(true);
+//		frame.add(panel);
+//	}
 
 	public BrailleCell(JRadioButton radio1x1, JRadioButton radio1x2, JRadioButton radio2x1, JRadioButton radio2x2,
 			JRadioButton radio3x1, JRadioButton radio3x2, JRadioButton radio4x1, JRadioButton radio4x2) {

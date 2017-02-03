@@ -80,7 +80,7 @@ public class SimulatorMain {
 
 			}
 		});
-		mainButton.setBounds(268, 364, 68, 35);
+		mainButton.setBounds(12, 364, 68, 35);
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(mainButton);
 
