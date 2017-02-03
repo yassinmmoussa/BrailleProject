@@ -25,14 +25,16 @@ public class Simulator {
 	LinkedList<ArrayList<JRadioButton>> pinList = new LinkedList<ArrayList<JRadioButton>>();
 	LinkedList<JButton> buttonList = new LinkedList<JButton>();
 	LinkedList<BrailleCell> brailleList = new LinkedList<BrailleCell>();
+	JPanel southPanel = new JPanel();
+	JPanel centerPanel = new JPanel();
 
 	public Simulator(int brailleCellNumber, int jButtonNumber) {
 
-		int bigger = brailleCellNumber > jButtonNumber ? brailleCellNumber : jButtonNumber;
 		frame = new JFrame();
+		frame.setTitle("Simulator");
 		frame.setBounds(100, 100, 627, 459);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new GridLayout(3, 2));
+		frame.getContentPane().setLayout(new BorderLayout());
 
 		for (int i = 0; i < brailleCellNumber; i++) {
 
@@ -56,18 +58,22 @@ public class Simulator {
 			brailleList.add(cell);
 			panel.setSize(100, 150);
 			panel.setBorder(BorderFactory.createLineBorder(Color.black));
-			frame.getContentPane().add(panel);
+			centerPanel.add(panel);
+			
 			pins.clear();
+			if (i==(brailleCellNumber-1)) frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
 
 		}
+		
+	
 
 		for (int i = 0; i < jButtonNumber; i++) {
 			JButton button = new JButton("" + i);
-			// button.setSize(70, 35);
 			buttonList.add(button);
-			button.setSize(70, 35);
-			frame.getContentPane().add(button);
+			//button.setSize(70, 35);
+			southPanel.add(button);
 		}
+		frame.getContentPane().add(southPanel, BorderLayout.SOUTH);
 
 		for (int i = 0; i < brailleCellNumber; i++) {
 			brailleList.get(i).displayLetter('a');
