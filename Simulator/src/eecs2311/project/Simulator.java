@@ -29,7 +29,7 @@ public class Simulator implements ActionListener {
 	LinkedList<BrailleCell> brailleList = new LinkedList<BrailleCell>();
 	JPanel southPanel = new JPanel();
 	JPanel centerPanel = new JPanel();
-	
+
 	static String test = "This is a test sentence";
 	static int index = 0;
 
@@ -64,19 +64,19 @@ public class Simulator implements ActionListener {
 			panel.setSize(100, 150);
 			panel.setBorder(BorderFactory.createLineBorder(Color.black));
 			centerPanel.add(panel);
-			
+
 			pins.clear();
-			if (i==(brailleCellNumber-1)) frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
+			if (i == (brailleCellNumber - 1))
+				frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
 
 		}
-		
-	
 
 		for (int i = 0; i < jButtonNumber; i++) {
 			JButton button = new JButton("" + i);
-			button.addActionListener(this);			//added an action listener event on the button
+			button.addActionListener(this); // added an action listener event on
+											// the button
 			buttonList.add(button);
-			//button.setSize(70, 35);
+			// button.setSize(70, 35);
 			southPanel.add(button);
 		}
 		frame.getContentPane().add(southPanel, BorderLayout.SOUTH);
@@ -88,10 +88,14 @@ public class Simulator implements ActionListener {
 		frame.setVisible(true);
 
 	}
+
 	//
-	//action event when button is pressed. I assume maybe the implementor will modify this part.
+	// action event when button is pressed. I assume maybe the implementor will
+	// modify this part.
 	public void actionPerformed(ActionEvent e) {
-		JOptionPane.showMessageDialog(null, "Button has been clicked");
+		JOptionPane.showMessageDialog(null,
+				"Button number " + buttonList.indexOf(e.getSource()) + " has been pressed.");
+
 	}
 
 }
