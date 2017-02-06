@@ -142,7 +142,7 @@ public class BrailleCell {
 		if (!alphabet.containsKey(a)) {
 			throw new IllegalArgumentException("Non standard character");
 		}
-		this.raisePins(alphabet.get(a));
+		this.setPins(alphabet.get(a));
 		// switch (a) {
 		// case 'a':
 		// // Fully implemented
@@ -157,7 +157,7 @@ public class BrailleCell {
 		// }
 	}
 
-	public void raisePins(String pins) {
+	public void setPins(String pins) {
 		if (pins.length() != 8) {
 			throw new IllegalArgumentException("Illegal string passed, length > or < 8.");
 		}

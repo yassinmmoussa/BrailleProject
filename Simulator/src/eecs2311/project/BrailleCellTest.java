@@ -63,8 +63,8 @@ public class BrailleCellTest {
 }
 	
 	@Test
-	public void testRaisePin(){
-		b.raisePins("00011100");
+	public void testSetPin(){
+		b.setPins("00011100");
 		assertFalse("pin at 1x1 must be false", b.radio1x1.isSelected());
 		assertFalse("pin at 1x2 must be false", b.radio1x2.isSelected());
 		assertFalse("pin at 2x1 must be false", b.radio2x1.isSelected());
@@ -74,7 +74,7 @@ public class BrailleCellTest {
 		assertFalse("pin at 4x1 must be false", b.radio4x1.isSelected());
 		assertFalse("pin at 4x2 must be false", b.radio4x2.isSelected());
 		
-		b.raisePins("11001100");
+		b.setPins("11001100");
 		assertTrue("pin at 1x1 must be true", b.radio1x1.isSelected());
 		assertTrue("pin at 1x2 must be true", b.radio1x2.isSelected());
 		assertFalse("pin at 2x1 must be false", b.radio2x1.isSelected());
@@ -84,7 +84,7 @@ public class BrailleCellTest {
 		assertFalse("pin at 4x1 must be false", b.radio4x1.isSelected());
 		assertFalse("pin at 4x2 must be false", b.radio4x2.isSelected());
 		
-		b.raisePins("00000000");
+		b.setPins("00000000");
 		assertFalse("pin at 1x1 must be false", b.radio1x1.isSelected());
 		assertFalse("pin at 1x2 must be false", b.radio1x2.isSelected());
 		assertFalse("pin at 2x1 must be false", b.radio2x1.isSelected());

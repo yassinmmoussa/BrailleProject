@@ -20,8 +20,7 @@ public class Simulator implements ActionListener {
 	int brailleCellNumber;
 	int jButtonNumber;
 	private JFrame frame;
-	GridLayout cellGrid = new GridLayout(4, 2);
-	GridLayout frameGrid = new GridLayout(3, 1);
+	private GridLayout cellGrid = new GridLayout(4, 2);
 	LinkedList<JPanel> panelList = new LinkedList<JPanel>();
 	ArrayList<JRadioButton> pins = new ArrayList<JRadioButton>(8);
 	LinkedList<ArrayList<JRadioButton>> pinList = new LinkedList<ArrayList<JRadioButton>>();
@@ -30,11 +29,13 @@ public class Simulator implements ActionListener {
 	JPanel southPanel = new JPanel();
 	JPanel centerPanel = new JPanel();
 
-	static String test = "This is a test sentence";
-	static int index = 0;
+	static String test = "abcdefghijklmnopwrstuvwxyz";
+	static int testIndex = 0;
 
 	public Simulator(int brailleCellNumber, int jButtonNumber) {
 
+		this.brailleCellNumber = brailleCellNumber;
+		this.jButtonNumber = jButtonNumber;
 		frame = new JFrame();
 		frame.setTitle("Simulator");
 		frame.setBounds(100, 100, 627, 459);
@@ -61,7 +62,7 @@ public class Simulator implements ActionListener {
 					pins.get(5), pins.get(6), pins.get(7));
 			panelList.add(panel);
 			brailleList.add(cell);
-			panel.setSize(100, 150);
+			panel.setSize(150, 200);
 			panel.setBorder(BorderFactory.createLineBorder(Color.black));
 			centerPanel.add(panel);
 
@@ -82,10 +83,17 @@ public class Simulator implements ActionListener {
 		frame.getContentPane().add(southPanel, BorderLayout.SOUTH);
 
 		for (int i = 0; i < brailleCellNumber; i++) {
-			brailleList.get(i).displayLetter('a');
+			if (Simulator.testIndex >= test.length()) {
+				Simulator.testIndex = 0;
+			}
+			brailleList.get(i).displayLetter(test.charAt(Simulator.testIndex));
+			testIndex++;
+
 		}
 		frame.repaint();
 		frame.setVisible(true);
+		// TEST
+		// this.brailleList.get(0).clear();
 
 	}
 
@@ -96,6 +104,35 @@ public class Simulator implements ActionListener {
 		JOptionPane.showMessageDialog(null,
 				"Button number " + buttonList.indexOf(e.getSource()) + " has been pressed.");
 
+	}
+
+	public JButton getButton(int index) {
+		if (index > this.jButtonNumber || index < 0) {
+			throw new IllegalArgumentException("Invalid button index.");
+		}
+		return this.buttonList.get(index);
+	}
+
+	public BrailleCell getCell(int index) {
+		if (index > this.brailleCellNumber || index < 0) {
+			throw new IllegalArgumentException("Invalid cell index.");
+		}
+		return this.brailleList.get(index);
+	}
+
+	public void clearAllCells() {
+
+		for (int i = 0; i < this.brailleCellNumber; i++) {
+			this.brailleList.get(i).clear();
+
+		}
+	}
+
+	public void displayString(String aString) {
+		this.clearAllCells();
+		for (int i = 0; i < this.brailleCellNumber && i < aString.length(); i++) {
+			this.brailleList.get(i).displayLetter(aString.charAt(i));
+		}
 	}
 
 }
