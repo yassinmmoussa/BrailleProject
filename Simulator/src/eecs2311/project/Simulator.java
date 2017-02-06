@@ -29,9 +29,6 @@ public class Simulator implements ActionListener {
 	JPanel southPanel = new JPanel();
 	JPanel centerPanel = new JPanel();
 
-	static String test = "abcdefghijklmnopwrstuvwxyz";
-	static int testIndex = 0;
-
 	public Simulator(int brailleCellNumber, int jButtonNumber) {
 
 		this.brailleCellNumber = brailleCellNumber;
@@ -77,29 +74,16 @@ public class Simulator implements ActionListener {
 			button.addActionListener(this); // added an action listener event on
 											// the button
 			buttonList.add(button);
-			// button.setSize(70, 35);
+
 			southPanel.add(button);
 		}
 		frame.getContentPane().add(southPanel, BorderLayout.SOUTH);
 
-		for (int i = 0; i < brailleCellNumber; i++) {
-			if (Simulator.testIndex >= test.length()) {
-				Simulator.testIndex = 0;
-			}
-			brailleList.get(i).displayLetter(test.charAt(Simulator.testIndex));
-			testIndex++;
-
-		}
 		frame.repaint();
 		frame.setVisible(true);
-		// TEST
-		// this.brailleList.get(0).clear();
 
 	}
 
-	//
-	// action event when button is pressed. I assume maybe the implementor will
-	// modify this part.
 	public void actionPerformed(ActionEvent e) {
 		JOptionPane.showMessageDialog(null,
 				"Button number " + buttonList.indexOf(e.getSource()) + " has been pressed.");
@@ -107,14 +91,14 @@ public class Simulator implements ActionListener {
 	}
 
 	public JButton getButton(int index) {
-		if (index > this.jButtonNumber || index < 0) {
+		if (index >= this.jButtonNumber || index < 0) {
 			throw new IllegalArgumentException("Invalid button index.");
 		}
 		return this.buttonList.get(index);
 	}
 
 	public BrailleCell getCell(int index) {
-		if (index > this.brailleCellNumber || index < 0) {
+		if (index >= this.brailleCellNumber || index < 0) {
 			throw new IllegalArgumentException("Invalid cell index.");
 		}
 		return this.brailleList.get(index);

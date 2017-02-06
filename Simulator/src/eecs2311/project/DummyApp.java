@@ -8,9 +8,12 @@ import javax.swing.JOptionPane;
 public class DummyApp {
 
 	public static void main(String[] args) {
-		Simulator x = new Simulator(20, 7);
+		Simulator x = new Simulator(48, 7);
 
-		x.displayString("Hello my friend");
+		x.displayString("Wow these are so many braille cells I dont even know how we fit them in there");
+		x.getCell(4).clear();
+		x.getCell(12).displayLetter('z');
+		x.getButton(0).setText("My Button");
 
 		x.getButton(0).addActionListener(new ActionListener() {
 

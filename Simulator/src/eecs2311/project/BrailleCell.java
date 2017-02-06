@@ -4,33 +4,6 @@ import java.util.HashMap;
 
 import javax.swing.JRadioButton;
 
-/*
- * The simulator is mainly a platform for the next step in the project, the actual software, to use.
- * The more flexible the simulator, the better it is. But I'd thought at first that flexible meant that
- * it was just able to show any letter, and that you had to shield that data away from the user. The
- * professor explained however that the main purpose is to create a platform that would give absolute
- * control of the pins to the software. And so instead of having 26 specific methods, we'd have a method
- * to which you (for example) pass a string of 1s and 0s, and it manually raises the pins. This is to give
- * absolute access to the software in terms of what pins to raise.
- * 
- * Use a HashMap to map every character of the alphabet to an 8 character string, implement a method that would
- * take an 8 character string of 1s and 0s, and raise the corresponding pins in the cell object. That way,
- * if the client wants it could manually call that method and pass it  string of 1s and 0s to manually raise
- * the pins it wants to raise. Additionally, implementing the simulator this way would allow for very fast and
- * easy addition of new characters or letters to the already available ones.
- * 
- * 
- * verify input
- * extended letters - 8 pin
- * Throw exceptions
- * Should the client have access to the Hash Map?
- * 8 pin different?
- * 
- * Interfacing, having variable number of buttons
- * Is the current simulator enough?
- * BrailleCell takes RadioButtons as arguments.
- */
-
 public class BrailleCell {
 
 	JRadioButton radio1x1;
@@ -73,53 +46,6 @@ public class BrailleCell {
 		alphabet.put(' ', "00000000");
 
 	}
-	
-	
-//	public BrailleCell(JFrame frame)
-//	{
-//		this.initializeAlphabet();
-//		
-//		this.radio1x1 = new JRadioButton();
-//		radio1x1.setEnabled(true);
-//		
-//		this.radio1x2 = new JRadioButton();
-//		radio1x2.setEnabled(true);
-//		
-//		this.radio2x1 = new JRadioButton();
-//		radio2x1.setEnabled(true);
-//		
-//		this.radio2x2 = new JRadioButton();
-//		radio2x2.setEnabled(true);
-//		
-//		this.radio3x1 = new JRadioButton();
-//		radio3x1.setEnabled(true);
-//		
-//		this.radio3x2 = new JRadioButton();
-//		radio3x2.setEnabled(true);
-//		
-//		this.radio4x1 = new JRadioButton();
-//		radio4x1.setEnabled(true);
-//		
-//		this.radio4x2 = new JRadioButton();
-//		radio4x2.setEnabled(true);
-//		
-//		GridLayout grid = new GridLayout();
-//		panel = new JPanel(grid);
-//		grid.setRows(4);
-//		grid.setColumns(2);
-//		panel.setSize(100, 50);
-//		panel.add(radio1x1);
-//		panel.add(radio1x2);
-//		panel.add(radio2x1);
-//		panel.add(radio2x2);
-//		panel.add(radio3x1);
-//		panel.add(radio3x2);
-//		panel.add(radio4x1);
-//		panel.add(radio4x2);
-//		panel.setBorder(BorderFactory.createLineBorder(Color.black));
-//		panel.setVisible(true);
-//		frame.add(panel);
-//	}
 
 	public BrailleCell(JRadioButton radio1x1, JRadioButton radio1x2, JRadioButton radio2x1, JRadioButton radio2x2,
 			JRadioButton radio3x1, JRadioButton radio3x2, JRadioButton radio4x1, JRadioButton radio4x2) {
@@ -143,18 +69,7 @@ public class BrailleCell {
 			throw new IllegalArgumentException("Non standard character");
 		}
 		this.setPins(alphabet.get(a));
-		// switch (a) {
-		// case 'a':
-		// // Fully implemented
-		// this.displayA();
-		// break;
-		// case 'b':
-		// // Implementation missing
-		// break;
-		// // Rest of the case statements go after here
-		// default:
-		// break;
-		// }
+
 	}
 
 	public void setPins(String pins) {
@@ -213,7 +128,7 @@ public class BrailleCell {
 	}
 
 	public void clear() {
-		// Fully implemented
+
 		radio1x1.setSelected(false);
 		radio1x2.setSelected(false);
 		radio2x1.setSelected(false);
@@ -224,10 +139,4 @@ public class BrailleCell {
 		radio4x2.setSelected(false);
 	}
 
-	// private void displayA() {
-	// // Fully implemented
-	// this.clear();
-	// radio1x1.setSelected(true);
-	// }
-	//
 }
