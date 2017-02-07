@@ -15,6 +15,38 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+/**
+ * This class simulates the hardware for a machine with physical Braille cells
+ * that can display any letters, and buttons that are programmable.
+ * <p>
+ * The constructor initializes the window and takes as arguments the number of
+ * Braille Cells and the number of buttons the simulator should display. This
+ * class also contains several methods that allow for the manipulation of the
+ * Simulator.
+ * <p>
+ * The cells are arrayed using <code> BorderLayout.CENTER</code> while the
+ * buttons are arrayed using <code> BorderLayout.SOUTH</code>, meaning this
+ * class supports any number of buttons or BrailleCells.
+ * <p>
+ * The individual Braille Cells can be accessed using the
+ * <code> getCell(int)</code> method and the cell's index, the cells are indexed
+ * from left to right and top to bottom. Similarly, the buttons can be accessed
+ * using the <code> getButton(int)</code> method, and they are indexed from left
+ * to right. Both of these methods return the actual reference of the objects
+ * displayed in the frame, meaning you can then call methods from each of the
+ * object's respective classes to manipulate them. For example, you can call
+ * <code> displayLetter(char)</code> on any specific cell to display a character
+ * on that cell. You can also, in a similar fashion, use the
+ * <code> getButton(int) </code> method to get the reference of a specific
+ * button. Then, you can call any methods specified in the JButton class on that
+ * button, such as the <code> addActionListener() </code> method.
+ * 
+ * 
+ * 
+ * 
+ * @author Team 4: Yassin Mohamed, Qassim Allauddin, Derek Li, Artem Solovey.
+ *
+ */
 public class Simulator implements ActionListener {
 
 	int brailleCellNumber;
@@ -29,7 +61,22 @@ public class Simulator implements ActionListener {
 	JPanel southPanel = new JPanel();
 	JPanel centerPanel = new JPanel();
 
+	/**
+	 * Class Constructor, creates and displays a window with brailleCellNumber
+	 * Braille Cells and jButtonNumber Buttons. The two parameters must be
+	 * positive integers.
+	 * 
+	 * @param brailleCellNumber
+	 *            the number of braille cells the Simulator should have
+	 * @param jButtonNumber
+	 *            the number of buttons the Simulator should have
+	 * @throws IllegalArgumentException
+	 *             if one or both of the two parameters is negative
+	 */
 	public Simulator(int brailleCellNumber, int jButtonNumber) {
+
+		if (brailleCellNumber < 0 || jButtonNumber < 0)
+			throw new IllegalArgumentException("Negative integer entered.");
 
 		this.brailleCellNumber = brailleCellNumber;
 		this.jButtonNumber = jButtonNumber;
@@ -71,8 +118,7 @@ public class Simulator implements ActionListener {
 
 		for (int i = 0; i < jButtonNumber; i++) {
 			JButton button = new JButton("" + i);
-			button.addActionListener(this); // added an action listener event on
-											// the button
+			button.addActionListener(this);
 			buttonList.add(button);
 
 			southPanel.add(button);
@@ -84,12 +130,33 @@ public class Simulator implements ActionListener {
 
 	}
 
+	/**
+	 * 
+	 * Initializes default events for all of the buttons initialized by the
+	 * constructor. This method is part of the ActionListener interface.
+	 * 
+	 * 
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent e) {
 		JOptionPane.showMessageDialog(null,
 				"Button number " + buttonList.indexOf(e.getSource()) + " has been pressed.");
 
 	}
 
+	/**
+	 * Returns a reference to the button at the index passed as argument.
+	 * Buttons are numbered from left to right as they appear in the frame, from
+	 * 0 to (jButtonNumber-1), jButtonNumber being the number of buttons
+	 * initialized by the constructor.
+	 * 
+	 * @param index
+	 *            the index of the button to be returned
+	 * @return reference to the JButton object at the index passed as argument
+	 * @throws IllegalArgumentException
+	 *             if the index is negative or equal to or bigger than
+	 *             jButtonNumber (the number of buttons initialized)
+	 */
 	public JButton getButton(int index) {
 		if (index >= this.jButtonNumber || index < 0) {
 			throw new IllegalArgumentException("Invalid button index.");
@@ -97,6 +164,23 @@ public class Simulator implements ActionListener {
 		return this.buttonList.get(index);
 	}
 
+	/**
+	 * Returns a reference to the BrailleCell object at the index passed as
+	 * argument. Braille Cells are numbered left to right and top to bottom as
+	 * they appear in the frame, from 0 to (brailleCellNumber - 1),
+	 * brailleCellNumber being the number of BrailleCell objects initialized by
+	 * the constructor.
+	 * 
+	 * 
+	 * @param index
+	 *            the index of the BrailleCell object whose reference is to be
+	 *            returned
+	 * @return reference to the BrailleCell object at the index passed as
+	 *         argument
+	 * @throws IllegalArgumentException
+	 *             if the index is negative or equal to or bigger than
+	 *             brailleCellNumber (the number of Braille Cells initialized)
+	 */
 	public BrailleCell getCell(int index) {
 		if (index >= this.brailleCellNumber || index < 0) {
 			throw new IllegalArgumentException("Invalid cell index.");
@@ -104,6 +188,10 @@ public class Simulator implements ActionListener {
 		return this.brailleList.get(index);
 	}
 
+	/**
+	 * Clears all the Braille Cells, i.e lowers all the pins for all of them,
+	 * effectively making them display nothing.
+	 */
 	public void clearAllCells() {
 
 		for (int i = 0; i < this.brailleCellNumber; i++) {
@@ -112,6 +200,21 @@ public class Simulator implements ActionListener {
 		}
 	}
 
+	/**
+	 * Displays the string passed as argument on all the Braille Cells
+	 * initialized in the Simulator.
+	 * <p>
+	 * clearAllCells() is called first, then the string is displayed on the
+	 * cells.
+	 * <p>
+	 * If the string is shorter than the total number of Braille Cells, the
+	 * others are left empty. However, if the string is longer it only displays
+	 * the part of it up to however many Braille Cells there are and ignores the
+	 * rest.
+	 * 
+	 * @param aString
+	 *            the String to be displayed on the Braille Cells
+	 */
 	public void displayString(String aString) {
 		this.clearAllCells();
 		for (int i = 0; i < this.brailleCellNumber && i < aString.length(); i++) {

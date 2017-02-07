@@ -4,6 +4,22 @@ import java.util.HashMap;
 
 import javax.swing.JRadioButton;
 
+/**
+ * This class groups 8 JRadioButtons into a Braille Cell. A 'selected' radio
+ * button represents a raised pin, while a non-selected radio button represents
+ * a lowered pin. The class contains methods for displaying letters on the cells
+ * as well as raising and/or lowering individual pins.
+ * <p>
+ * By default, this class supports basic alphabet + the space character using
+ * the <code> displayCharacter()</code> method. The predetermined characters are
+ * displayed using standard Braille. For any non-standard characters or ones
+ * that aren't included by default, use the <code> setPins()</code> method,
+ * which takes a string of 1s and 0s as argument and sets the pins accordingly.
+ * 1 meaning raised and 0 meaning lowered.
+ * 
+ * @author Team 4: Yassin Mohamed, Qassim Allauddin, Derek Li, Artem Solovey.
+ *
+ */
 public class BrailleCell {
 
 	JRadioButton radio1x1;
@@ -47,6 +63,34 @@ public class BrailleCell {
 
 	}
 
+	/**
+	 * 
+	 * Class constructor, initializes the class's 8 radio button variables as
+	 * the ones passed into the constructor. The arguments and the class
+	 * parameters have the same reference to allow the class to alter the state
+	 * of the radio buttons.
+	 * <p>
+	 * Radio buttons can be thought of as occupying a 4x2 grid, with each button
+	 * having index Row x Coloumn starting with 1x1 on the top-left.
+	 * 
+	 * 
+	 * @param radio1x1
+	 *            radio button at position 1x1
+	 * @param radio1x2
+	 *            radio button at position 1x2
+	 * @param radio2x1
+	 *            radio button at position 2x1
+	 * @param radio2x2
+	 *            radio button at position 2x2
+	 * @param radio3x1
+	 *            radio button at position 3x1
+	 * @param radio3x2
+	 *            radio button at position 3x2
+	 * @param radio4x1
+	 *            radio button at position 4x1
+	 * @param radio4x2
+	 *            radio button at position 4x2
+	 */
 	public BrailleCell(JRadioButton radio1x1, JRadioButton radio1x2, JRadioButton radio2x1, JRadioButton radio2x2,
 			JRadioButton radio3x1, JRadioButton radio3x2, JRadioButton radio4x1, JRadioButton radio4x2) {
 
@@ -62,6 +106,22 @@ public class BrailleCell {
 
 	}
 
+	/**
+	 * 
+	 * Displays the character passed as argument on this Braille Cell object in
+	 * Braille.
+	 * <p>
+	 * The method works by selecting specific radio buttons that represent
+	 * raised "pins", or the parts of the letter that would be felt by a human
+	 * hand.
+	 * 
+	 * 
+	 * @param a
+	 *            the character to be displayed in Braille
+	 * @throws IllegalArgumentException
+	 *             if the character isn't part of the standard alphabet or a
+	 *             space character.
+	 */
 	public void displayLetter(char a) {
 
 		a = Character.toLowerCase(a);
@@ -72,6 +132,25 @@ public class BrailleCell {
 
 	}
 
+	/**
+	 * Takes an eight character string of 1s and 0s as argument, and sets the
+	 * eight radio buttons that represent the pins in the braille cell to either
+	 * true or false, depending on the String passed.
+	 * <p>
+	 * The 8 character string of 1s and 0s sets the state of the eight radio
+	 * buttons. Depending on the value of the character in the String, the
+	 * corresponding radio button is set. The first character corresponds to the
+	 * top-left radio button, the next character corresponding to the next radio
+	 * button from left to right and top to bottom.
+	 * 
+	 * 
+	 * @param pins
+	 *            string of 1s and 0s that is 8 characters long that sets the
+	 *            state of the eight radio buttons that form the cell
+	 * @throws IllegalArgumentException
+	 *             if the string is not 8 characters long or if it contains any
+	 *             character that isn't a 1 or a 0
+	 */
 	public void setPins(String pins) {
 		if (pins.length() != 8) {
 			throw new IllegalArgumentException("Illegal string passed, length > or < 8.");
@@ -127,6 +206,14 @@ public class BrailleCell {
 		}
 	}
 
+	/**
+	 * Sets all the radio buttons' selected state to false, effectively clearing
+	 * the cell of whatever it was displaying.
+	 * <p>
+	 * This is equivalent to <code> displayLetter(' ') </code>.
+	 * 
+	 * 
+	 */
 	public void clear() {
 
 		radio1x1.setSelected(false);
