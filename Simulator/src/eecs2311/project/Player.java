@@ -33,15 +33,8 @@ public class Player {
 	{
 		try
 		{
-			Logger.getGlobal().info("Opening file");
-			
 			File file = new File(fileName);
-			
-			Logger.getGlobal().info(""+file.exists());
-		
-			Scanner s = new Scanner(new File(fileName));
-			
-			Logger.getGlobal().info("Read file");
+			Scanner s = new Scanner(file);
 			
 			while (s.hasNextLine())
 			{
