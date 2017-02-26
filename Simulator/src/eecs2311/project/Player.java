@@ -14,15 +14,16 @@ public class Player {
 	private Simulator simulator;
 	private int buttonNumber;
 	private int cellNumber;
+	private static final String VOICENAME_kevin = "kevin";	
 
 	public Player(File inputFile) throws FileNotFoundException {
 
 		String nextLine;
 		Scanner scanner = new Scanner(inputFile);
 
-		this.buttonNumber = scanner.nextInt();
-		this.cellNumber = scanner.nextInt();
-		simulator = new Simulator(cellNumber, buttonNumber);
+		//this.buttonNumber = scanner.nextInt();
+		//this.cellNumber = scanner.nextInt();
+		//simulator = new Simulator(cellNumber, buttonNumber);
 
 		while (scanner.hasNextLine()) {
 
@@ -30,13 +31,13 @@ public class Player {
 			switch (nextLine) {
 			case "<t>":
 				Player.readText(scanner);
-				break;
+				
 			case "<a>":
 				Player.playAudio(scanner);
-				break;
+				
 			case "<c>":
 				Player.processAction(scanner);
-				break;
+				
 			default:
 				break;
 
@@ -52,8 +53,7 @@ public class Player {
 	 * @param text
 	 *            - The text to be converted to audio.
 	 */
-	private void tts(String text) {
-		String VOICENAME_kevin = "kevin";
+	public static void speak(String text) {
 		Voice voice;
 		VoiceManager vm = VoiceManager.getInstance();
 		voice = vm.getVoice(VOICENAME_kevin);
@@ -61,23 +61,24 @@ public class Player {
 		voice.speak(text);
 	}
 
-	public void ttsFile(String fileName) throws Exception {
+	// Do we need this block of code?
+	/*public void ttsFile(String fileName) throws Exception {
 		try {
 			File file = new File(fileName);
 			Scanner s = new Scanner(file);
 
 			while (s.hasNextLine()) {
-				tts(s.nextLine());
+				speak(s.nextLine());
 			}
 			s.close();
 		} catch (IOException e) {
 			throw new IOException("File can not be opened.");
 		}
 
-	}
+	}*/
 
 	private static void playAudio(Scanner scanner) {
-
+		
 	}
 
 	private static void processAction(Scanner scanner) {
@@ -85,7 +86,14 @@ public class Player {
 	}
 
 	private static void readText(Scanner scanner) {
-
+		String line = scanner.nextLine();
+		while(scanner.hasNextLine()){
+			if(line.contentEquals("<end>")){
+				break;
+			}
+			speak(line);
+			line = scanner.nextLine();
+		}
 	}
 
 }
