@@ -9,42 +9,57 @@ import java.util.logging.Logger;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 
+/*
+ * All buttons will be added to a Map<JButton, Boolean>, all booleans will be initialized to false.
+ * The boolean indicates whether that button was pressed or not. When a choice is required,
+ * another tag (after the choice tag) indicates which button should be pressed for the scenario to continue.
+ * The actionPerformed method checks which button was pressed and sets its corresponding flag in the map
+ * to true. The processAction method then compares which flag was set to true with which flag was SUPPOSED to
+ * be set to true. If the correct button was pressed it continues, if the incorrect one is pressed it loops back.
+ */
+
 public class Player {
 
 	private Simulator simulator;
 	private int buttonNumber;
 	private int cellNumber;
-	private static final String VOICENAME_kevin = "kevin";	
+	private static final String VOICENAME_kevin = "kevin";
 
 	public Player(File inputFile) throws FileNotFoundException {
 
 		String nextLine;
 		Scanner scanner = new Scanner(inputFile);
 
-		//this.buttonNumber = scanner.nextInt();
-		//this.cellNumber = scanner.nextInt();
-		//simulator = new Simulator(cellNumber, buttonNumber);
+		this.cellNumber = scanner.nextInt();
+		this.buttonNumber = scanner.nextInt();
+		simulator = new Simulator(cellNumber, buttonNumber);
 
 		while (scanner.hasNextLine()) {
 
 			nextLine = scanner.nextLine();
-			switch (nextLine) {
-			case "<t>":
-				Player.readText(scanner);
-				
-			case "<a>":
-				Player.playAudio(scanner);
-				
-			case "<c>":
-				Player.processAction(scanner);
-				
-			default:
-				break;
-
-			}
+			setPath(nextLine, scanner);
 
 		}
 		scanner.close();
+	}
+
+	private void setPath(String nextLine, Scanner scanner) {
+		switch (nextLine) {
+		case "<t>":
+			Player.readText(scanner);
+			break;
+
+		case "<a>":
+			Player.playAudio(scanner);
+			break;
+
+		case "<c>":
+			Player.processAction(scanner);
+			break;
+		default:
+			break;
+
+		}
 	}
 
 	/**
@@ -61,24 +76,8 @@ public class Player {
 		voice.speak(text);
 	}
 
-	// Do we need this block of code?
-	/*public void ttsFile(String fileName) throws Exception {
-		try {
-			File file = new File(fileName);
-			Scanner s = new Scanner(file);
-
-			while (s.hasNextLine()) {
-				speak(s.nextLine());
-			}
-			s.close();
-		} catch (IOException e) {
-			throw new IOException("File can not be opened.");
-		}
-
-	}*/
-
 	private static void playAudio(Scanner scanner) {
-		
+
 	}
 
 	private static void processAction(Scanner scanner) {
@@ -87,10 +86,8 @@ public class Player {
 
 	private static void readText(Scanner scanner) {
 		String line = scanner.nextLine();
-		while(scanner.hasNextLine()){
-			if(line.contentEquals("<end>")){
-				break;
-			}
+		while (line != "<end>") {
+
 			speak(line);
 			line = scanner.nextLine();
 		}
