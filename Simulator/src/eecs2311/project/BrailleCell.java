@@ -171,7 +171,7 @@ public class BrailleCell {
 		}
 	}
 
-	private void raiseOnePin(int i) {
+	public void raiseOnePin(int i) {
 		if (i < 1 || i > 8) {
 			throw new IllegalArgumentException("Invalid index");
 		}
@@ -199,6 +199,50 @@ public class BrailleCell {
 			break;
 		case 8:
 			radio4x2.setSelected(true);
+			break;
+		default:
+			break;
+
+		}
+	}
+	
+	/**
+	 * Lowers the pin that corresponds to the argument.
+	 * 
+	 * @param pin
+	 *            the index of the pin to lower
+	 * @throws IllegalArgumentException
+	 *             if the argument is not between 1 and 8 inclusive
+	 */
+
+	public void lowerOnePin(int pin) {
+		if (pin < 1 || pin > 8) {
+			throw new IllegalArgumentException("Invalid index");
+		}
+		switch (pin) {
+		case 1:
+			radio1x1.setSelected(false);
+			break;
+		case 2:
+			radio1x2.setSelected(false);
+			break;
+		case 3:
+			radio2x1.setSelected(false);
+			break;
+		case 4:
+			radio2x2.setSelected(false);
+			break;
+		case 5:
+			radio3x1.setSelected(false);
+			break;
+		case 6:
+			radio3x2.setSelected(false);
+			break;
+		case 7:
+			radio4x1.setSelected(false);
+			break;
+		case 8:
+			radio4x2.setSelected(false);
 			break;
 		default:
 			break;

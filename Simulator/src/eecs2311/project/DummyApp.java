@@ -10,25 +10,27 @@ import javax.swing.JOptionPane;
 
 public class DummyApp {
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 		
-		Player p = new Player(new File("library.txt"));
-		Simulator x = new Simulator(48, 7);
-
-		x.displayString("Wow these are so many braille cells I dont even know how we fit them in there");
-		x.getCell(4).clear();
-		x.getCell(12).displayLetter('z');
-		x.getButton(0).setText("My Button");
-
-		x.getButton(0).addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(null, "The action event you set is triggered");
-
-			}
-
-		});
+		Player p = new Player(new File("input2.txt"));
+		
+		
+//		Simulator x = new Simulator(48, 7);
+//
+//		x.displayString("Wow these are so many braille cells I dont even know how we fit them in there");
+//		x.getCell(4).clear();
+//		x.getCell(12).displayLetter('z');
+//		x.getButton(0).setText("My Button");
+//
+//		x.getButton(0).addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent arg0) {
+//				JOptionPane.showMessageDialog(null, "The action event you set is triggered");
+//
+//			}
+//
+//		});
 
 	}
 }
