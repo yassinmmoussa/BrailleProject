@@ -12,7 +12,7 @@ public class DummyApp {
 
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 		
-		Player p = new Player(new File("input2.txt"));
+		Player p = new Player(new File("input.txt"));
 		
 		
 //		Simulator x = new Simulator(48, 7);
