@@ -117,7 +117,7 @@ public class Simulator implements ActionListener {
 		}
 
 		for (int i = 0; i < jButtonNumber; i++) {
-			JButton button = new JButton("" + i);
+			JButton button = new JButton("" + (i+1));
 			//button.addActionListener(this);
 			buttonList.add(button);
 
