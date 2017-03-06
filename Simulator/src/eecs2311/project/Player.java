@@ -10,6 +10,13 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 
 import com.sun.speech.freetts.Voice;
@@ -37,7 +44,11 @@ public class Player implements ActionListener {
 	private Simulator simulator;
 	private int buttonNumber;
 	private int cellNumber;
+	
 	private static final String VOICENAME_kevin = "kevin";
+	// size of the byte buffer used to read/write the audio stream
+    private static final int BUFFER_SIZE = 4096;
+
 	private HashMap<JButton, Boolean> buttonMap;
 	String filePath;
 	boolean buttonFlag = true; // I explain why it's initiialized to true in the
@@ -109,7 +120,73 @@ public class Player implements ActionListener {
 	}
 
 	private void playAudio(Scanner scanner) {
+		String line = scanner.nextLine();
+		while (!line.contentEquals("<end>")) {
+			System.out.println(line);
+			
+			/*
+			 * NOTE: See console when running test
+			 * NOTE: Audio files must be stored in the parent folder same as the text files
+			 * Play long audio files (SourceDataLine) but no control on the
+			 * files.
+			 * Must wait till audio finishes before program continues.
+			 * Can't get duration of file.
+			 */
+			File audioFile = new File(line);
+			try {
+				AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+				AudioFormat format = audioStream.getFormat();
+				DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+				SourceDataLine audioLine = (SourceDataLine) AudioSystem.getLine(info);
+				audioLine.open(format);
+				audioLine.start();
+				System.out.println("Playback started.");
+				byte[] bytesBuffer = new byte[BUFFER_SIZE];
+				int bytesRead = -1;
+				while ((bytesRead = audioStream.read(bytesBuffer)) != -1) {
+					audioLine.write(bytesBuffer, 0, bytesRead);
+				}
 
+				audioLine.drain();
+				audioLine.close();
+				audioStream.close();
+
+				System.out.println("Playback completed.");
+
+			} catch (UnsupportedAudioFileException ex) {
+				System.out.println("The specified audio file is not supported.");
+				ex.printStackTrace();
+			} catch (LineUnavailableException ex) {
+				System.out.println("Audio line for playing back is unavailable.");
+				ex.printStackTrace();
+			} catch (IOException ex) {
+				System.out.println("Error playing the audio file.");
+				ex.printStackTrace();
+			}
+			/*
+			 * Plays short audio CLIPS, but more flexibility and control.
+			 * Allows starting and stopping at any point in the file as well as stopping.
+			 * Allows looping
+			 * Get duration of audio
+			 * 
+			 * try {
+			 * 
+			 * Clip audio = AudioSystem.getClip();
+			 * audio.open(AudioSystem.getAudioInputStream(new File(line)));
+			 * audio.start(); Thread.sleep(audio.getMicrosecondLength()/1000);
+			 * //create delay to allow the audio to finish
+			 * 
+			 * } catch (UnsupportedAudioFileException e) {
+			 * System.out.println("The specified audio file is not supported.");
+			 * e.printStackTrace(); } catch (LineUnavailableException e) {
+			 * System.out.println("Audio line for playing back is unavailable."
+			 * ); e.printStackTrace(); } catch (IOException e) {
+			 * System.out.println("Error playing the audio file.");
+			 * e.printStackTrace(); } catch (InterruptedException e) { // TODO
+			 * Auto-generated catch block e.printStackTrace(); }
+			 */
+			line = scanner.nextLine();	//go to next line to read
+		}
 	}
 
 	private void processAction(Scanner scanner) throws InterruptedException {
