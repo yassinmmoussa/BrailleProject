@@ -44,15 +44,15 @@ public class Player implements ActionListener {
 	private Simulator simulator;
 	private int buttonNumber;
 	private int cellNumber;
-	
+
 	private static final String VOICENAME_kevin = "kevin";
 	// size of the byte buffer used to read/write the audio stream
-    private static final int BUFFER_SIZE = 4096;
+	private static final int BUFFER_SIZE = 4096;
 
 	private HashMap<JButton, Boolean> buttonMap;
 	String filePath;
-	boolean buttonFlag = true; // I explain why it's initiialized to true in the
-								// processAction method.
+	boolean buttonFlag = true; // Flag that represents whether the user has made
+								// a choice or not (in the case of a question)
 
 	public Player(File inputFile) throws FileNotFoundException, InterruptedException {
 
@@ -63,12 +63,16 @@ public class Player implements ActionListener {
 		this.cellNumber = scanner.nextInt();
 		this.buttonNumber = scanner.nextInt();
 		simulator = new Simulator(cellNumber, buttonNumber);
+		// Construct the simulator with the number of cells and buttons read
+		// from the file
 
 		buttonMap = new HashMap<JButton, Boolean>();
 
 		for (int i = 0; i < this.buttonNumber; i++) {
 			simulator.getButton(i).addActionListener(this);
 			buttonMap.put(simulator.getButton(i), false);
+			// The flags in the HashMap indicate whether this specific button
+			// was pressed or not. Thus they're all initialized to false.
 		}
 
 		while (scanner.hasNextLine()) {
@@ -119,18 +123,17 @@ public class Player implements ActionListener {
 		voice.speak(text);
 	}
 
-	private void playAudio(Scanner scanner) {
+	public void playAudio(Scanner scanner) {
 		String line = scanner.nextLine();
 		while (!line.contentEquals("<end>")) {
 			System.out.println(line);
-			
+
 			/*
-			 * NOTE: See console when running test
-			 * NOTE: Audio files must be stored in the parent folder same as the text files
-			 * Play long audio files (SourceDataLine) but no control on the
-			 * files.
-			 * Must wait till audio finishes before program continues.
-			 * Can't get duration of file.
+			 * NOTE: See console when running test NOTE: Audio files must be
+			 * stored in the parent folder same as the text files Play long
+			 * audio files (SourceDataLine) but no control on the files. Must
+			 * wait till audio finishes before program continues. Can't get
+			 * duration of file.
 			 */
 			File audioFile = new File(line);
 			try {
@@ -163,45 +166,14 @@ public class Player implements ActionListener {
 				System.out.println("Error playing the audio file.");
 				ex.printStackTrace();
 			}
-			/*
-			 * Plays short audio CLIPS, but more flexibility and control.
-			 * Allows starting and stopping at any point in the file as well as stopping.
-			 * Allows looping
-			 * Get duration of audio
-			 * 
-			 * try {
-			 * 
-			 * Clip audio = AudioSystem.getClip();
-			 * audio.open(AudioSystem.getAudioInputStream(new File(line)));
-			 * audio.start(); Thread.sleep(audio.getMicrosecondLength()/1000);
-			 * //create delay to allow the audio to finish
-			 * 
-			 * } catch (UnsupportedAudioFileException e) {
-			 * System.out.println("The specified audio file is not supported.");
-			 * e.printStackTrace(); } catch (LineUnavailableException e) {
-			 * System.out.println("Audio line for playing back is unavailable."
-			 * ); e.printStackTrace(); } catch (IOException e) {
-			 * System.out.println("Error playing the audio file.");
-			 * e.printStackTrace(); } catch (InterruptedException e) { // TODO
-			 * Auto-generated catch block e.printStackTrace(); }
-			 */
-			line = scanner.nextLine();	//go to next line to read
+			
+			line = scanner.nextLine(); // go to next line to read
 		}
 	}
 
-	private void processAction(Scanner scanner) throws InterruptedException {
+	public void processAction(Scanner scanner) throws InterruptedException {
 
-		// The reason buttonFlag is originally initialized to true is this:
-		// Assume I had, as intuition decrees, set it initially to false, what
-		// if the user presses a button without being prompted? In that case the
-		// actionPerformed method would run, and the flag would be set to true.
-		// In that case, when an actual choice is required the flag would
-		// already be true, meaning the method won't wait for an input and will
-		// just consider the last button pressed as the answer. If I
-		// initialize the flag to true, I can then tell the actionPerformed method not to do
-		// anything unless the flag is false, and I then set the flag to = false ONLY in the processAction
-		// method. After that, the actionPerformed method (provided the flag is false) sets it to true
-		// if a button is pressed and the processAction method can continue normally.
+		
 		buttonFlag = false;
 		simulator.displayString(scanner.nextLine());
 		int correctAnswer = Integer.parseInt(scanner.nextLine());
@@ -214,13 +186,10 @@ public class Player implements ActionListener {
 		while (!buttonFlag) {
 			Thread.sleep(500);
 		}
-		
-		if(buttonMap.get(simulator.getButton(correctAnswer-1)))
-		{
-			scanner.findWithinHorizon("<cs>", 0);						
-		}
-		else
-		{
+
+		if (buttonMap.get(simulator.getButton(correctAnswer - 1))) {
+			scanner.findWithinHorizon("<cs>", 0);
+		} else {
 			scanner.findWithinHorizon("<cf>", 0);
 		}
 
@@ -228,11 +197,10 @@ public class Player implements ActionListener {
 					// false.
 	}
 
-	private void readText(Scanner scanner) {
+	public void readText(Scanner scanner) {
 		String line = scanner.nextLine();
 		while (!line.contentEquals("<end>")) {
-			
-			
+
 			speak(line);
 			line = scanner.nextLine();
 		}
