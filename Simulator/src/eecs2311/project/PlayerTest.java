@@ -59,8 +59,10 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testReadText() {
+	public void testReadText() throws FileNotFoundException {
 		// Also tests the speak() method.
+		scan = new Scanner(new File("test.txt"));
+		//Scanner has to be reinitialized because of conflict with testProcessAction
 
 		// tests when the method reads text using speak() method
 		scan.findWithinHorizon("<readText1>", 0);
@@ -91,7 +93,7 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void TestProcessAction() throws Exception{
+	public void testProcessAction() throws Exception{
 		scan.findWithinHorizon("<case1>", 0);
 		
 	}

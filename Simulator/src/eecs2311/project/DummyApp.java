@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 public class DummyApp {
 
-	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
+	public static void main(String[] args) throws Exception {
 		
 		Player p = new Player(new File("input.txt"));
 		
