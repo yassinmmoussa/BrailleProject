@@ -39,3 +39,9 @@ wow, your parents must be so proud
 <t>
 that's all folks
 <end>
+<j>
+<endOfFile>
+<t>
+this shouldn't run
+<end>
+<endOfFile>

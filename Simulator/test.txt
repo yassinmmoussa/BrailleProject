@@ -27,6 +27,15 @@ Hi
 <cf>
 <t>
 really? wrong again?
-wow, your parents must be so proud
 <end>
 <end_c>
+
+<jump_test>
+<aTag>
+<incorrect>
+<aTag>
+<correct>
+
+<jump_test2>
+tag that doesn't exist
+Not the line jump is looking for in jump_test2

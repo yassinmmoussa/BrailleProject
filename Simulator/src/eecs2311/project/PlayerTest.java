@@ -99,12 +99,35 @@ public class PlayerTest {
 
 	@Test
 	public void testProcessAction() throws Exception {
+		scan = new Scanner(new File("test.txt"));
 		// test if the correct button is pressed then continues to play scenario
 		// which is indicated by next <case1> tag
 		scan.findWithinHorizon("<case1>", 0);
 		scan.nextLine();
 		p1.processAction(scan);
 		assertTrue(p1.buttonMap.get(p1.simulator.getButton(0)));
+
+	}
+
+	@Test
+	public void testJump() throws Exception {
+		//Testing for correct jump
+		scan = new Scanner(new File("test.txt"));
+		scan.findWithinHorizon("<jump_test>\n", 0);
+		p1.jump(scan);
+		// If the scanner didn't jump, the next line would be <incorrect> and
+		// the test case would fail
+		// Additionnally, if the jump() method throws an exception, which it
+		// shouldn't, the test case
+		// will also fail.
+		assertEquals("<correct>", scan.nextLine());
+		
+		scan.reset();
+		//Testing for exception being thrown in case jump tries to go to a line that doesn't exist
+		scan.findWithinHorizon("<jump_test2>\n", 0);
+		exceptionRule.expect(IllegalArgumentException.class);
+		p1.jump(scan);
+		
 
 	}
 

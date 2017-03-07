@@ -99,6 +99,10 @@ public class Player implements ActionListener {
 		case "<c>":
 			processAction(scanner);
 			break;
+		case "<j>":
+			jump(scanner);
+			break;
+
 		case "<break>":
 			scanner.findWithinHorizon("<end_c>", 0);
 			break;
@@ -179,9 +183,9 @@ public class Player implements ActionListener {
 	}
 
 	public void processAction(Scanner scanner) throws Exception {
-		resetMap(); // Resets all boolean values associated with buttons to
-		// false. Do this beginning of the method for testing the
-		// ActionPerformed method in test case
+		resetMap();
+		//Resets all the flags in the buttonMap to 0, this is to avoid bugs caused by old values
+		//from previous calls to this method.
 		buttonFlag = false;
 		simulator.displayString(scanner.nextLine());
 		int correctAnswer = Integer.parseInt(scanner.nextLine());
@@ -215,6 +219,38 @@ public class Player implements ActionListener {
 		}
 	}
 
+	/**
+	 * Looks for a specific string in the file, then positions the scanner right
+	 * after that string. The string is the next line after whatever position
+	 * the scanner was in when it was passed to the method. Typically, this
+	 * method will only be called after the correct tag, which in this case is
+	 * "<j>".
+	 * 
+	 * 
+	 * @param scanner
+	 *            the scanner going through the file currently being read.
+	 *
+	 */
+	public void jump(Scanner scanner) {
+		String line = scanner.nextLine();
+		String k = scanner.findWithinHorizon(line + "\n", 0);
+		// The first if statement is just in case the user wants to jump to a
+		// tag that is at the very end of the file.
+		// In that case the tag wouldn't have a \n after it, meaning the
+		// findWithinHorizon method wouldn't spot it.
+		// Just for that case, if it is not found the scanner looks over the
+		// file one more time for the same
+		// line without a '\n' character, if it's not found a second time then
+		// an exception is thrown.
+		if (k == null) {
+			k = scanner.findWithinHorizon(line, 0);
+		}
+		if (k == null) {
+			throw new IllegalArgumentException("Cannot jump to line, does not exist within the file");
+		}
+
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -230,4 +266,5 @@ public class Player implements ActionListener {
 			buttonMap.put(simulator.getButton(i), false);
 		}
 	}
+
 }
