@@ -41,20 +41,22 @@ import com.sun.speech.freetts.VoiceManager;
 
 public class Player implements ActionListener {
 
-	private Simulator simulator;
-	private int buttonNumber;
-	private int cellNumber;
+	public Simulator simulator;
+	public int buttonNumber;
+	public int cellNumber;
+	boolean testFlag;
+	// Flag used for testing purposes. (speak() method)
 
 	private static final String VOICENAME_kevin = "kevin";
 	// size of the byte buffer used to read/write the audio stream
 	private static final int BUFFER_SIZE = 4096;
 
-	private HashMap<JButton, Boolean> buttonMap;
+	public HashMap<JButton, Boolean> buttonMap;
 	String filePath;
 	boolean buttonFlag = true; // Flag that represents whether the user has made
 								// a choice or not (in the case of a question)
 
-	public Player(File inputFile) throws FileNotFoundException, InterruptedException {
+	public Player(File inputFile) throws Exception {
 
 		String nextLine;
 		Scanner scanner = new Scanner(inputFile);
@@ -84,7 +86,7 @@ public class Player implements ActionListener {
 		scanner.close();
 	}
 
-	private void setPath(String nextLine, Scanner scanner) throws InterruptedException {
+	private void setPath(String nextLine, Scanner scanner) throws Exception {
 		switch (nextLine) {
 		case "<t>":
 			readText(scanner);
@@ -120,10 +122,12 @@ public class Player implements ActionListener {
 		VoiceManager vm = VoiceManager.getInstance();
 		voice = vm.getVoice(VOICENAME_kevin);
 		voice.allocate();
-		voice.speak(text);
+		testFlag = voice.speak(text); // speak method in freetts returns
+										// true if text is spoken; otherwise
+										// false
 	}
 
-	public void playAudio(Scanner scanner) {
+	public void playAudio(Scanner scanner) throws Exception {
 		String line = scanner.nextLine();
 		while (!line.contentEquals("<end>")) {
 			System.out.println(line);
@@ -135,45 +139,47 @@ public class Player implements ActionListener {
 			 * wait till audio finishes before program continues. Can't get
 			 * duration of file.
 			 */
-			File audioFile = new File(line);
-			try {
-				AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-				AudioFormat format = audioStream.getFormat();
-				DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-				SourceDataLine audioLine = (SourceDataLine) AudioSystem.getLine(info);
-				audioLine.open(format);
-				audioLine.start();
-				System.out.println("Playback started.");
-				byte[] bytesBuffer = new byte[BUFFER_SIZE];
-				int bytesRead = -1;
-				while ((bytesRead = audioStream.read(bytesBuffer)) != -1) {
-					audioLine.write(bytesBuffer, 0, bytesRead);
-				}
+			File audioFile;
+			audioFile = new File(line);
+			// try {
 
-				audioLine.drain();
-				audioLine.close();
-				audioStream.close();
-
-				System.out.println("Playback completed.");
-
-			} catch (UnsupportedAudioFileException ex) {
-				System.out.println("The specified audio file is not supported.");
-				ex.printStackTrace();
-			} catch (LineUnavailableException ex) {
-				System.out.println("Audio line for playing back is unavailable.");
-				ex.printStackTrace();
-			} catch (IOException ex) {
-				System.out.println("Error playing the audio file.");
-				ex.printStackTrace();
+			AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+			AudioFormat format = audioStream.getFormat();
+			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+			SourceDataLine audioLine = (SourceDataLine) AudioSystem.getLine(info);
+			audioLine.open(format);
+			audioLine.start();
+			System.out.println("Playback started.");
+			byte[] bytesBuffer = new byte[BUFFER_SIZE];
+			int bytesRead = -1;
+			while ((bytesRead = audioStream.read(bytesBuffer)) != -1) {
+				audioLine.write(bytesBuffer, 0, bytesRead);
 			}
-			
+
+			audioLine.drain();
+			audioLine.close();
+			audioStream.close();
+
+			System.out.println("Playback completed.");
+
+			// } catch (UnsupportedAudioFileException ex) {
+			// System.out.println("The specified audio file is not supported.");
+			// ex.printStackTrace();
+			// } catch (LineUnavailableException ex) {
+			// System.out.println("Audio line for playing back is
+			// unavailable.");
+			// ex.printStackTrace();
+			// } catch (IOException ex) {
+			// System.out.println("Error playing the audio file.");
+			// ex.printStackTrace();
+			// }
+
 			line = scanner.nextLine(); // go to next line to read
 		}
 	}
 
-	public void processAction(Scanner scanner) throws InterruptedException {
+	public void processAction(Scanner scanner) throws Exception {
 
-		
 		buttonFlag = false;
 		simulator.displayString(scanner.nextLine());
 		int correctAnswer = Integer.parseInt(scanner.nextLine());
@@ -199,10 +205,14 @@ public class Player implements ActionListener {
 
 	public void readText(Scanner scanner) {
 		String line = scanner.nextLine();
+		testFlag = false; // For testing purposes
 		while (!line.contentEquals("<end>")) {
-
-			speak(line);
-			line = scanner.nextLine();
+			if (line.length() == 0) {
+				line = scanner.nextLine();
+			} else {
+				speak(line);
+				line = scanner.nextLine();
+			}
 		}
 	}
 
@@ -221,5 +231,4 @@ public class Player implements ActionListener {
 			buttonMap.put(simulator.getButton(i), false);
 		}
 	}
-
 }
