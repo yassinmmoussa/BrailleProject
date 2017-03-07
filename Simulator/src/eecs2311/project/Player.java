@@ -179,7 +179,9 @@ public class Player implements ActionListener {
 	}
 
 	public void processAction(Scanner scanner) throws Exception {
-
+		resetMap(); // Resets all boolean values associated with buttons to
+		// false. Do this beginning of the method for testing the
+		// ActionPerformed method in test case
 		buttonFlag = false;
 		simulator.displayString(scanner.nextLine());
 		int correctAnswer = Integer.parseInt(scanner.nextLine());
@@ -198,9 +200,6 @@ public class Player implements ActionListener {
 		} else {
 			scanner.findWithinHorizon("<cf>", 0);
 		}
-
-		resetMap(); // Resets all boolean values associated with buttons to
-					// false.
 	}
 
 	public void readText(Scanner scanner) {
