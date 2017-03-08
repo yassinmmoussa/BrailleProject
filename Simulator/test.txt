@@ -1,40 +1,52 @@
-<audio1>
+audio1>
 nofile.mp3
 <end>
 
 <audio2>
-notsupported.mp4
+library.txt
+<end>
+
+<audio3>
+sample.wav
+sample.mp3
 <end>
 
 <readText1>
 A B C
+hello world
+1 2 3
+1.2345
+2311
 <end>
 
 <readText2>
 <end>
 
 <case1>
+Press 1 to test successful choice.
+Press 2 to test failure choice.
+<end>
 Hi
 1
 <cs>
-<break>
-<cf>
-<c>
-Hi
-2
-<cs>
-<break>
-<cf>
-<t>
-really? wrong again?
+Correct
+We are now inside choice success tag
 <end>
-<end_c>
+<cf>
+Fail
+We are now inside choice fail tag
+<end>
+
+<case2>
+Hi
+100
 
 <jump_test>
 <aTag>
 <incorrect>
 <aTag>
 <correct>
+
 
 <jump_test2>
 tag that doesn't exist
