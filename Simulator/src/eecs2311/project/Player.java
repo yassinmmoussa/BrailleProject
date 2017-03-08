@@ -134,7 +134,6 @@ public class Player implements ActionListener {
 	public void playAudio(Scanner scanner) throws Exception {
 		String line = scanner.nextLine();
 		while (!line.contentEquals("<end>")) {
-			System.out.println(line);
 
 			/*
 			 * NOTE: See console when running test NOTE: Audio files must be
@@ -166,17 +165,7 @@ public class Player implements ActionListener {
 
 			System.out.println("Playback completed.");
 
-			// } catch (UnsupportedAudioFileException ex) {
-			// System.out.println("The specified audio file is not supported.");
-			// ex.printStackTrace();
-			// } catch (LineUnavailableException ex) {
-			// System.out.println("Audio line for playing back is
-			// unavailable.");
-			// ex.printStackTrace();
-			// } catch (IOException ex) {
-			// System.out.println("Error playing the audio file.");
-			// ex.printStackTrace();
-			// }
+	
 
 			line = scanner.nextLine(); // go to next line to read
 		}

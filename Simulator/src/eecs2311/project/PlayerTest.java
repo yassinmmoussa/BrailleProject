@@ -52,7 +52,7 @@ public class PlayerTest {
 	 */
 	@Test
 	public void testPlayAudio() throws Exception {
-		// scan = new Scanner(new File("test.txt"));
+		 scan = new Scanner(new File("test.txt"));
 		// Scanner has to be reinitialized because of conflict with
 		// testProcessAction
 
@@ -67,6 +67,7 @@ public class PlayerTest {
 
 		// test for file not found exception
 		// Note: the file must not exist in your project
+		scan.reset();
 		scan.findWithinHorizon("<audio1>", 0);
 		scan.nextLine();
 		exceptionRule.expect(FileNotFoundException.class);
@@ -74,6 +75,7 @@ public class PlayerTest {
 
 		// test for non-supported audio such as .mp4 or .txt
 		// Note: you must have the unsupported file in your project folder
+		scan.reset();
 		scan.findWithinHorizon("<audio2>", 0);
 		scan.nextLine();
 		exceptionRule.expect(UnsupportedAudioFileException.class);
