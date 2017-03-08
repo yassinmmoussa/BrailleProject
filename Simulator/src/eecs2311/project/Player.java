@@ -159,7 +159,7 @@ public class Player implements ActionListener {
 			while ((bytesRead = audioStream.read(bytesBuffer)) != -1) {
 				audioLine.write(bytesBuffer, 0, bytesRead);
 			}
-
+			testFlag = audioLine.isActive();	//For testing: checks if the audio is being played
 			audioLine.drain();
 			audioLine.close();
 			audioStream.close();

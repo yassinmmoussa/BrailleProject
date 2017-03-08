@@ -23,19 +23,20 @@ hello world
 <end>
 
 <case1>
-Press 1 to test successful choice.
-Press 2 to test failure choice.
+Please press 1 to test correct.
 <end>
 Hi
 1
 <cs>
 Correct
-We are now inside choice success tag
+Now please press 2 to test Fail.
 <end>
+Hi
+1
+<cs>
+Nothing happens
 <cf>
 Fail
-We are now inside choice fail tag
-<end>
 
 <case2>
 Hi
