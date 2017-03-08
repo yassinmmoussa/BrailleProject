@@ -60,22 +60,19 @@ public class PlayerTest {
 		// Note: You must have the file in the project and it must be either
 		// .mp3 or .wav
 		p1.testFlag = false;
-		scan.findWithinHorizon("<audio3>", 0);
-		scan.nextLine();
+		scan.findWithinHorizon("<audio3>\n", 0);
 		p1.playAudio(scan);
 		assertTrue(p1.testFlag);
 
 		// test for file not found exception
 		// Note: the file must not exist in your project
-		scan.findWithinHorizon("<audio1>", 0);
-		scan.nextLine();
+		scan.findWithinHorizon("<audio1>\n", 0);
 		exceptionRule.expect(FileNotFoundException.class);
 		p1.playAudio(scan);
 
 		// test for non-supported audio such as .mp4 or .txt
 		// Note: you must have the unsupported file in your project folder
-		scan.findWithinHorizon("<audio2>", 0);
-		scan.nextLine();
+		scan.findWithinHorizon("<audio2>\n", 0);
 		exceptionRule.expect(UnsupportedAudioFileException.class);
 		p1.playAudio(scan);
 
@@ -93,12 +90,12 @@ public class PlayerTest {
 		// testProcessAction
 
 		// tests when the method reads text using speak() method
-		scan.findWithinHorizon("<readText1>", 0);
+		scan.findWithinHorizon("<readText1>\n", 0);
 		p1.readText(scan);
 		assertTrue("TTS method should run for letters, sentences, digits, and numbers", p1.testFlag);
 
 		// tests when the method does not read text using speak() method
-		scan.findWithinHorizon("<readText2>", 0);
+		scan.findWithinHorizon("<readText2>\n", 0);
 		p1.readText(scan);
 		assertFalse("TTS method should not run", p1.testFlag);
 
