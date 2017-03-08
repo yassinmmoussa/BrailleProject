@@ -22,37 +22,36 @@ import javax.swing.JButton;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 
-/*
- * All buttons will be added to a Map<JButton, Boolean>, all booleans will be initialized to false.
- * And all brailleCels will be added to a DT.
- * Use displayString to set the braille Cells.
- * set a flag in actionperformed and make the program sleep while the flag is false.
+/**
+ * This class reads through and executes a scenario made to teach children
+ * Braille.
+ * <p>
+ * The class has methods that process all the different tags that can be present
+ * in the scenario text file.
+ * <p>
+ * The player class supports reading test out loud, through a Text-To-Speech
+ * library called FreeTTS, playing .mp3 and .wav files, and branching paths in the scenario.
  * 
- * The boolean indicates whether that button was pressed or not. When a choice is required,
- * another tag (after the choice tag) indicates which button should be pressed for the scenario to continue.
- * The actionPerformed method checks which button was pressed and sets its corresponding flag in the map
- * to true. The processAction method then compares which flag was set to true with which flag was SUPPOSED to
- * be set to true. If the correct button was pressed it continues, if the incorrect one is pressed it loops back.
- * 
- * Should the audio file paths be absoulute. Yes, or you can make them relative to the input file.
- * 
- * 
+ * @author Team 4: Qassim Allaudin, Derek Li, Yassin Mohamed, Artem Solovey
  */
-
 public class Player implements ActionListener {
 
+	// Variables pertaining to the Simulator
 	public Simulator simulator;
 	public int buttonNumber;
 	public int cellNumber;
-	boolean testFlag;
+
 	// Flag used for testing purposes. (speak() method)
+	boolean testFlag;
 
 	private static final String VOICENAME_kevin = "kevin";
 	// size of the byte buffer used to read/write the audio stream
 	private static final int BUFFER_SIZE = 4096;
 
+	// Contains the references for all the buttons that are declared, and maps
+	// all the buttons to flags.
+	// Each flag represents whether the button was pressed or not.
 	public HashMap<JButton, Boolean> buttonMap;
-	String filePath;
 	boolean buttonFlag = true; // Flag that represents whether the user has made
 								// a choice or not (in the case of a question)
 
@@ -60,7 +59,6 @@ public class Player implements ActionListener {
 
 		String nextLine;
 		Scanner scanner = new Scanner(inputFile);
-		filePath = inputFile.getAbsolutePath();
 
 		this.cellNumber = scanner.nextInt();
 		this.buttonNumber = scanner.nextInt();
@@ -131,20 +129,25 @@ public class Player implements ActionListener {
 										// false
 	}
 
+	/**
+	 * 
+	 * Plays audio that follows the scanner in its current position in the file.
+	 * <p>
+	 * Audio files must be in the same directory as the project OR absolute file
+	 * paths.
+	 * 
+	 * @param scanner
+	 *            The current scanner going through the scenario text file
+	 * @throws Exception
+	 *             if: The file was not found, or if the audio file was not
+	 *             supported, or if the thread playing the audio is interrupted.
+	 */
 	public void playAudio(Scanner scanner) throws Exception {
 		String line = scanner.nextLine();
 		while (!line.contentEquals("<end>")) {
 
-			/*
-			 * NOTE: See console when running test NOTE: Audio files must be
-			 * stored in the parent folder same as the text files Play long
-			 * audio files (SourceDataLine) but no control on the files. Must
-			 * wait till audio finishes before program continues. Can't get
-			 * duration of file.
-			 */
 			File audioFile;
 			audioFile = new File(line);
-			// try {
 
 			AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 			AudioFormat format = audioStream.getFormat();
@@ -158,23 +161,32 @@ public class Player implements ActionListener {
 			while ((bytesRead = audioStream.read(bytesBuffer)) != -1) {
 				audioLine.write(bytesBuffer, 0, bytesRead);
 			}
-			testFlag = audioLine.isActive();	//For testing: checks if the audio is being played
+			testFlag = audioLine.isActive(); // For testing: checks if the audio
+												// is being played
 			audioLine.drain();
 			audioLine.close();
 			audioStream.close();
 
 			System.out.println("Playback completed.");
 
-	
-
 			line = scanner.nextLine(); // go to next line to read
 		}
 	}
 
+	/**
+	 * 
+	 * Decides which location in the file to jump to based on which button the user was prompted to press.
+	 * 
+	 * 
+	 * @param scanner The current scanner going through the scenario text file
+	 * 
+	 * @throws Exception
+	 */
 	public void processAction(Scanner scanner) throws Exception {
 		resetMap();
-		//Resets all the flags in the buttonMap to 0, this is to avoid bugs caused by old values
-		//from previous calls to this method.
+		// Resets all the flags in the buttonMap to 0, this is to avoid bugs
+		// caused by old values
+		// from previous calls to this method.
 		buttonFlag = false;
 		simulator.displayString(scanner.nextLine());
 		int correctAnswer = Integer.parseInt(scanner.nextLine());
@@ -195,6 +207,10 @@ public class Player implements ActionListener {
 		}
 	}
 
+	/**
+	 * Calls on the speak() method to read text through the TTS engine.
+	 * @param scanner
+	 */
 	public void readText(Scanner scanner) {
 		String line = scanner.nextLine();
 		testFlag = false; // For testing purposes
@@ -250,6 +266,9 @@ public class Player implements ActionListener {
 
 	}
 
+	/**
+	 * resets the buttonMap hashmap so that all the flags are false.
+	 */
 	public void resetMap() {
 		for (int i = 0; i < buttonNumber; i++) {
 			buttonMap.put(simulator.getButton(i), false);
