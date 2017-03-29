@@ -1,21 +1,24 @@
 package eecs2311.project;
 
+
 import java.util.HashMap;
 
 import javax.swing.JRadioButton;
 
 /**
- * This class groups 8 JRadioButtons into a Braille Cell. A 'selected' radio
- * button represents a raised pin, while a non-selected radio button represents
- * a lowered pin. The class contains methods for displaying letters on the cells
+ * This class implements a Braille Cell with 8 pins. The class contains methods
+ * for displaying letters on the cell
  * as well as raising and/or lowering individual pins.
  * <p>
- * By default, this class supports basic alphabet + the space character using
- * the <code> displayCharacter()</code> method. The predetermined characters are
- * displayed using standard Braille. For any non-standard characters or ones
+ * This class supports the standard Braille encoding of English characters plus the space character using
+ * the <code> displayCharacter()</code> method. For any non-standard characters or ones
  * that aren't included by default, use the <code> setPins()</code> method,
  * which takes a string of 1s and 0s as argument and sets the pins accordingly.
  * 1 meaning raised and 0 meaning lowered.
+ * 
+ * The constructor of this class is not public. Objects are created when a 
+ * <code> Simulator</code> object is created. Use the <code> getCell</code> method of class 
+ * <code> Simulator</code> to obtain references to individual <code> BrailleCell</code> objects.
  * 
  * @author Team 4: Yassin Mohamed, Qassim Allauddin, Derek Li, Artem Solovey.
  *
@@ -91,7 +94,7 @@ public class BrailleCell {
 	 * @param radio4x2
 	 *            radio button at position 4x2
 	 */
-	public BrailleCell(JRadioButton radio1x1, JRadioButton radio1x2, JRadioButton radio2x1, JRadioButton radio2x2,
+	 BrailleCell(JRadioButton radio1x1, JRadioButton radio1x2, JRadioButton radio2x1, JRadioButton radio2x2,
 			JRadioButton radio3x1, JRadioButton radio3x2, JRadioButton radio4x1, JRadioButton radio4x2) {
 
 		this.initializeAlphabet();
@@ -122,7 +125,7 @@ public class BrailleCell {
 	 *             if the character isn't part of the standard alphabet or a
 	 *             space character.
 	 */
-	public void displayLetter(char a) {
+	public void displayCharacter(char a) {
 
 		a = Character.toLowerCase(a);
 		if (!alphabet.containsKey(a)) {
@@ -134,19 +137,15 @@ public class BrailleCell {
 
 	/**
 	 * Takes an eight character string of 1s and 0s as argument, and sets the
-	 * eight radio buttons that represent the pins in the braille cell to either
-	 * true or false, depending on the String passed.
-	 * <p>
-	 * The 8 character string of 1s and 0s sets the state of the eight radio
-	 * buttons. Depending on the value of the character in the String, the
-	 * corresponding radio button is set. The first character corresponds to the
-	 * top-left radio button, the next character corresponding to the next radio
-	 * button from left to right and top to bottom.
+	 * the 8 pins accordingly. 1 corresponds to raising the pin, 0 to lowering it.
+	 * The first character corresponds to the
+	 * top-left pinn, the next character corresponding to the next pin
+	 * from left to right and top to bottom.
 	 * 
 	 * 
 	 * @param pins
 	 *            string of 1s and 0s that is 8 characters long that sets the
-	 *            state of the eight radio buttons that form the cell
+	 *            state of the eight pins that form the cell
 	 * @throws IllegalArgumentException
 	 *             if the string is not 8 characters long or if it contains any
 	 *             character that isn't a 1 or a 0
@@ -171,11 +170,20 @@ public class BrailleCell {
 		}
 	}
 
-	public void raiseOnePin(int i) {
-		if (i < 1 || i > 8) {
+	/**
+	 * Raises the pin that corresponds to the argument.
+	 * 
+	 * @param pin
+	 *            the index of the pin to raise
+	 * @throws IllegalArgumentException
+	 *             if the argument is not between 1 and 8 inclusive
+	 */
+
+	public void raiseOnePin(int pin) {
+		if (pin < 1 || pin > 8) {
 			throw new IllegalArgumentException("Invalid index");
 		}
-		switch (i) {
+		switch (pin) {
 		case 1:
 			radio1x1.setSelected(true);
 			break;
@@ -205,7 +213,7 @@ public class BrailleCell {
 
 		}
 	}
-	
+
 	/**
 	 * Lowers the pin that corresponds to the argument.
 	 * 
@@ -249,10 +257,8 @@ public class BrailleCell {
 
 		}
 	}
-
 	/**
-	 * Sets all the radio buttons' selected state to false, effectively clearing
-	 * the cell of whatever it was displaying.
+	 * Lowers all the pins in the cell.
 	 * <p>
 	 * This is equivalent to <code> displayLetter(' ') </code>.
 	 * 

@@ -1,53 +1,44 @@
 package eecs2311.project;
 
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 /**
- * This class simulates the hardware for a machine with physical Braille cells
- * that can display any letters, and buttons that are programmable.
+ * This class simulates the hardware for a device with physical Braille cells
+ * and programmable buttons.
  * <p>
  * The constructor initializes the window and takes as arguments the number of
  * Braille Cells and the number of buttons the simulator should display. This
  * class also contains several methods that allow for the manipulation of the
  * Simulator.
  * <p>
- * The cells are arrayed using <code> BorderLayout.CENTER</code> while the
- * buttons are arrayed using <code> BorderLayout.SOUTH</code>, meaning this
- * class supports any number of buttons or BrailleCells.
- * <p>
  * The individual Braille Cells can be accessed using the
- * <code> getCell(int)</code> method and the cell's index, the cells are indexed
+ * <code> getCell(int)</code> method and the cell's index. The cells are indexed
  * from left to right and top to bottom. Similarly, the buttons can be accessed
  * using the <code> getButton(int)</code> method, and they are indexed from left
  * to right. Both of these methods return the actual reference of the objects
  * displayed in the frame, meaning you can then call methods from each of the
  * object's respective classes to manipulate them. For example, you can call
- * <code> displayLetter(char)</code> on any specific cell to display a character
+ * <code> displayCharacter(char)</code> on any specific cell to display a character
  * on that cell. You can also, in a similar fashion, use the
  * <code> getButton(int) </code> method to get the reference of a specific
  * button. Then, you can call any methods specified in the JButton class on that
  * button, such as the <code> addActionListener() </code> method.
  * 
- * 
- * 
- * 
  * @author Team 4: Yassin Mohamed, Qassim Allauddin, Derek Li, Artem Solovey.
  *
  */
-public class Simulator implements ActionListener {
+public class Simulator {
 
 	int brailleCellNumber;
 	int jButtonNumber;
@@ -62,8 +53,8 @@ public class Simulator implements ActionListener {
 	JPanel centerPanel = new JPanel();
 
 	/**
-	 * Class Constructor, creates and displays a window with brailleCellNumber
-	 * Braille Cells and jButtonNumber Buttons. The two parameters must be
+	 * Creates and displays a window with <code>brailleCellNumber</code>
+	 * Braille cells and <code>jButtonNumber</code> buttons. The two parameters must be
 	 * positive integers.
 	 * 
 	 * @param brailleCellNumber
@@ -71,12 +62,12 @@ public class Simulator implements ActionListener {
 	 * @param jButtonNumber
 	 *            the number of buttons the Simulator should have
 	 * @throws IllegalArgumentException
-	 *             if one or both of the two parameters is negative
+	 *             if one or both of the two parameters is negative or 0
 	 */
 	public Simulator(int brailleCellNumber, int jButtonNumber) {
 
-		if (brailleCellNumber < 0 || jButtonNumber < 0)
-			throw new IllegalArgumentException("Negative integer entered.");
+		if (brailleCellNumber <= 0 || jButtonNumber <= 0)
+			throw new IllegalArgumentException("Non-positive integer entered.");
 
 		this.brailleCellNumber = brailleCellNumber;
 		this.jButtonNumber = jButtonNumber;
@@ -106,7 +97,7 @@ public class Simulator implements ActionListener {
 					pins.get(5), pins.get(6), pins.get(7));
 			panelList.add(panel);
 			brailleList.add(cell);
-			panel.setSize(150, 200);
+			panel.setSize(50, 50);
 			panel.setBorder(BorderFactory.createLineBorder(Color.black));
 			centerPanel.add(panel);
 
@@ -118,7 +109,6 @@ public class Simulator implements ActionListener {
 
 		for (int i = 0; i < jButtonNumber; i++) {
 			JButton button = new JButton("" + (i+1));
-			//button.addActionListener(this);
 			buttonList.add(button);
 
 			southPanel.add(button);
@@ -130,25 +120,15 @@ public class Simulator implements ActionListener {
 
 	}
 
-	/**
-	 * 
-	 * Initializes default events for all of the buttons initialized by the
-	 * constructor. This method is part of the ActionListener interface.
-	 * 
-	 * 
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	public void actionPerformed(ActionEvent e) {
-		JOptionPane.showMessageDialog(null,
-				"Button number " + buttonList.indexOf(e.getSource()) + " has been pressed.");
 
-	}
 
 	/**
 	 * Returns a reference to the button at the index passed as argument.
+	 * The main purpose of providing this method is so the client can add
+	 * actionListeners to the button.
 	 * Buttons are numbered from left to right as they appear in the frame, from
 	 * 0 to (jButtonNumber-1), jButtonNumber being the number of buttons
-	 * initialized by the constructor.
+	 * initialized by the constructor. 
 	 * 
 	 * @param index
 	 *            the index of the button to be returned
@@ -202,13 +182,8 @@ public class Simulator implements ActionListener {
 
 	/**
 	 * Displays the string passed as argument on all the Braille Cells
-	 * initialized in the Simulator.
-	 * <p>
-	 * clearAllCells() is called first, then the string is displayed on the
-	 * cells.
-	 * <p>
 	 * If the string is shorter than the total number of Braille Cells, the
-	 * others are left empty. However, if the string is longer it only displays
+	 * remaining cells are cleared. However, if the string is longer it only displays
 	 * the part of it up to however many Braille Cells there are and ignores the
 	 * rest.
 	 * 
@@ -218,7 +193,7 @@ public class Simulator implements ActionListener {
 	public void displayString(String aString) {
 		this.clearAllCells();
 		for (int i = 0; i < this.brailleCellNumber && i < aString.length(); i++) {
-			this.brailleList.get(i).displayLetter(aString.charAt(i));
+			this.brailleList.get(i).displayCharacter(aString.charAt(i));
 		}
 	}
 

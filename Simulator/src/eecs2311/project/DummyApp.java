@@ -12,8 +12,8 @@ public class DummyApp {
 
 	public static void main(String[] args) throws Exception {
 		
-		Player p = new Player(new File("input.txt"));
-		
+		SoundPlayer p = new SoundPlayer();
+		p.setScenarioFile("input.txt");
 	
 
 	}

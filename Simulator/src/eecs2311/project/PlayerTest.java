@@ -19,7 +19,7 @@ import org.junit.rules.ExpectedException;
 
 public class PlayerTest {
 
-	private static Player p1;
+	private static SoundPlayer p1;
 	private static Scanner scan;
 
 	/*
@@ -36,7 +36,7 @@ public class PlayerTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		p1 = new Player(new File("library.txt"));
+		p1 = new SoundPlayer(new File("library.txt"));
 
 	}
 
@@ -61,7 +61,7 @@ public class PlayerTest {
 	@Test
 	public void testPlayer() throws Exception {
 		exceptionRule.expect(FileNotFoundException.class);
-		Player p2 = new Player(new File("nofile.txt"));
+		SoundPlayer p2 = new SoundPlayer(new File("nofile.txt"));
 	}
 
 	/**

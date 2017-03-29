@@ -1,0 +1,47 @@
+5
+2
+<a>
+sample.mp3
+sample.wav
+<end>
+<t>
+this is the beginning
+choice coming up
+press the first button
+<end>
+<c>
+Hello
+1
+<cs>
+<t>
+that's right good job
+<end>
+<break>
+<cf>
+<t>
+that's not right let's try this again
+press the second button
+<end>
+<c>
+Hi
+2
+<cs>
+<t>
+finally, good job
+<end>
+<break>
+<cf>
+<t>
+really? wrong again?
+wow, your parents must be so proud
+<end>
+<end_c>
+<t>
+that's all folks
+<end>
+<j>
+<endOfFile>
+<t>
+this shouldn't run
+<end>
+<endOfFile>
