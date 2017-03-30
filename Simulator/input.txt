@@ -4,6 +4,7 @@ The Adventures of the High Seas
 
 /~pause:1
 /~disp-string:aoo
+/~set-voice:2
 This was supposed to set the voice to 2
 What is the answer to braille one?
 The choices are A, B
@@ -27,6 +28,7 @@ Incorrect, the correct answer was A
 
 /~disp-clearAll
 /~disp-string:yes
+/~set-voice:3
 This was supposed to set the voice to 3
 /~repeat
 Moving on to the next question. What is the answer to braille two?

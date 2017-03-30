@@ -12,9 +12,10 @@ public class DummyApp {
 
 	public static void main(String[] args) throws Exception {
 		
-		SoundPlayer p = new SoundPlayer();
-		p.setScenarioFile("input.txt");
-	
+		//SoundPlayer p = new SoundPlayer();
+		//p.setScenarioFile("input.txt");
+		Frame x = new Frame();
+		x.setVisible(true);
 
 	}
 }
