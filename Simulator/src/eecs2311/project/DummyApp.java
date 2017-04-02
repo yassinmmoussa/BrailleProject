@@ -14,8 +14,8 @@ public class DummyApp {
 		
 		//SoundPlayer p = new SoundPlayer();
 		//p.setScenarioFile("input.txt");
-		Frame x = new Frame();
-		x.setVisible(true);
+		//JFrame x = new JFrame();
+		//x.setVisible(true);
 
 	}
 }
