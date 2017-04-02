@@ -10,6 +10,11 @@ import java.util.Scanner;
  * Remember to reset buttons at the very beginning of any branch you go to
  * AND to use the /~skip: tag to make it go back to the main storyline
  * 
+ * You can't set the Resume nodes to current, because you can't add anything after
+ * The Main Branch node is the only one that is allowed to have two parents
+ * 
+ * MAYBE implement switch nodes by switching their values and not actually switching the nodes themselves
+ * 
  * 
  */
 
@@ -18,6 +23,7 @@ public class ScenarioNode {
 	private int cellNumber; // only if node is root
 	private int buttonNumber; // only if node is root
 	ScenarioNode onlyParent, onlyChild, leftChild, rightChild;
+	ArrayList<ScenarioNode> twoParents = new ArrayList<ScenarioNode>(2);
 
 	String nodeType;
 	// The nodeType variable must correspond to one of the keys in the labelMap
@@ -27,9 +33,9 @@ public class ScenarioNode {
 	String content;
 	// The content of the node, this can either be the parameters the node
 	// needs, or the text in the case of Text-To-Speech
-	HashMap<String, String> labelMap = new HashMap<String, String>();
+	private HashMap<String, String> labelMap = new HashMap<String, String>();
 
-	protected ScenarioNode(String nodeType, String content) {
+	public ScenarioNode(String nodeType, String content) {
 		this.nodeType = nodeType;
 		if (nodeType != "Root")
 			this.content = content;
@@ -37,24 +43,20 @@ public class ScenarioNode {
 		this.leftChild = null;
 		this.rightChild = null;
 		this.onlyChild = null;
-		if (nodeType == "Root") {
-			this.content = null;
-			Scanner x = new Scanner(content);
-			cellNumber = x.nextInt();
-			buttonNumber = x.nextInt();
-			x.close();
-		}
+		twoParents.set(0, null);
+		twoParents.set(1, null);
+		
 	}
 
-	protected ScenarioNode(String nodeType, String content, ScenarioNode parent, ScenarioNode left, ScenarioNode right,
-			ScenarioNode onlyChild) {
-		this(nodeType, content);
-		this.onlyParent = parent;
-		this.leftChild = left;
-		this.rightChild = right;
-		this.onlyChild = onlyChild;
-
-	}
+//	public ScenarioNode(String nodeType, String content, ScenarioNode parent, ScenarioNode left, ScenarioNode right,
+//			ScenarioNode onlyChild) {
+//		this(nodeType, content);
+//		this.onlyParent = parent;
+//		this.leftChild = left;
+//		this.rightChild = right;
+//		this.onlyChild = onlyChild;
+//
+//	}
 
 	private void initializeMap() {
 		labelMap.put("Pause", "/~pause:");
@@ -65,7 +67,7 @@ public class ScenarioNode {
 		labelMap.put("Resume", "/~skip:mainBranch\n");
 		labelMap.put("Branch 1", "/~Branch1\n");
 		labelMap.put("Branch 2", "/~Branch2\n");
-		labelMap.put("Main Barnch", "/~mainBranch\n");
+		labelMap.put("Main Branch", "");
 		labelMap.put("Clear All", "/~disp-clearALL\n");
 		labelMap.put("Clear Cell", "/~disp-clear-cell:");
 		labelMap.put("Set Pins", "/~disp-cell-pins:");
@@ -112,22 +114,74 @@ public class ScenarioNode {
 	public void setOnlyChild(ScenarioNode node) {
 		this.onlyChild = node;
 	}
-	
-	public ScenarioNode getOnlyChild()
-	{
+
+	public ScenarioNode getOnlyChild() {
 		return this.onlyChild;
-			
+
 	}
-	
-	public ArrayList<ScenarioNode> getTwoChildren()
-	{
+
+	public ArrayList<ScenarioNode> getTwoChildren() {
 		ArrayList<ScenarioNode> nodes = new ArrayList<ScenarioNode>(2);
 		nodes.add(this.leftChild);
 		nodes.add(this.rightChild);
 		return nodes;
-		
-		
-		
+
 	}
+
+	public ArrayList<ScenarioNode> getTwoParents() {
+
+		if (twoParents.get(0) != null && twoParents.get(1) != null) {
+			return twoParents;
+		} else {
+			throw new IllegalArgumentException("Node does not have two parents");
+		}
+	}
+
+	public void setLeftParent(ScenarioNode node) {
+		this.twoParents.set(0, node);
+	}
+
+	public void setRightParent(ScenarioNode node) {
+		this.twoParents.set(1, node);
+	}
+
+	public void switchNodes(ScenarioNode node) {
+		String tempType = this.nodeType;
+		String tempContent = this.content;
+		this.content = node.content;
+		this.nodeType = node.nodeType;
+		node.content = tempContent;
+		node.nodeType = tempType;
+	}
+
+	public boolean hasOneParent() {
+		return (twoParents.get(0) == null && twoParents.get(1) == null && this.onlyParent != null);
+	}
+	
+	public void setCellNumber(int cellNumber)
+	{
+		if (this.nodeType == "Root")
+		{
+			this.cellNumber = cellNumber;
+		}
+		else
+		{
+			throw new IllegalStateException("Node not a Root node");
+		}
+	}
+	
+	
+	public void setButtonNumber(int buttonNumber)
+	{
+		if (this.nodeType == "Root")
+		{
+			this.buttonNumber = buttonNumber;
+		}
+		else
+		{
+			throw new IllegalStateException("Node not a Root node");
+		}
+	}
+	
 
 }
