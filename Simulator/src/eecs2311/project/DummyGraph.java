@@ -26,13 +26,15 @@ import javax.swing.filechooser.FileFilter;
 public class DummyGraph implements ActionListener {
 
 	private static String filepath = "";
+	private static String scenario = "This is where the scenario format will be appended";
 	private static File lastpath;
 	private static JFileChooser chooser = new JFileChooser();
 	private static JButton browseAudio, browseScenario, saveScenario;
 
 	public DummyGraph() {
-		String scenario = "This is where the scenario format will be appended";
 		JFrame frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		frame.setSize(600, 600);
 		frame.getContentPane().setLayout(null);
 
@@ -114,6 +116,7 @@ public class DummyGraph implements ActionListener {
 		mainPanel.add(saveScenario);
 		frame.getContentPane().add(mainPanel);
 		frame.setVisible(true);
+		
 	}
 
 	@Override
