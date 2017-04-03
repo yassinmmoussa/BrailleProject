@@ -161,7 +161,7 @@ public class DummyGraph implements ActionListener {
 			String scenario = "You can set ur scenario format string here";
 			filter = new FileNameExtensionFilter("Text File", "txt");
 			chooser.setFileFilter(filter);
-			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 				String filename = chooser.getSelectedFile().getAbsolutePath();
 				if (!filename.endsWith(".txt")) {
 					filename += ".txt";
@@ -175,7 +175,8 @@ public class DummyGraph implements ActionListener {
 		    					fw.write(scenario.toString());
 		    					JOptionPane.showMessageDialog(chooser, "File saved successfully.");
 		    				} catch (IOException ex) {
-		    					// TODO Auto-generated catch block
+		    					JOptionPane.showMessageDialog(chooser, "Error saving file");
+		    					ex.printStackTrace();
 		    				}
 		    				lastpath = chooser.getSelectedFile().getParentFile();
 		                case JOptionPane.NO_OPTION:
