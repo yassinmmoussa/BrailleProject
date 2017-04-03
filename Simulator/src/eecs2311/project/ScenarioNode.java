@@ -45,18 +45,19 @@ public class ScenarioNode {
 		this.onlyChild = null;
 		twoParents.set(0, null);
 		twoParents.set(1, null);
-		
+
 	}
 
-//	public ScenarioNode(String nodeType, String content, ScenarioNode parent, ScenarioNode left, ScenarioNode right,
-//			ScenarioNode onlyChild) {
-//		this(nodeType, content);
-//		this.onlyParent = parent;
-//		this.leftChild = left;
-//		this.rightChild = right;
-//		this.onlyChild = onlyChild;
-//
-//	}
+	// public ScenarioNode(String nodeType, String content, ScenarioNode parent,
+	// ScenarioNode left, ScenarioNode right,
+	// ScenarioNode onlyChild) {
+	// this(nodeType, content);
+	// this.onlyParent = parent;
+	// this.leftChild = left;
+	// this.rightChild = right;
+	// this.onlyChild = onlyChild;
+	//
+	// }
 
 	private void initializeMap() {
 		labelMap.put("Pause", "/~pause:");
@@ -101,6 +102,8 @@ public class ScenarioNode {
 
 	public void setParent(ScenarioNode node) {
 		this.onlyParent = node;
+		this.twoParents.set(0,  null);
+		this.twoParents.set(1, null);
 	}
 
 	public void setRight(ScenarioNode node) {
@@ -139,10 +142,12 @@ public class ScenarioNode {
 
 	public void setLeftParent(ScenarioNode node) {
 		this.twoParents.set(0, node);
+		this.onlyParent = null;
 	}
 
 	public void setRightParent(ScenarioNode node) {
 		this.twoParents.set(1, node);
+		this.onlyParent = null;
 	}
 
 	public void switchNodes(ScenarioNode node) {
@@ -157,31 +162,25 @@ public class ScenarioNode {
 	public boolean hasOneParent() {
 		return (twoParents.get(0) == null && twoParents.get(1) == null && this.onlyParent != null);
 	}
-	
-	public void setCellNumber(int cellNumber)
-	{
-		if (this.nodeType == "Root")
-		{
+
+	public void setCellNumber(int cellNumber) {
+		if (this.nodeType == "Root") {
 			this.cellNumber = cellNumber;
-		}
-		else
-		{
+		} else {
 			throw new IllegalStateException("Node not a Root node");
 		}
 	}
-	
-	
-	public void setButtonNumber(int buttonNumber)
-	{
-		if (this.nodeType == "Root")
-		{
+
+	public void setButtonNumber(int buttonNumber) {
+		if (this.nodeType == "Root") {
 			this.buttonNumber = buttonNumber;
-		}
-		else
-		{
+		} else {
 			throw new IllegalStateException("Node not a Root node");
 		}
 	}
-	
+
+	public ScenarioNode getOnlyParent() {
+		return this.onlyParent;
+	}
 
 }
