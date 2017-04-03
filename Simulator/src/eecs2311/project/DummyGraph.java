@@ -23,54 +23,14 @@ import javax.swing.*;
 import javax.swing.filechooser.*;
 import javax.swing.filechooser.FileFilter;
 
-public class DummyGraph {
+public class DummyGraph implements ActionListener {
 
 	private static String filepath = "";
 	private static File lastpath;
 	private static JFileChooser chooser = new JFileChooser();
-	private static FileNameExtensionFilter filter = new FileNameExtensionFilter(".txt", "txt");
+	private static JButton browseAudio, browseScenario, saveScenario;
 
-	
-
-	private static String browseFile() {
-		if (lastpath != null) {
-			chooser.setCurrentDirectory(lastpath);
-		} else {
-			chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-		}
-		chooser.setDialogTitle("Browse for file...");
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		chooser.setAcceptAllFileFilterUsed(false);
-
-		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			// System.out.println("getCurrentDirectory(): " +
-			// chooser.getCurrentDirectory());
-			System.out.println("getSelectedFile() : " + chooser.getSelectedFile().getName());
-			lastpath = chooser.getSelectedFile().getParentFile();
-			return chooser.getSelectedFile().getAbsolutePath();
-
-		} else {
-			return "";
-		}
-	}
-
-	public static void saveFile(String scenario) {
-		chooser.setFileFilter(filter);
-		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			try (FileWriter fw = new FileWriter(chooser.getSelectedFile()+".txt")) {
-				fw.write(scenario.toString());
-				JOptionPane.showMessageDialog(chooser, "File saved successfully.");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-			}
-			lastpath = chooser.getSelectedFile().getParentFile();
-		}else{
-			return;
-		}
-	}
-
-	public static void main(String args[]) {
-
+	public DummyGraph() {
 		String scenario = "This is where the scenario format will be appended";
 		JFrame frame = new JFrame();
 		frame.setSize(600, 600);
@@ -125,39 +85,137 @@ public class DummyGraph {
 		 * Browse button will open FileChooser and when you select file name, it
 		 * will return the filepath of the selected file
 		 */
-		JButton browse = new JButton("Browse..");
-		browse.setBounds(235, 100, 100, 30);
-		browse.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// open file chooser and select file path
-				filepath = browseFile();
-				System.out.println("filepath : " + filepath);
+		browseAudio = new JButton("Browse Audio");
+		browseAudio.setBounds(235, 100, 150, 30);
+		browseAudio.addActionListener(this);
 
-			}
-		});
+		/*
+		 * Browse button will open FileChooser and when you select file name, it
+		 * will return the filepath of the selected file
+		 */
+		browseScenario = new JButton("Browse Scenario");
+		browseScenario.setBounds(235, 200, 150, 30);
+		browseScenario.addActionListener(this);
 
 		/*
 		 * Save button will open FileChooser and allow user to save their
 		 * scenario format into a .txt file
 		 * 
 		 */
-		JButton save = new JButton("Save");
-		save.setBounds(235, 150, 100, 30);
-		save.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// open file chooser and select file path
-				saveFile(scenario);
-			}
-		});
+		saveScenario = new JButton("Save Scenario");
+		saveScenario.setBounds(235, 150, 150, 30);
+		saveScenario.addActionListener(this);
 
 		// add the two panels to the frame
 		mainPanel.add(panel);
 		mainPanel.add(btnPanel);
-		mainPanel.add(browse);
-		mainPanel.add(save);
+		mainPanel.add(browseAudio);
+		mainPanel.add(browseScenario);
+		mainPanel.add(saveScenario);
 		frame.getContentPane().add(mainPanel);
 		frame.setVisible(true);
-
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		FileNameExtensionFilter filter;
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		chooser.setAcceptAllFileFilterUsed(false);
+		chooser.resetChoosableFileFilters();
+		chooser.setSelectedFile(new File(""));
+		
+		
+		// browseAudio button
+		if (e.getSource() == browseAudio) {
+			if (lastpath != null) {
+				chooser.setCurrentDirectory(lastpath);
+			} else {
+				chooser.setCurrentDirectory(new File(System.getProperty("user.dir")+File.separator+"AudioFiles"));
+			}
+			chooser.setDialogTitle("add audio...");
+			
+			filter = new FileNameExtensionFilter("Sound File (.wav)", "wav");
+			chooser.setFileFilter(filter);
+
+			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				// System.out.println("getCurrentDirectory(): " +
+				// chooser.getCurrentDirectory());
+				JOptionPane.showMessageDialog(chooser, "Added file '"+chooser.getSelectedFile().getName()+"'");
+				lastpath = chooser.getSelectedFile().getParentFile();
+				filepath = chooser.getSelectedFile().getAbsolutePath();
+
+			} else {
+				filepath = "";
+			}
+		} 
+		// saveScenario button
+		else if (e.getSource() == saveScenario) {
+			if (lastpath != null) {
+				chooser.setCurrentDirectory(lastpath);
+			} else {
+				chooser.setCurrentDirectory(new File(System.getProperty("user.dir")+File.separator+"Scenarios"));
+			}
+			String scenario = "You can set ur scenario format string here";
+			filter = new FileNameExtensionFilter("Text File", "txt");
+			chooser.setFileFilter(filter);
+			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				String filename = chooser.getSelectedFile().getAbsolutePath();
+				if (!filename.endsWith(".txt")) {
+					filename += ".txt";
+				}
+				File selected = new File(filename);
+				if(selected.exists()){
+		            int result = JOptionPane.showConfirmDialog(chooser,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_OPTION);
+		            switch(result){
+		                case JOptionPane.YES_OPTION:
+		                	try (FileWriter fw = new FileWriter(selected)) {
+		    					fw.write(scenario.toString());
+		    					JOptionPane.showMessageDialog(chooser, "File saved successfully.");
+		    				} catch (IOException ex) {
+		    					// TODO Auto-generated catch block
+		    				}
+		    				lastpath = chooser.getSelectedFile().getParentFile();
+		                case JOptionPane.NO_OPTION:
+		                    
+		                case JOptionPane.CLOSED_OPTION:
+		                    
+		            }
+		        }
+				else {
+					try (FileWriter fw = new FileWriter(selected)) {
+    					fw.write(scenario.toString());
+    					JOptionPane.showMessageDialog(chooser, "File saved successfully.");
+    				} catch (IOException ex) {
+    					// TODO Auto-generated catch block
+    				}
+				}
+			} 
+		}
+		//browseScenario button
+		else if(e.getSource() == browseScenario){
+			if (lastpath != null) {
+				chooser.setCurrentDirectory(lastpath);
+			} else {
+				chooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+			}
+			chooser.setDialogTitle("Browse for scenario...");
+			filter = new FileNameExtensionFilter("Text File", "txt");
+			chooser.setFileFilter(filter);
+
+			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				// System.out.println("getCurrentDirectory(): " +
+				// chooser.getCurrentDirectory());
+				System.out.println("getSelectedFile() : " + chooser.getSelectedFile().getName());
+				lastpath = chooser.getSelectedFile().getParentFile();
+				filepath = chooser.getSelectedFile().getAbsolutePath();
+
+			} else {
+				filepath = "";
+			}
+		}
+	}
+
+	public static void main(String args[]) {
+		DummyGraph d = new DummyGraph();
+	}
 }

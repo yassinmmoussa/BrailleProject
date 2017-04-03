@@ -69,7 +69,7 @@ public class SimulatorMain {
 //					label1.setText("END");
 					index = 0;
 				}
-				cell1.displayLetter(test.charAt(index));
+				cell1.displayCharacter(test.charAt(index));
 				if (test.charAt(index) == ' ') {
 					label1.setText("<space>");
 				} else {
