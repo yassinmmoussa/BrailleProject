@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Scanner;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -13,18 +14,20 @@ import org.junit.rules.ExpectedException;
 
 public class ScenarioNodeTest {
 
-	private static int cell, button;
+	//private static int cell, button;
 	private static ScenarioNode root, node, t1, t2;
 	private static String content, nodeType;
+	private static Scanner read;
 
 	@Before
 	public void setUp() throws Exception {
 		nodeType = "Text-To-Speech";
-		content = "testing TTS system";
-		root = new ScenarioNode("Root", null);
+		content = "2 3";
+		root = new ScenarioNode("Root", content);
 		node = new ScenarioNode(nodeType, content);
 		t1 = new ScenarioNode("Pause", "100");
 		t2 = new ScenarioNode("Set Voice", "Kevin");
+		read = new Scanner(content);
 	}
 
 	/*
@@ -48,6 +51,9 @@ public class ScenarioNodeTest {
 
 		// test for root node content for root node should be null
 		assertNull(root.content);
+		assertEquals(2, root.cellNumber);
+		assertEquals(3, root.buttonNumber);
+
 
 		/*
 		 * Iterate through the labelMap and see if the the keys and values are
@@ -472,10 +478,11 @@ public class ScenarioNodeTest {
 	@Test
 	public void TestSetCellNumber() {
 		try {
+			//cell number is initialized as 2 in setup() method above
 			root.setCellNumber(0);
 			fail("Exception should be thrown");
 		} catch (IndexOutOfBoundsException ex) {
-			assertEquals(0, root.cellNumber);
+			assertEquals(2, root.cellNumber); 
 		}
 
 		try {
@@ -495,10 +502,11 @@ public class ScenarioNodeTest {
 	@Test
 	public void TestSetButtonNumber() {
 		try {
+			//button number is initialized as 3 in setup() method above
 			root.setButtonNumber(0);
 			fail("Exception should be thrown");
 		} catch (IndexOutOfBoundsException ex) {
-			assertEquals(0, root.buttonNumber);
+			assertEquals(3, root.buttonNumber);	
 		}
 
 		try {
