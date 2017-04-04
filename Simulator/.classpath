@@ -3,5 +3,17 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/Qassim/git/BrailleProject/Simulator/lib/cmu_time_awb.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Qassim/git/BrailleProject/Simulator/lib/cmu_us_kal.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Qassim/git/BrailleProject/Simulator/lib/cmudict04.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Qassim/git/BrailleProject/Simulator/lib/cmulex.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Qassim/git/BrailleProject/Simulator/lib/cmutimelex.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Qassim/git/BrailleProject/Simulator/lib/en_us.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Qassim/git/BrailleProject/Simulator/lib/freetts.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Qassim/git/BrailleProject/Simulator/lib/freetts-jsapi10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Qassim/git/BrailleProject/Simulator/lib/jgraphx.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Qassim/git/BrailleProject/Simulator/lib/jsapi.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Qassim/git/BrailleProject/Simulator/lib/mbrola.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Qassim/git/BrailleProject/Simulator/lib/SwingSoundRecorder.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
