@@ -20,8 +20,8 @@ import java.util.Scanner;
 
 public class ScenarioNode {
 
-	private int cellNumber; // only if node is root
-	private int buttonNumber; // only if node is root
+	public int cellNumber; // only if node is root
+	public int buttonNumber; // only if node is root
 	ScenarioNode onlyParent, onlyChild, leftChild, rightChild;
 	ArrayList<ScenarioNode> twoParents = new ArrayList<ScenarioNode>(2);
 
@@ -33,9 +33,10 @@ public class ScenarioNode {
 	String content;
 	// The content of the node, this can either be the parameters the node
 	// needs, or the text in the case of Text-To-Speech
-	private HashMap<String, String> labelMap = new HashMap<String, String>();
+	public HashMap<String, String> labelMap = new HashMap<String, String>();
 
 	public ScenarioNode(String nodeType, String content) {
+		initializeMap();
 		this.nodeType = nodeType;
 		if (nodeType != "Root")
 			this.content = content;
@@ -43,8 +44,8 @@ public class ScenarioNode {
 		this.leftChild = null;
 		this.rightChild = null;
 		this.onlyChild = null;
-		twoParents.set(0, null);
-		twoParents.set(1, null);
+		twoParents.add(0, null);
+		twoParents.add(1, null);
 
 	}
 
@@ -102,7 +103,7 @@ public class ScenarioNode {
 
 	public void setParent(ScenarioNode node) {
 		this.onlyParent = node;
-		this.twoParents.set(0,  null);
+		this.twoParents.set(0, null);
 		this.twoParents.set(1, null);
 	}
 
@@ -164,16 +165,20 @@ public class ScenarioNode {
 	}
 
 	public void setCellNumber(int cellNumber) {
-		if (this.nodeType == "Root") {
+		if (this.nodeType == "Root" && cellNumber > 0) {
 			this.cellNumber = cellNumber;
+		} else if (cellNumber <= 0) {
+			throw new IndexOutOfBoundsException("cell number must be greater than 0");
 		} else {
 			throw new IllegalStateException("Node not a Root node");
 		}
 	}
 
 	public void setButtonNumber(int buttonNumber) {
-		if (this.nodeType == "Root") {
+		if (this.nodeType == "Root" && buttonNumber > 0) {
 			this.buttonNumber = buttonNumber;
+		} else if (buttonNumber <= 0) {
+			throw new IndexOutOfBoundsException("button number must be greater than 0");
 		} else {
 			throw new IllegalStateException("Node not a Root node");
 		}
