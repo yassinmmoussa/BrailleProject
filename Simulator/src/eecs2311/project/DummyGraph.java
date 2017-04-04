@@ -116,7 +116,7 @@ public class DummyGraph implements ActionListener {
 		mainPanel.add(saveScenario);
 		frame.getContentPane().add(mainPanel);
 		frame.setVisible(true);
-		
+
 	}
 
 	@Override
@@ -126,37 +126,36 @@ public class DummyGraph implements ActionListener {
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.resetChoosableFileFilters();
 		chooser.setSelectedFile(new File(""));
-		
-		
+
 		// browseAudio button
 		if (e.getSource() == browseAudio) {
 			if (lastpath != null) {
 				chooser.setCurrentDirectory(lastpath);
 			} else {
-				chooser.setCurrentDirectory(new File(System.getProperty("user.dir")+File.separator+"AudioFiles"));
+				chooser.setCurrentDirectory(new File(System.getProperty("user.dir") + File.separator + "AudioFiles"));
 			}
 			chooser.setDialogTitle("add audio...");
-			
+
 			filter = new FileNameExtensionFilter("Sound File (.wav)", "wav");
 			chooser.setFileFilter(filter);
 
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				// System.out.println("getCurrentDirectory(): " +
 				// chooser.getCurrentDirectory());
-				JOptionPane.showMessageDialog(chooser, "Added file '"+chooser.getSelectedFile().getName()+"'");
+				JOptionPane.showMessageDialog(chooser, "Added file '" + chooser.getSelectedFile().getName() + "'");
 				lastpath = chooser.getSelectedFile().getParentFile();
 				filepath = chooser.getSelectedFile().getAbsolutePath();
 
 			} else {
 				filepath = "";
 			}
-		} 
+		}
 		// saveScenario button
 		else if (e.getSource() == saveScenario) {
 			if (lastpath != null) {
 				chooser.setCurrentDirectory(lastpath);
 			} else {
-				chooser.setCurrentDirectory(new File(System.getProperty("user.dir")+File.separator+"Scenarios"));
+				chooser.setCurrentDirectory(new File(System.getProperty("user.dir") + File.separator + "Scenarios"));
 			}
 			String scenario = "You can set ur scenario format string here";
 			filter = new FileNameExtensionFilter("Text File", "txt");
@@ -167,36 +166,33 @@ public class DummyGraph implements ActionListener {
 					filename += ".txt";
 				}
 				File selected = new File(filename);
-				if(selected.exists()){
-		            int result = JOptionPane.showConfirmDialog(chooser,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_OPTION);
-		            switch(result){
-		                case JOptionPane.YES_OPTION:
-		                	try (FileWriter fw = new FileWriter(selected)) {
-		    					fw.write(scenario.toString());
-		    					JOptionPane.showMessageDialog(chooser, "File saved successfully.");
-		    				} catch (IOException ex) {
-		    					JOptionPane.showMessageDialog(chooser, "Error saving file");
-		    					ex.printStackTrace();
-		    				}
-		    				lastpath = chooser.getSelectedFile().getParentFile();
-		                case JOptionPane.NO_OPTION:
-		                    
-		                case JOptionPane.CLOSED_OPTION:
-		                    
-		            }
-		        }
-				else {
+				if (selected.exists()) {
+					int result = JOptionPane.showConfirmDialog(chooser, "The file exists, overwrite?", "Existing file",
+							JOptionPane.YES_NO_OPTION);
+					switch (result) {
+					case JOptionPane.YES_OPTION:
+						try (FileWriter fw = new FileWriter(selected)) {
+							fw.write(scenario.toString());
+							JOptionPane.showMessageDialog(chooser, "File saved successfully.");
+						} catch (IOException ex) {
+							JOptionPane.showMessageDialog(chooser, "Error saving file");
+							ex.printStackTrace();
+						}
+						lastpath = chooser.getSelectedFile().getParentFile();
+
+					}
+				} else {
 					try (FileWriter fw = new FileWriter(selected)) {
-    					fw.write(scenario.toString());
-    					JOptionPane.showMessageDialog(chooser, "File saved successfully.");
-    				} catch (IOException ex) {
-    					// TODO Auto-generated catch block
-    				}
+						fw.write(scenario.toString());
+						JOptionPane.showMessageDialog(chooser, "File saved successfully.");
+					} catch (IOException ex) {
+						// TODO Auto-generated catch block
+					}
 				}
-			} 
+			}
 		}
-		//browseScenario button
-		else if(e.getSource() == browseScenario){
+		// browseScenario button
+		else if (e.getSource() == browseScenario) {
 			if (lastpath != null) {
 				chooser.setCurrentDirectory(lastpath);
 			} else {
