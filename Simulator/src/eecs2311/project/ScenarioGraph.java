@@ -26,7 +26,7 @@ public class ScenarioGraph {
 
 	public ScenarioGraph(ScenarioNode node) {
 		root = node;
-		current = root;
+		//current = root;
 
 	}
 
@@ -275,6 +275,10 @@ public class ScenarioGraph {
 	}
 
 	public void addOneToCurrent(ScenarioNode node) {
+		if (current==null)
+		{
+			return;
+		}
 		// if it has no children
 		if (current.hasNoChildren()) {
 			current.setOnlyChild(node);
@@ -301,6 +305,10 @@ public class ScenarioGraph {
 	}
 
 	public void addTwoToCurrent(ScenarioNode leftNode, ScenarioNode rightNode) {
+		if (current==null)
+		{
+			return;
+		}
 		// if it has no children
 		if (current.hasNoChildren()) {
 			current.setLeft(leftNode);
@@ -344,7 +352,16 @@ public class ScenarioGraph {
 
 		ScenarioNode current2;
 		current2 = root;
-		Object mxRoot = graph.insertVertex(parent, null, root.nodeType, 0, 0, 50, 50);
+		Object mxRoot;
+		graph.getModel().beginUpdate();
+		try
+		{
+		mxRoot = graph.insertVertex(parent, null, root.nodeType, 0, 0, 50, 50);
+		layout.execute(graph.getDefaultParent());
+		}finally
+		{
+			graph.getModel().endUpdate();			
+		}
 
 		graphMap.put((mxCell) mxRoot, root);
 		mxCell current2Cell = null;
@@ -355,6 +372,7 @@ public class ScenarioGraph {
 					current2Cell = i.getKey();
 				}
 			}
+			
 
 			if (current2.hasOneChild()) {
 
@@ -363,6 +381,8 @@ public class ScenarioGraph {
 					Object v1 = graph.insertVertex(parent, null, current2.getOnlyChild().nodeType, 0, 0, 50, 50);
 					graphMap.put((mxCell) v1, current2.getOnlyChild());
 					Object e1 = graph.insertEdge(parent, null, null, current2Cell, v1);
+					//DEBUG LINE BELOW
+					System.out.println(graphMap.get(current2Cell).nodeType + "->" + graphMap.get(v1).nodeType);
 					layout.execute(graph.getDefaultParent());
 				} finally {
 					graph.getModel().endUpdate();
@@ -477,20 +497,7 @@ public class ScenarioGraph {
 		this.current = node;
 	}
 
-	public void moveToBranch1(Scanner scanner) {
-		String line = scanner.nextLine();
-		while (line != "/~Branch1\n") {
-			if (line == "/~user-input") {
-				while (line != "/~mainBranch\n") {
-					line = scanner.nextLine();
-				}
-			} else {
-				line = scanner.nextLine();
-			}
-
-		}
-
-	}
+	
 
 	public void removeCurrent() {
 		if (current != null && current.nodeType != "Main Branch") {
@@ -516,5 +523,7 @@ public class ScenarioGraph {
 
 		}
 	}
+	
+
 
 }

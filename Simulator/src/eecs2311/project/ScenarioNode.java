@@ -20,8 +20,8 @@ import java.util.Scanner;
 
 public class ScenarioNode {
 
-	private int cellNumber; // only if node is root
-	private int buttonNumber; // only if node is root
+	public int cellNumber; // only if node is root
+	public int buttonNumber; // only if node is root
 	ScenarioNode onlyParent, onlyChild, leftChild, rightChild;
 	ArrayList<ScenarioNode> twoParents = new ArrayList<ScenarioNode>(2);
 
@@ -36,15 +36,23 @@ public class ScenarioNode {
 	private HashMap<String, String> labelMap = new HashMap<String, String>();
 
 	public ScenarioNode(String nodeType, String content) {
+		initializeMap();
 		this.nodeType = nodeType;
 		if (nodeType != "Root")
-			this.content = content;
+			{this.content = content;}
+		else
+		{
+			Scanner scanner = new Scanner(content);
+			this.cellNumber = scanner.nextInt();
+			this.buttonNumber = scanner.nextInt();
+			
+		}
 		this.onlyParent = null;
 		this.leftChild = null;
 		this.rightChild = null;
 		this.onlyChild = null;
-		twoParents.set(0, null);
-		twoParents.set(1, null);
+		twoParents.add(0, null);
+		twoParents.add(1, null);
 
 	}
 
