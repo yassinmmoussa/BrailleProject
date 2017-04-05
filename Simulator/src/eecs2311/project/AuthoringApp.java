@@ -11,9 +11,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.mxgraph.layout.mxGraphLayout;
@@ -34,16 +36,17 @@ public class AuthoringApp {
 
 	static JFrame frame;
 	static String filePath;
-	private static File lastpath;
+
 	private static JFileChooser chooser = new JFileChooser();
 	private static JButton newScenario, browseAudio, browseScenario, saveScenario, pauseNode, setVoiceNode,
 			displayStringNode, branchNode, playAudioNode, clearAllNode, clearCellNode, setPinsNode, displayCharNode,
-			ttsNode;
+			ttsNode, removeCurrent;
 	private static SwingSoundRecorder recordBtn;
 	public static ScenarioGraph scenarioGraph;
 	public static mxGraph graph;
 	public static JPanel graphPanel, btnPanel;
 	static mxGraphComponent graphComponent;
+	public static String text;
 
 	public static void main(String[] args) {
 
@@ -61,6 +64,10 @@ public class AuthoringApp {
 		graphPanel.setLayout(new BorderLayout());
 		// graphPanel.setBackground(Color.BLACK);
 
+		JPanel recordPanel = new JPanel();
+		recordPanel.setBounds(12, 13, 678, 49);
+		frame.getContentPane().add(recordPanel);
+
 		btnPanel = new JPanel();
 		btnPanel.setBounds(500, 75, 210, 600);
 		btnPanel.setLayout(null);
@@ -69,6 +76,10 @@ public class AuthoringApp {
 
 		browseAudio = new JButton("Browse Audio");
 		browseAudio.setSize(200, 30);
+		
+		removeCurrent = new JButton("Remove Current");
+		removeCurrent.setSize(150, 30);
+		recordPanel.add(removeCurrent);
 
 		browseScenario = new JButton("Browse Scenario");
 		browseScenario.setLocation(0, 91);
@@ -120,6 +131,10 @@ public class AuthoringApp {
 		ttsNode = new JButton("Add Text-To-Speech Node");
 		ttsNode.setBounds(0, 557, 200, 30);
 
+		recordBtn = new SwingSoundRecorder();
+		recordBtn.setVisible(true);
+		recordPanel.add(recordBtn);
+
 		setActionListeners();
 
 		// btnPanel.add(browseAudio);
@@ -145,13 +160,18 @@ public class AuthoringApp {
 		JLabel lblNodes = new JLabel("Nodes:");
 		lblNodes.setBounds(0, 148, 56, 16);
 		btnPanel.add(lblNodes);
+
 		try {
 			mouseListener = new MouseAdapter() {
 				public void mouseReleased(MouseEvent e) {
 					mxCell clickedCell = (mxCell) graphComponent.getCellAt(e.getX(), e.getY());
+					String x;
+					if (clickedCell != null)
+					{x = (String) clickedCell.getValue();
+					if (x != null && !x.equals("Branch on User Input") && !x.equals("Resume"))
 					scenarioGraph.setCurrent(scenarioGraph.graphMap.get(clickedCell));
 
-				}
+				}}
 			};
 			graphComponent.getGraphControl().addMouseListener(mouseListener);
 		} catch (Exception e) {
@@ -192,34 +212,7 @@ public class AuthoringApp {
 			}
 
 		});
-		// ttsNode.addActionListener(new ActionListener() {
-		//
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// if (scenarioGraph != null && scenarioGraph.current != null) {
-		// scenarioGraph.addOneToCurrent(new ScenarioNode("Text-To-Speech",
-		// ""));
-		// graphPanel.removeAll();
-		// graph.getModel().beginUpdate();
-		// graph = scenarioGraph.getGraph();
-		// graph.refresh();
-		// mxGraphLayout layout = new mxHierarchicalLayout(graph);
-		// layout.execute(graph.getDefaultParent());
-		// graph.getModel().endUpdate();
-		// graph.refresh();
-		// graphComponent = new mxGraphComponent(graph);
-		// graphPanel.revalidate();
-		// graph.refresh();
-		// graphPanel.add(graphComponent);
-		// graphComponent.getGraphControl().addMouseListener(mouseListener);
-		// graphPanel.repaint();
-		// frame.revalidate();
-		// scenarioGraph.setCurrent(null);
-		// }
-		//
-		// }
-		//
-		// });
+	
 
 		pauseNode.addActionListener(new ActionListener() {
 			@Override
@@ -469,7 +462,6 @@ public class AuthoringApp {
 									JOptionPane.showMessageDialog(chooser, "Error saving file");
 									ex.printStackTrace();
 								}
-								lastpath = chooser.getSelectedFile().getParentFile();
 
 							}
 						} else {
@@ -491,9 +483,8 @@ public class AuthoringApp {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (scenarioGraph != null && scenarioGraph.current != null)
-				{
-					ScenarioNode fork = new ScenarioNode("Branch on User Input", "");				
+				if (scenarioGraph != null && scenarioGraph.current != null) {
+					ScenarioNode fork = new ScenarioNode("Branch on User Input", "");
 					ScenarioNode branch1 = new ScenarioNode("Branch 1", "");
 					ScenarioNode branch2 = new ScenarioNode("Branch 2", "");
 					ScenarioNode resume1 = new ScenarioNode("Resume", "");
@@ -501,7 +492,7 @@ public class AuthoringApp {
 					ScenarioNode mainBranch = new ScenarioNode("Main Branch", "");
 					scenarioGraph.addOneToCurrent(fork);
 					scenarioGraph.setCurrent(fork);
-					scenarioGraph.addTwoToCurrent(branch1,  branch2);
+					scenarioGraph.addTwoToCurrent(branch1, branch2);
 					scenarioGraph.setCurrent(branch1);
 					scenarioGraph.addOneToCurrent(resume1);
 					scenarioGraph.setCurrent(resume1);
@@ -512,10 +503,9 @@ public class AuthoringApp {
 					resume2.setOnlyChild(mainBranch);
 					mainBranch.setLeftParent(resume1);
 					mainBranch.setRightParent(resume2);
+
 					
-					//DEBUG LINE
-					System.out.println("breakpoint");
-					
+
 					graphPanel.removeAll();
 					graph = scenarioGraph.getGraph();
 					graphComponent = new mxGraphComponent(graph);
@@ -529,15 +519,128 @@ public class AuthoringApp {
 					graphPanel.repaint();
 					frame.revalidate();
 					scenarioGraph.setCurrent(null);
-					
-					
-					
-					
+
 				}
 
 			}
 
 		});
+
+		ttsNode.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (scenarioGraph != null && scenarioGraph.current != null) {
+					JDialog ttsDialog = new JDialog(frame, "TTS Node");
+					ttsDialog.setModal(true);
+					JPanel okBtnPanel = new JPanel();
+					text = null;
+					ttsDialog.setSize(300, 160);
+					ttsDialog.setResizable(false);
+					ttsDialog.setLocationRelativeTo(frame);
+					JTextArea ttsText = new JTextArea("Please enter the text you would like to be read out here...", 5,
+							20);
+					JButton ttsButton = new JButton("OK");
+					ttsButton.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							text = ttsText.getText();
+							ttsDialog.setVisible(false);
+
+						}
+
+					});
+					okBtnPanel.add(ttsButton);
+					ttsDialog.getContentPane().add(ttsText, BorderLayout.NORTH);
+					ttsDialog.getContentPane().add(okBtnPanel, BorderLayout.PAGE_END);
+					ttsDialog.setVisible(true);
+					if (text != null && text.equals("Please enter the text you would like to be read out here...")) {
+						text = null;
+					}
+					if (text != null && text.length() > 0) {
+						scenarioGraph.addOneToCurrent(new ScenarioNode("Text-To-Speech", text));
+						graphPanel.removeAll();
+						graph = scenarioGraph.getGraph();
+						graphComponent = new mxGraphComponent(graph);
+						mxGraphLayout layout = new mxHierarchicalLayout(graph);
+						graph.getModel().beginUpdate();
+						layout.execute(graph.getDefaultParent());
+						graph.getModel().endUpdate();
+						graphPanel.revalidate();
+						graphPanel.add(graphComponent);
+						graphComponent.getGraphControl().addMouseListener(mouseListener);
+						graphPanel.repaint();
+						frame.revalidate();
+						scenarioGraph.setCurrent(null);
+					}
+					text = null;
+				}
+
+			}
+
+		});
+
+		playAudioNode.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (scenarioGraph != null && scenarioGraph.current != null) {
+					FileNameExtensionFilter filter;
+					chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					chooser.setAcceptAllFileFilterUsed(false);
+					chooser.resetChoosableFileFilters();
+					chooser.setSelectedFile(new File(""));
+					chooser.setCurrentDirectory(
+							new File(System.getProperty("user.dir") + File.separator + "AudioFiles"));
+					chooser.setDialogTitle("add audio...");
+					filter = new FileNameExtensionFilter("Sound File (.wav)", "wav");
+					chooser.setFileFilter(filter);
+					if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+
+						JOptionPane.showMessageDialog(chooser,
+								"Added file '" + chooser.getSelectedFile().getName() + "'");
+
+						filePath = chooser.getSelectedFile().getName();// Get
+																		// name
+																		// assumes
+																		// it's
+																		// in
+																		// AudioFiles
+																		// getAbsolutePath
+																		// otherwise
+
+					} else {
+						filePath = "";
+					}
+
+					if (!filePath.equals("") && filePath.length() > 0) {
+
+						scenarioGraph.addOneToCurrent(new ScenarioNode("Play Audio", filePath));
+						graphPanel.removeAll();
+						graph = scenarioGraph.getGraph();
+						graphComponent = new mxGraphComponent(graph);
+						mxGraphLayout layout = new mxHierarchicalLayout(graph);
+						graph.getModel().beginUpdate();
+						layout.execute(graph.getDefaultParent());
+						graph.getModel().endUpdate();
+						graphPanel.revalidate();
+						graphPanel.add(graphComponent);
+						graphComponent.getGraphControl().addMouseListener(mouseListener);
+						graphPanel.repaint();
+						frame.revalidate();
+						scenarioGraph.setCurrent(null);
+
+					}
+					filePath = "";
+
+				}
+
+			}
+
+		});
+
+		
 
 	}
 }

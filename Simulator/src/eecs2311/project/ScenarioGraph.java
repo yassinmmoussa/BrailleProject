@@ -227,14 +227,16 @@ public class ScenarioGraph {
 				current2 = current2.getOnlyChild();
 
 			} else if (current2.hasTwoChildren()) {
+				scenario.append(current2.toString());
+				scenario.append(System.getProperty("line.separator"));
 				ScenarioNode leftChild = current2.getTwoChildren().get(0);
 				ScenarioNode rightChild = current2.getTwoChildren().get(1);
 				scenario.append(leftChild.toString());
 				scenario.append(System.getProperty("line.separator"));
-				current2 = getBranchScenario(leftChild, scenario);
+				current2 = getBranchScenario(leftChild.getOnlyChild(), scenario);
 				scenario.append(rightChild.toString());
 				scenario.append(System.getProperty("line.separator"));
-				getBranchScenario(rightChild, scenario);
+				getBranchScenario(rightChild.getOnlyChild(), scenario);
 				scenario.append("/~mainBranch");
 				scenario.append(System.getProperty("line.separator"));
 
@@ -259,21 +261,22 @@ public class ScenarioGraph {
 				current2 = current2.getOnlyChild();
 
 			} else if (current2.hasTwoChildren()) {
-
+				scenario.append(current2.toString());
+				scenario.append(System.getProperty("line.separator"));
 				ScenarioNode leftChild = current2.getTwoChildren().get(0);
 				ScenarioNode rightChild = current2.getTwoChildren().get(1);
 				scenario.append(leftChild.toString());
 				scenario.append(System.getProperty("line.separator"));
-				current2 = getBranchScenario(leftChild, scenario);
+				current2 = getBranchScenario(leftChild.getOnlyChild(), scenario);
 				scenario.append(rightChild.toString());
 				scenario.append(System.getProperty("line.separator"));
-				getBranchScenario(rightChild, scenario);
+				getBranchScenario(rightChild.getOnlyChild(), scenario);
 				scenario.append("/~mainBranch");
 				scenario.append(System.getProperty("line.separator"));
 
 			}
 		}
-		return null;
+		return current2;
 	}
 
 	public void addOneToCurrent(ScenarioNode node) {
@@ -496,6 +499,7 @@ public class ScenarioGraph {
 	}
 
 	public void setCurrent(ScenarioNode node) {
+		
 		this.current = node;
 	}
 
