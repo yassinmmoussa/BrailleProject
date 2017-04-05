@@ -354,6 +354,7 @@ public class ScenarioGraph {
 		current2 = root;
 		Object mxRoot;
 		graph.getModel().beginUpdate();
+		graph.getModel().beginUpdate();
 		try
 		{
 		mxRoot = graph.insertVertex(parent, null, root.nodeType, 0, 0, 50, 50);
@@ -416,6 +417,8 @@ public class ScenarioGraph {
 
 			}
 		}
+		layout.execute(graph.getDefaultParent());
+		graph.getModel().endUpdate();
 
 		return graph;
 

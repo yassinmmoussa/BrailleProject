@@ -85,8 +85,13 @@ public class ScenarioNode {
 		labelMap.put("Root", "Cells " + cellNumber + "\nButton " + buttonNumber + "\n");
 
 	}
-
+	
+	@Override
 	public String toString() {
+		if (nodeType.equals("Root"))
+		{
+			return "Cells "+ cellNumber +"\nButton " + buttonNumber +"\n";
+		}
 		return labelMap.get(nodeType) + content + "\n";
 
 	}
