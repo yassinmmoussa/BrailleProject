@@ -70,7 +70,9 @@ public class ScenarioNode {
 		labelMap.put("Pause", "/~pause:");
 		labelMap.put("Set Voice", "/~set-voice:");
 		labelMap.put("Display String", "/~disp-string:");
-		labelMap.put("Branch on User Input", "/~skip-button:0 Branch1\n/~skip-button:1 Branch2\n/~user-input\n");
+		labelMap.put("Branch on User Input",
+				"/~skip-button:0 Branch1" + System.getProperty("line.separator") + "/~skip-button:1 Branch2"
+						+ System.getProperty("line.separator") + "/~user-input" + System.getProperty("line.separator"));
 		labelMap.put("Play Audio", "/~sound:");
 		labelMap.put("Resume", "/~skip:mainBranch\n");
 		labelMap.put("Branch 1", "/~Branch1\n");

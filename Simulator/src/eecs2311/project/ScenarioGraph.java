@@ -112,7 +112,7 @@ public class ScenarioGraph {
 			} else if (line.charAt(0) != '/') {
 				StringBuilder audio = new StringBuilder();
 				while (line.charAt(0) != '/') {
-					audio.append(line + "\n");
+					audio.append(line + System.getProperty("line.separator"));
 					line = scanner.nextLine();
 				}
 				ScenarioNode node = new ScenarioNode("Text-To-Speech", audio.toString());
@@ -203,7 +203,7 @@ public class ScenarioGraph {
 			} else if (line.charAt(0) != '/') {
 				StringBuilder audio = new StringBuilder();
 				while (line.charAt(0) != '/') {
-					audio.append(line + "\n");
+					audio.append(line + System.getProperty("line.separator"));
 					line = scanner.nextLine();
 				}
 				ScenarioNode node = new ScenarioNode("Text-To-Speech", audio.toString());
@@ -236,7 +236,7 @@ public class ScenarioGraph {
 				scenario.append(rightChild.toString());
 				scenario.append(System.getProperty("line.separator"));
 				getBranchScenario(rightChild, scenario);
-				scenario.append("/~mainBranch\n");
+				scenario.append("/~mainBranch");
 				scenario.append(System.getProperty("line.separator"));
 
 			}
@@ -269,7 +269,7 @@ public class ScenarioGraph {
 				scenario.append(rightChild.toString());
 				scenario.append(System.getProperty("line.separator"));
 				getBranchScenario(rightChild, scenario);
-				scenario.append("/~mainBranch\n");
+				scenario.append("/~mainBranch");
 				scenario.append(System.getProperty("line.separator"));
 
 			}

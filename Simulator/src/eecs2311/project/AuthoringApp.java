@@ -161,7 +161,7 @@ public class AuthoringApp {
 	}
 
 	public static void setActionListeners() {
-		// newScenarioV, browseAudio, browseScenario, saveScenario, pauseNodeV,
+		// newScenarioV, browseAudio, browseScenario, saveScenarioV, pauseNodeV,
 		// setVoiceNodeV,
 		// displayStringNodeV, branchNode, playAudioNode, clearAllNodeV,
 		// clearCellNodeV, setPinsNodeV, displayCharNodeV,
@@ -176,17 +176,18 @@ public class AuthoringApp {
 						"Please enter the number of Cells, followed by the number of Buttons separated by whitespace",
 						"Root Node", JOptionPane.PLAIN_MESSAGE);
 
-				scenarioGraph = new ScenarioGraph(new ScenarioNode("Root", content));
-				graph = scenarioGraph.getGraph();
-				graphComponent = new mxGraphComponent(graph);
-				graphPanel.removeAll();
-
-				graphPanel.add(graphComponent);
-				graphComponent.getGraphControl().addMouseListener(mouseListener);
-				graphPanel.repaint();
-				graphPanel.revalidate();
-				frame.revalidate();
-				scenarioGraph.setCurrent(null);
+				if (content != null && content.length() > 0) {
+					scenarioGraph = new ScenarioGraph(new ScenarioNode("Root", content));
+					graph = scenarioGraph.getGraph();
+					graphComponent = new mxGraphComponent(graph);
+					graphPanel.removeAll();
+					graphPanel.add(graphComponent);
+					graphComponent.getGraphControl().addMouseListener(mouseListener);
+					graphPanel.repaint();
+					graphPanel.revalidate();
+					frame.revalidate();
+					scenarioGraph.setCurrent(null);
+				}
 
 			}
 
@@ -226,23 +227,25 @@ public class AuthoringApp {
 				if (scenarioGraph != null && scenarioGraph.current != null) {
 					String content = JOptionPane.showInputDialog(frame,
 							"Please enter the duration, in seconds, that you would like the scenario to pause for.\n"
-							+ "Example:4",
+									+ "Example:4",
 							"Pause Node", JOptionPane.PLAIN_MESSAGE);
 
-					scenarioGraph.addOneToCurrent(new ScenarioNode("Pause", content));
-					graphPanel.removeAll();
-					graph = scenarioGraph.getGraph();
-					graphComponent = new mxGraphComponent(graph);
-					mxGraphLayout layout = new mxHierarchicalLayout(graph);
-					graph.getModel().beginUpdate();
-					layout.execute(graph.getDefaultParent());
-					graph.getModel().endUpdate();
-					graphPanel.revalidate();
-					graphPanel.add(graphComponent);
-					graphComponent.getGraphControl().addMouseListener(mouseListener);
-					graphPanel.repaint();
-					frame.revalidate();
-					scenarioGraph.setCurrent(null);
+					if (content != null && content.length() > 0) {
+						scenarioGraph.addOneToCurrent(new ScenarioNode("Pause", content));
+						graphPanel.removeAll();
+						graph = scenarioGraph.getGraph();
+						graphComponent = new mxGraphComponent(graph);
+						mxGraphLayout layout = new mxHierarchicalLayout(graph);
+						graph.getModel().beginUpdate();
+						layout.execute(graph.getDefaultParent());
+						graph.getModel().endUpdate();
+						graphPanel.revalidate();
+						graphPanel.add(graphComponent);
+						graphComponent.getGraphControl().addMouseListener(mouseListener);
+						graphPanel.repaint();
+						frame.revalidate();
+						scenarioGraph.setCurrent(null);
+					}
 				}
 
 			}
@@ -255,23 +258,25 @@ public class AuthoringApp {
 				if (scenarioGraph != null && scenarioGraph.current != null) {
 					String content = JOptionPane.showInputDialog(frame,
 							"Please enter index of the voice you would like to use.\n"
-							+ "1 = Male #1\n2 = Female\n3 = Male #2\n4 = Male#3\nExample:1",
+									+ "1 = Male #1\n2 = Female\n3 = Male #2\n4 = Male#3\nExample:1",
 							"Set Voice Node", JOptionPane.PLAIN_MESSAGE);
 
-					scenarioGraph.addOneToCurrent(new ScenarioNode("Set Voice", content));
-					graphPanel.removeAll();
-					graph = scenarioGraph.getGraph();
-					graphComponent = new mxGraphComponent(graph);
-					mxGraphLayout layout = new mxHierarchicalLayout(graph);
-					graph.getModel().beginUpdate();
-					layout.execute(graph.getDefaultParent());
-					graph.getModel().endUpdate();
-					graphPanel.revalidate();
-					graphPanel.add(graphComponent);
-					graphComponent.getGraphControl().addMouseListener(mouseListener);
-					graphPanel.repaint();
-					frame.revalidate();
-					scenarioGraph.setCurrent(null);
+					if (content != null && content.length() > 0) {
+						scenarioGraph.addOneToCurrent(new ScenarioNode("Set Voice", content));
+						graphPanel.removeAll();
+						graph = scenarioGraph.getGraph();
+						graphComponent = new mxGraphComponent(graph);
+						mxGraphLayout layout = new mxHierarchicalLayout(graph);
+						graph.getModel().beginUpdate();
+						layout.execute(graph.getDefaultParent());
+						graph.getModel().endUpdate();
+						graphPanel.revalidate();
+						graphPanel.add(graphComponent);
+						graphComponent.getGraphControl().addMouseListener(mouseListener);
+						graphPanel.repaint();
+						frame.revalidate();
+						scenarioGraph.setCurrent(null);
+					}
 				}
 
 			}
@@ -284,23 +289,25 @@ public class AuthoringApp {
 				if (scenarioGraph != null && scenarioGraph.current != null) {
 					String content = JOptionPane.showInputDialog(frame,
 							"Please enter the string you want to be displayed on the BrailleCells\n"
-							+ "Example:A String",
+									+ "Example:A String",
 							"Set Display String Node", JOptionPane.PLAIN_MESSAGE);
 
-					scenarioGraph.addOneToCurrent(new ScenarioNode("Display String", content));
-					graphPanel.removeAll();
-					graph = scenarioGraph.getGraph();
-					graphComponent = new mxGraphComponent(graph);
-					mxGraphLayout layout = new mxHierarchicalLayout(graph);
-					graph.getModel().beginUpdate();
-					layout.execute(graph.getDefaultParent());
-					graph.getModel().endUpdate();
-					graphPanel.revalidate();
-					graphPanel.add(graphComponent);
-					graphComponent.getGraphControl().addMouseListener(mouseListener);
-					graphPanel.repaint();
-					frame.revalidate();
-					scenarioGraph.setCurrent(null);
+					if (content != null && content.length() > 0) {
+						scenarioGraph.addOneToCurrent(new ScenarioNode("Display String", content));
+						graphPanel.removeAll();
+						graph = scenarioGraph.getGraph();
+						graphComponent = new mxGraphComponent(graph);
+						mxGraphLayout layout = new mxHierarchicalLayout(graph);
+						graph.getModel().beginUpdate();
+						layout.execute(graph.getDefaultParent());
+						graph.getModel().endUpdate();
+						graphPanel.revalidate();
+						graphPanel.add(graphComponent);
+						graphComponent.getGraphControl().addMouseListener(mouseListener);
+						graphPanel.repaint();
+						frame.revalidate();
+						scenarioGraph.setCurrent(null);
+					}
 				}
 
 			}
@@ -339,23 +346,25 @@ public class AuthoringApp {
 			public void actionPerformed(ActionEvent e) {
 				if (scenarioGraph != null && scenarioGraph.current != null) {
 					String content = JOptionPane.showInputDialog(frame,
-							"Please enter the index of the Cell you would like to clear.\nExample:2", "Set Clear Cell Node",
-							JOptionPane.PLAIN_MESSAGE);
+							"Please enter the index of the Cell you would like to clear.\nExample:2",
+							"Set Clear Cell Node", JOptionPane.PLAIN_MESSAGE);
 
-					scenarioGraph.addOneToCurrent(new ScenarioNode("Clear Cell", content));
-					graphPanel.removeAll();
-					graph = scenarioGraph.getGraph();
-					graphComponent = new mxGraphComponent(graph);
-					mxGraphLayout layout = new mxHierarchicalLayout(graph);
-					graph.getModel().beginUpdate();
-					layout.execute(graph.getDefaultParent());
-					graph.getModel().endUpdate();
-					graphPanel.revalidate();
-					graphPanel.add(graphComponent);
-					graphComponent.getGraphControl().addMouseListener(mouseListener);
-					graphPanel.repaint();
-					frame.revalidate();
-					scenarioGraph.setCurrent(null);
+					if (content != null && content.length() > 0) {
+						scenarioGraph.addOneToCurrent(new ScenarioNode("Clear Cell", content));
+						graphPanel.removeAll();
+						graph = scenarioGraph.getGraph();
+						graphComponent = new mxGraphComponent(graph);
+						mxGraphLayout layout = new mxHierarchicalLayout(graph);
+						graph.getModel().beginUpdate();
+						layout.execute(graph.getDefaultParent());
+						graph.getModel().endUpdate();
+						graphPanel.revalidate();
+						graphPanel.add(graphComponent);
+						graphComponent.getGraphControl().addMouseListener(mouseListener);
+						graphPanel.repaint();
+						frame.revalidate();
+						scenarioGraph.setCurrent(null);
+					}
 				}
 
 			}
@@ -369,23 +378,25 @@ public class AuthoringApp {
 				if (scenarioGraph != null && scenarioGraph.current != null) {
 					String content = JOptionPane.showInputDialog(frame,
 							"Please enter the index of the Cell whose Pins you want to set, followed by a space,"
-							+ "\nfollowed by the 8 character string defining the state of the pins.\nExample:1 11111101",
+									+ "\nfollowed by the 8 character string defining the state of the pins.\nExample:1 11111101",
 							"Set Pins Node", JOptionPane.PLAIN_MESSAGE);
 
-					scenarioGraph.addOneToCurrent(new ScenarioNode("Set Pins", content));
-					graphPanel.removeAll();
-					graph = scenarioGraph.getGraph();
-					graphComponent = new mxGraphComponent(graph);
-					mxGraphLayout layout = new mxHierarchicalLayout(graph);
-					graph.getModel().beginUpdate();
-					layout.execute(graph.getDefaultParent());
-					graph.getModel().endUpdate();
-					graphPanel.revalidate();
-					graphPanel.add(graphComponent);
-					graphComponent.getGraphControl().addMouseListener(mouseListener);
-					graphPanel.repaint();
-					frame.revalidate();
-					scenarioGraph.setCurrent(null);
+					if (content != null && content.length() > 0) {
+						scenarioGraph.addOneToCurrent(new ScenarioNode("Set Pins", content));
+						graphPanel.removeAll();
+						graph = scenarioGraph.getGraph();
+						graphComponent = new mxGraphComponent(graph);
+						mxGraphLayout layout = new mxHierarchicalLayout(graph);
+						graph.getModel().beginUpdate();
+						layout.execute(graph.getDefaultParent());
+						graph.getModel().endUpdate();
+						graphPanel.revalidate();
+						graphPanel.add(graphComponent);
+						graphComponent.getGraphControl().addMouseListener(mouseListener);
+						graphPanel.repaint();
+						frame.revalidate();
+						scenarioGraph.setCurrent(null);
+					}
 				}
 
 			}
@@ -402,7 +413,109 @@ public class AuthoringApp {
 									+ " followed by a whitespace, followed by the character itself\nExample:1 P",
 							"Display Character Node", JOptionPane.PLAIN_MESSAGE);
 
-					scenarioGraph.addOneToCurrent(new ScenarioNode("Display Character", content));
+					if (content != null && content.length() > 0) {
+						scenarioGraph.addOneToCurrent(new ScenarioNode("Display Character", content));
+						graphPanel.removeAll();
+						graph = scenarioGraph.getGraph();
+						graphComponent = new mxGraphComponent(graph);
+						mxGraphLayout layout = new mxHierarchicalLayout(graph);
+						graph.getModel().beginUpdate();
+						layout.execute(graph.getDefaultParent());
+						graph.getModel().endUpdate();
+						graphPanel.revalidate();
+						graphPanel.add(graphComponent);
+						graphComponent.getGraphControl().addMouseListener(mouseListener);
+						graphPanel.repaint();
+						frame.revalidate();
+						scenarioGraph.setCurrent(null);
+					}
+				}
+
+			}
+
+		});
+
+		saveScenario.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (scenarioGraph != null) {
+
+					FileNameExtensionFilter filter;
+					chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					chooser.setAcceptAllFileFilterUsed(false);
+					chooser.resetChoosableFileFilters();
+					chooser.setSelectedFile(new File(""));
+					chooser.setCurrentDirectory(
+							new File(System.getProperty("user.dir") + File.separator + "Scenarios"));
+					String scenario = scenarioGraph.getScenario();
+					filter = new FileNameExtensionFilter("Text File", "txt");
+					chooser.setFileFilter(filter);
+					if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+						String filename = chooser.getSelectedFile().getAbsolutePath();
+						if (!filename.endsWith(".txt")) {
+							filename += ".txt";
+						}
+						File selected = new File(filename);
+						if (selected.exists()) {
+							int result = JOptionPane.showConfirmDialog(chooser, "The file exists, overwrite?",
+									"Existing file", JOptionPane.YES_NO_OPTION);
+							switch (result) {
+							case JOptionPane.YES_OPTION:
+								try (FileWriter fw = new FileWriter(selected)) {
+									fw.write(scenario.toString());
+									JOptionPane.showMessageDialog(chooser, "File saved successfully.");
+								} catch (IOException ex) {
+									JOptionPane.showMessageDialog(chooser, "Error saving file");
+									ex.printStackTrace();
+								}
+								lastpath = chooser.getSelectedFile().getParentFile();
+
+							}
+						} else {
+							try (FileWriter fw = new FileWriter(selected)) {
+								fw.write(scenario.toString());
+								JOptionPane.showMessageDialog(chooser, "File saved successfully.");
+							} catch (IOException ex) {
+								// TODO Auto-generated catch block
+							}
+						}
+					}
+				}
+
+			}
+
+		});
+
+		branchNode.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (scenarioGraph != null && scenarioGraph.current != null)
+				{
+					ScenarioNode fork = new ScenarioNode("Branch on User Input", "");				
+					ScenarioNode branch1 = new ScenarioNode("Branch 1", "");
+					ScenarioNode branch2 = new ScenarioNode("Branch 2", "");
+					ScenarioNode resume1 = new ScenarioNode("Resume", "");
+					ScenarioNode resume2 = new ScenarioNode("Resume", "");
+					ScenarioNode mainBranch = new ScenarioNode("Main Branch", "");
+					scenarioGraph.addOneToCurrent(fork);
+					scenarioGraph.setCurrent(fork);
+					scenarioGraph.addTwoToCurrent(branch1,  branch2);
+					scenarioGraph.setCurrent(branch1);
+					scenarioGraph.addOneToCurrent(resume1);
+					scenarioGraph.setCurrent(resume1);
+					scenarioGraph.addOneToCurrent(mainBranch);
+					scenarioGraph.setCurrent(branch2);
+					scenarioGraph.addOneToCurrent(resume2);
+					scenarioGraph.setCurrent(resume2);
+					resume2.setOnlyChild(mainBranch);
+					mainBranch.setLeftParent(resume1);
+					mainBranch.setRightParent(resume2);
+					
+					//DEBUG LINE
+					System.out.println("breakpoint");
+					
 					graphPanel.removeAll();
 					graph = scenarioGraph.getGraph();
 					graphComponent = new mxGraphComponent(graph);
@@ -416,64 +529,15 @@ public class AuthoringApp {
 					graphPanel.repaint();
 					frame.revalidate();
 					scenarioGraph.setCurrent(null);
+					
+					
+					
+					
 				}
 
 			}
 
 		});
-		
-		saveScenario.addActionListener(new ActionListener()
-				{
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if (scenarioGraph != null) {
-							
-							FileNameExtensionFilter filter;
-							chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-							chooser.setAcceptAllFileFilterUsed(false);
-							chooser.resetChoosableFileFilters();
-							chooser.setSelectedFile(new File(""));
-							chooser.setCurrentDirectory(
-									new File(System.getProperty("user.dir") + File.separator + "Scenarios"));
-							String scenario = scenarioGraph.getScenario();
-							filter = new FileNameExtensionFilter("Text File", "txt");
-							chooser.setFileFilter(filter);
-							if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-								String filename = chooser.getSelectedFile().getAbsolutePath();
-								if (!filename.endsWith(".txt")) {
-									filename += ".txt";
-								}
-								File selected = new File(filename);
-								if (selected.exists()) {
-									int result = JOptionPane.showConfirmDialog(chooser, "The file exists, overwrite?",
-											"Existing file", JOptionPane.YES_NO_OPTION);
-									switch (result) {
-									case JOptionPane.YES_OPTION:
-										try (FileWriter fw = new FileWriter(selected)) {
-											fw.write(scenario.toString());
-											JOptionPane.showMessageDialog(chooser, "File saved successfully.");
-										} catch (IOException ex) {
-											JOptionPane.showMessageDialog(chooser, "Error saving file");
-											ex.printStackTrace();
-										}
-										lastpath = chooser.getSelectedFile().getParentFile();
-
-									}
-								} else {
-									try (FileWriter fw = new FileWriter(selected)) {
-										fw.write(scenario.toString());
-										JOptionPane.showMessageDialog(chooser, "File saved successfully.");
-									} catch (IOException ex) {
-										// TODO Auto-generated catch block
-									}
-								}
-							} 
-						}
-						
-					}
-			
-				});
 
 	}
 }
