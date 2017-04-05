@@ -37,30 +37,29 @@ public class ScenarioGraph {
 		line = scanner.nextLine();
 		while (scanner.hasNextLine()) {
 
-			if (current.getOnlyParent().nodeType != "Text-To-Speech") {
+			if (current.getOnlyParent() != null && current.getOnlyParent().nodeType != "Text-To-Speech") {
 				line = scanner.nextLine();
 			}
 
 			if (line == "") {
 				line = scanner.nextLine();
 
-			} else if (line.substring(0, 8) == "/~pause:") {
+			} else if (line.length() >= 8 && line.substring(0, 8).equals("/~pause:")) {
 				ScenarioNode node = new ScenarioNode("Pause", ("" + line.charAt(8)));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 13) == "/~set-voice:") {
-				ScenarioNode node = new ScenarioNode("Set Voice", "" + line.charAt(13));
+			} else if (line.length() >= 12 && line.substring(0, 12).equals("/~set-voice:")) {
+				ScenarioNode node = new ScenarioNode("Set Voice", "" + line.charAt(12));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 15) == "/~disp-string:") {
-				ScenarioNode node = new ScenarioNode("Display String", line.substring(15, line.length()));
+			} else if (line.length() >= 14 && line.substring(0, 14).equals("/~disp-string:")) {
+				ScenarioNode node = new ScenarioNode("Display String", line.substring(14, line.length()));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 15) == "/~skip-button:") {
-
+			} else if (line.length() >= 14 && line.substring(0, 14).equals("/~skip-button:")) {
 				ScenarioNode node = new ScenarioNode("Branch on User Input", "");
 				addOneToCurrent(node);
 				ScenarioNode leftNode = new ScenarioNode("Branch 1", "");
@@ -84,28 +83,28 @@ public class ScenarioGraph {
 				mainBranch.setRightParent(resumeNode2);
 				current = mainBranch;
 
-			} else if (line.substring(0, 9) == "/~sound:") {
-				ScenarioNode node = new ScenarioNode("Play Audio", line.substring(9, line.length()));
+			} else if (line.length() >= 8 && line.substring(0, 8).equals("/~sound:")) {
+				ScenarioNode node = new ScenarioNode("Play Audio", line.substring(8, line.length()));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 16) == "/~disp-clearAll") {
+			} else if (line.length() >= 15 && line.substring(0, 15).equals("/~disp-clearAll")) {
 				ScenarioNode node = new ScenarioNode("Clear All", "");
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 19) == "/~disp-clear-cell:") {
-				ScenarioNode node = new ScenarioNode("Clear Cell", "" + line.charAt(19));
+			} else if (line.length() >= 18 && line.substring(0, 18).equals("/~disp-clear-cell:")) {
+				ScenarioNode node = new ScenarioNode("Clear Cell", "" + line.charAt(18));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 18) == "/~disp-cell-pins:") {
-				ScenarioNode node = new ScenarioNode("Set Pins", line.substring(18, line.length()));
+			} else if (line.length() >= 17 && line.substring(0, 17).equals("/~disp-cell-pins:")) {
+				ScenarioNode node = new ScenarioNode("Set Pins", line.substring(17, line.length()));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 18) == "/~disp-cell-char:") {
-				ScenarioNode node = new ScenarioNode("Display Character", line.substring(18, line.length()));
+			} else if (line.length() >= 17 && line.substring(0, 17).equals("/~disp-cell-char:")) {
+				ScenarioNode node = new ScenarioNode("Display Character", line.substring(17, line.length()));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
@@ -136,22 +135,22 @@ public class ScenarioGraph {
 			if (line == "") {
 				line = scanner.nextLine();
 
-			} else if (line.substring(0, 8) == "/~pause:") {
+			} else if (line.length() >= 8 && line.substring(0, 8).equals("/~pause:")) {
 				ScenarioNode node = new ScenarioNode("Pause", ("" + line.charAt(8)));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 13) == "/~set-voice:") {
-				ScenarioNode node = new ScenarioNode("Set Voice", "" + line.charAt(13));
+			} else if (line.length() >= 12 && line.substring(0, 12).equals("/~set-voice:")) {
+				ScenarioNode node = new ScenarioNode("Set Voice", "" + line.charAt(12));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 15) == "/~disp-string:") {
-				ScenarioNode node = new ScenarioNode("Display String", line.substring(15, line.length()));
+			} else if (line.length() >= 14 && line.substring(0, 14).equals("/~disp-string:")) {
+				ScenarioNode node = new ScenarioNode("Display String", line.substring(14, line.length()));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 15) == "/~skip-button:") {
+			} else if (line.length() >= 14 && line.substring(0, 14).equals("/~skip-button:")) {
 				ScenarioNode node = new ScenarioNode("Branch on User Input", "");
 				addOneToCurrent(node);
 				ScenarioNode leftNode = new ScenarioNode("Branch 1", "");
@@ -175,28 +174,28 @@ public class ScenarioGraph {
 				mainBranch.setRightParent(resumeNode2);
 				current = mainBranch;
 
-			} else if (line.substring(0, 9) == "/~sound:") {
-				ScenarioNode node = new ScenarioNode("Play Audio", line.substring(9, line.length()));
+			} else if (line.length() >= 8 && line.substring(0, 8).equals("/~sound:")) {
+				ScenarioNode node = new ScenarioNode("Play Audio", line.substring(8, line.length()));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 16) == "/~disp-clearAll") {
+			} else if (line.length() >= 15 && line.substring(0, 15).equals("/~disp-clearAll")) {
 				ScenarioNode node = new ScenarioNode("Clear All", "");
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 19) == "/~disp-clear-cell:") {
-				ScenarioNode node = new ScenarioNode("Clear Cell", "" + line.charAt(19));
+			} else if (line.length() >= 18 && line.substring(0, 18).equals("/~disp-clear-cell:")) {
+				ScenarioNode node = new ScenarioNode("Clear Cell", "" + line.charAt(18));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 18) == "/~disp-cell-pins:") {
-				ScenarioNode node = new ScenarioNode("Set Pins", line.substring(18, line.length()));
+			} else if (line.length() >= 17 && line.substring(0, 17).equals("/~disp-cell-pins:")) {
+				ScenarioNode node = new ScenarioNode("Set Pins", line.substring(17, line.length()));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.substring(0, 18) == "/~disp-cell-char:") {
-				ScenarioNode node = new ScenarioNode("Display Character", line.substring(18, line.length()));
+			} else if (line.length() >= 17 && line.substring(0, 17).equals("/~disp-cell-char:")) {
+				ScenarioNode node = new ScenarioNode("Display Character", line.substring(17, line.length()));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
@@ -357,13 +356,11 @@ public class ScenarioGraph {
 		graph.getModel().beginUpdate();
 
 		graph.getModel().beginUpdate();
-		try
-		{
-		mxRoot = graph.insertVertex(parent, null, root.nodeType, 0, 0, 50, 50);
-		layout.execute(graph.getDefaultParent());
-		}finally
-		{
-			graph.getModel().endUpdate();			
+		try {
+			mxRoot = graph.insertVertex(parent, null, root.nodeType, 0, 0, 50, 50);
+			layout.execute(graph.getDefaultParent());
+		} finally {
+			graph.getModel().endUpdate();
 
 		}
 
