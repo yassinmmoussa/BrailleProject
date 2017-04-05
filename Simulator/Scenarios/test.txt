@@ -1,12 +1,16 @@
 Cell 5
 Button 3
+/~skip-button:0 Branch1
 The Adventures of the High Seas
+/~Branch1
 /~pause:1
+/~sound:correct.wav
 /~disp-string:aoo
 /~set-voice:2
 This was supposed to set the voice to 2
 What is the answer to braille one?
 The choices are A, B
+/~disp-clear-cell:1
 /~disp-clearAll
 /~disp-cell-pins:2 10101010
 /~disp-cell-char:0 A
