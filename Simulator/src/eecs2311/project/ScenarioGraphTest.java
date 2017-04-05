@@ -66,9 +66,24 @@ public class ScenarioGraphTest {
 	}
 
 	@Test
-	public void TestGetScenario() {
-		String scenario = exists.getScenario();
-		System.out.println(scenario);
+	public void TestGetScenario() throws FileNotFoundException {
+		Scanner s1 = new Scanner(new File(test+"test.txt"));
+		String file = s1.nextLine();
+		while(s1.hasNextLine()){
+			file = file + s1.nextLine();
+		}
+		//System.out.println(file);
+		
+		Scanner s2 = new Scanner(exists.getScenario());
+		String scenario = s2.nextLine();
+		while(s2.hasNextLine()){
+			if(scenario.equals("\n\n") && s2.hasNextLine()){
+				s2.nextLine();
+			}else{
+				scenario = scenario + s2.nextLine();
+			}
+		}
+		//System.out.println(scenario);
 		
 	}
 }

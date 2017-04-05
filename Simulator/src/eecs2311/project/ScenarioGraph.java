@@ -31,16 +31,14 @@ public class ScenarioGraph {
 		String[] button = scanner.nextLine().split(" ");
 		String line = "";
 
-		this.root = new ScenarioNode("Root", cell[1] + " " + button[1]);
+		root = new ScenarioNode("Root", cell[1] + " " + button[1]);
 		current = root;
 
 		line = scanner.nextLine();
+		//System.out.println(line);
+
 		while (scanner.hasNextLine()) {
-
-			if (current.getOnlyParent() != null && current.getOnlyParent().nodeType != "Text-To-Speech") {
-				line = scanner.nextLine();
-			}
-
+			
 			if (line == "") {
 				line = scanner.nextLine();
 
@@ -118,7 +116,10 @@ public class ScenarioGraph {
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 			}
-
+			System.out.println(current.getOnlyParent().nodeType+":\t"+line);
+			if (current.getOnlyParent().nodeType.compareTo("Text-To-Speech\n") != 0) {
+				line = scanner.nextLine();
+			}
 		}
 
 		current = null;
@@ -126,7 +127,7 @@ public class ScenarioGraph {
 
 	private void parseBranch(Scanner scanner) {
 		String line = scanner.nextLine();
-		while (line.length() >= 17 && line.substring(0, 17).equals("/~skip:mainBranch")) {
+		while (line.length() >= 17 && !line.substring(0, 17).equals("/~skip:mainBranch")) {
 
 			if (current.getOnlyParent() != null && current.getOnlyParent().nodeType != "Text-To-Speech") {
 				line = scanner.nextLine();
