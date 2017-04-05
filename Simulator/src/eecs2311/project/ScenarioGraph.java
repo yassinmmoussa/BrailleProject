@@ -126,9 +126,9 @@ public class ScenarioGraph {
 
 	private void parseBranch(Scanner scanner) {
 		String line = scanner.nextLine();
-		while (line.length() >= 8 && line.substring(0, 8).equals("/~skip:mainBranch")) {
+		while (line.length() >= 17 && line.substring(0, 17).equals("/~skip:mainBranch")) {
 
-			if (current.getOnlyParent().nodeType != "Text-To-Speech") {
+			if (current.getOnlyParent() != null && current.getOnlyParent().nodeType != "Text-To-Speech") {
 				line = scanner.nextLine();
 			}
 
