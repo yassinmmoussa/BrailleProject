@@ -32,16 +32,16 @@ public class ScenarioGraph {
 
 	public ScenarioGraph(File file) throws FileNotFoundException {
 
+		
 		Scanner scanner = new Scanner(file);
-		String line = scanner.nextLine();
+		String[] cell = scanner.nextLine().split(" ");
+		String[] button = scanner.nextLine().split(" ");
+		String line = "";
 
-		this.root = new ScenarioNode("Root", "");
+		this.root = new ScenarioNode("Root", cell[1]+" "+button[1]);
 		current = root;
-		root.setCellNumber(Integer.parseInt("" + line.charAt(7)));
 
 		line = scanner.nextLine();
-		root.setButtonNumber(Integer.parseInt("" + line.charAt(8)));
-
 		while (scanner.hasNextLine()) {
 
 			if (current.getOnlyParent().nodeType != "Text-To-Speech") {
