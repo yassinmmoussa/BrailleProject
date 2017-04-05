@@ -30,19 +30,27 @@ public class ScenarioGraph {
 		String[] cell = scanner.nextLine().split(" ");
 		String[] button = scanner.nextLine().split(" ");
 		String line = "";
-
+		
+		boolean ttsFlag;
+		
 		root = new ScenarioNode("Root", cell[1] + " " + button[1]);
 		current = root;
 
 		line = scanner.nextLine();
+		line = scanner.nextLine();
+		line = scanner.nextLine();
+		
 		//System.out.println(line);
 
 		while (scanner.hasNextLine()) {
+			ttsFlag = false;
 			
-			if (line == "") {
+			while(scanner.hasNextLine() && line.isEmpty()) {
 				line = scanner.nextLine();
+				System.out.println(line);
 
-			} else if (line.length() >= 8 && line.substring(0, 8).equals("/~pause:")) {
+			} 
+			if (line.length() >= 8 && line.substring(0, 8).equals("/~pause:")) {
 				ScenarioNode node = new ScenarioNode("Pause", ("" + line.charAt(8)));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
@@ -65,6 +73,7 @@ public class ScenarioGraph {
 				current.setLeft(leftNode);
 				current.setRight(rightNode);
 				current = leftNode;
+				scanner.findWithinHorizon("/~Branch1\n",  0);
 				parseBranch(scanner);
 				ScenarioNode resumeNode = new ScenarioNode("Resume", "");
 				addOneToCurrent(resumeNode);
@@ -72,6 +81,7 @@ public class ScenarioGraph {
 				ScenarioNode mainBranch = new ScenarioNode("Main Branch", "");
 				current.setOnlyChild(mainBranch);
 				current = rightNode;
+				scanner.findWithinHorizon("/~Branch2\n",  0);
 				parseBranch(scanner);
 				ScenarioNode resumeNode2 = new ScenarioNode("Resume", "");
 				addOneToCurrent(resumeNode2);
@@ -106,7 +116,7 @@ public class ScenarioGraph {
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.charAt(0) != '/') {
+			} else if (!line.isEmpty() && line.charAt(0) != '/') {
 				StringBuilder audio = new StringBuilder();
 				while (line.charAt(0) != '/') {
 					audio.append(line + System.getProperty("line.separator"));
@@ -115,10 +125,12 @@ public class ScenarioGraph {
 				ScenarioNode node = new ScenarioNode("Text-To-Speech", audio.toString());
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
+				ttsFlag = true;
 			}
-			System.out.println(current.getOnlyParent().nodeType+":\t"+line);
-			if (current.getOnlyParent().nodeType.compareTo("Text-To-Speech\n") != 0) {
+			
+			if (!ttsFlag && scanner.hasNextLine()) {
 				line = scanner.nextLine();
+				System.out.println(line);
 			}
 		}
 
@@ -127,16 +139,16 @@ public class ScenarioGraph {
 
 	private void parseBranch(Scanner scanner) {
 		String line = scanner.nextLine();
+		boolean ttsFlag;
 		while (line.length() >= 17 && !line.substring(0, 17).equals("/~skip:mainBranch")) {
+			ttsFlag = false;
+			
 
-			if (current.getOnlyParent() != null && current.getOnlyParent().nodeType != "Text-To-Speech") {
-				line = scanner.nextLine();
-			}
-
-			if (line == "") {
+			while (line.isEmpty()) {
 				line = scanner.nextLine();
 
-			} else if (line.length() >= 8 && line.substring(0, 8).equals("/~pause:")) {
+			} 
+			if (line.length() >= 8 && line.substring(0, 8).equals("/~pause:")) {
 				ScenarioNode node = new ScenarioNode("Pause", ("" + line.charAt(8)));
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
@@ -159,6 +171,7 @@ public class ScenarioGraph {
 				current.setLeft(leftNode);
 				current.setRight(rightNode);
 				current = leftNode;
+				scanner.findWithinHorizon("/~Branch1\n",  0);
 				parseBranch(scanner);
 				ScenarioNode resumeNode = new ScenarioNode("Resume", "");
 				addOneToCurrent(resumeNode);
@@ -166,6 +179,7 @@ public class ScenarioGraph {
 				ScenarioNode mainBranch = new ScenarioNode("Main Branch", "");
 				current.setOnlyChild(mainBranch);
 				current = rightNode;
+				scanner.findWithinHorizon("/~Branch2\n",  0);
 				parseBranch(scanner);
 				ScenarioNode resumeNode2 = new ScenarioNode("Resume", "");
 				addOneToCurrent(resumeNode2);
@@ -209,6 +223,12 @@ public class ScenarioGraph {
 				ScenarioNode node = new ScenarioNode("Text-To-Speech", audio.toString());
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
+				ttsFlag = true;
+			}
+			
+			if (!ttsFlag) {
+				line = scanner.nextLine();
+				System.out.println(line);
 			}
 
 		}

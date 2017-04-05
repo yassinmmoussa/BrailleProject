@@ -205,7 +205,7 @@ public class DummyGraph implements ActionListener {
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				// System.out.println("getCurrentDirectory(): " +
 				// chooser.getCurrentDirectory());
-				System.out.println("getSelectedFile() : " + chooser.getSelectedFile().getName());
+				//System.out.println("getSelectedFile() : " + chooser.getSelectedFile().getName());
 				lastpath = chooser.getSelectedFile().getParentFile();
 				filepath = chooser.getSelectedFile().getAbsolutePath();
 

@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -76,12 +77,12 @@ public class AuthoringApp {
 
 		browseAudio = new JButton("Browse Audio");
 		browseAudio.setSize(200, 30);
-		
+
 		removeCurrent = new JButton("Remove Current");
 		removeCurrent.setSize(150, 30);
 		recordPanel.add(removeCurrent);
 
-		browseScenario = new JButton("Browse Scenario");
+		browseScenario = new JButton("Load Scenario");
 		browseScenario.setLocation(0, 91);
 		browseScenario.setSize(200, 30);
 
@@ -166,12 +167,13 @@ public class AuthoringApp {
 				public void mouseReleased(MouseEvent e) {
 					mxCell clickedCell = (mxCell) graphComponent.getCellAt(e.getX(), e.getY());
 					String x;
-					if (clickedCell != null)
-					{x = (String) clickedCell.getValue();
-					if (x != null && !x.equals("Branch on User Input") && !x.equals("Resume"))
-					scenarioGraph.setCurrent(scenarioGraph.graphMap.get(clickedCell));
+					if (clickedCell != null) {
+						x = (String) clickedCell.getValue();
+						if (x != null && !x.equals("Branch on User Input") && !x.equals("Resume"))
+							scenarioGraph.setCurrent(scenarioGraph.graphMap.get(clickedCell));
 
-				}}
+					}
+				}
 			};
 			graphComponent.getGraphControl().addMouseListener(mouseListener);
 		} catch (Exception e) {
@@ -212,7 +214,6 @@ public class AuthoringApp {
 			}
 
 		});
-	
 
 		pauseNode.addActionListener(new ActionListener() {
 			@Override
@@ -504,8 +505,6 @@ public class AuthoringApp {
 					mainBranch.setLeftParent(resume1);
 					mainBranch.setRightParent(resume2);
 
-					
-
 					graphPanel.removeAll();
 					graph = scenarioGraph.getGraph();
 					graphComponent = new mxGraphComponent(graph);
@@ -640,7 +639,58 @@ public class AuthoringApp {
 
 		});
 
-		
+		browseScenario.addActionListener(new ActionListener()
+
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FileNameExtensionFilter filter;
+				chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				chooser.setAcceptAllFileFilterUsed(false);
+				chooser.resetChoosableFileFilters();
+				chooser.setSelectedFile(new File(""));
+
+				chooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+
+				chooser.setDialogTitle("Browse for scenario...");
+				filter = new FileNameExtensionFilter("Text File", "txt");
+				chooser.setFileFilter(filter);
+
+				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+
+					filePath = chooser.getSelectedFile().getAbsolutePath();
+
+				} else {
+					filePath = "";
+				}
+
+				if (!filePath.equals("") && filePath.length() > 0) {
+					
+					try {
+						scenarioGraph = new ScenarioGraph(new File(filePath));
+					} catch (FileNotFoundException e1) {
+						//Handled by file chooser already
+					}
+					graph = scenarioGraph.getGraph();
+					graphComponent = new mxGraphComponent(graph);
+					graphPanel.removeAll();
+					graphPanel.add(graphComponent);
+					graphComponent.getGraphControl().addMouseListener(mouseListener);
+					graphPanel.repaint();
+					graphPanel.revalidate();
+					frame.revalidate();
+					scenarioGraph.setCurrent(null);
+					
+					
+					
+
+				}
+				filePath = "";
+
+			}
+
+		});
 
 	}
 }
