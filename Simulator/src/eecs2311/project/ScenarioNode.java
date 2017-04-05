@@ -38,14 +38,13 @@ public class ScenarioNode {
 	public ScenarioNode(String nodeType, String content) {
 		initializeMap();
 		this.nodeType = nodeType;
-		if (nodeType != "Root")
-			{this.content = content;}
-		else
-		{
+		if (nodeType != "Root") {
+			this.content = content;
+		} else {
 			Scanner scanner = new Scanner(content);
 			this.cellNumber = scanner.nextInt();
 			this.buttonNumber = scanner.nextInt();
-			
+
 		}
 		this.onlyParent = null;
 		this.leftChild = null;
@@ -85,14 +84,14 @@ public class ScenarioNode {
 		labelMap.put("Root", "Cells " + cellNumber + "\nButton " + buttonNumber + "\n");
 
 	}
-	
+
 	@Override
 	public String toString() {
-		if (nodeType.equals("Root"))
-		{
-			return "Cells "+ cellNumber +"\nButton " + buttonNumber +"\n";
+		if (nodeType.equals("Root")) {
+			return "Cells " + cellNumber + System.getProperty("line.separator") + "Button " + buttonNumber
+					+ System.getProperty("line.separator");
 		}
-		return labelMap.get(nodeType) + content + "\n";
+		return labelMap.get(nodeType) + content + System.getProperty("line.separator");
 
 	}
 

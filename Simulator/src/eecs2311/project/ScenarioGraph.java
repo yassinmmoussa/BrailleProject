@@ -19,29 +19,22 @@ public class ScenarioGraph {
 
 	HashMap<mxCell, ScenarioNode> graphMap = new HashMap<mxCell, ScenarioNode>();
 
-	public ScenarioGraph() {
-		root = null;
-		current = null;
-	}
-
 	public ScenarioGraph(ScenarioNode node) {
 		root = node;
-		//current = root;
 
 	}
 
 	public ScenarioGraph(File file) throws FileNotFoundException {
 
 		Scanner scanner = new Scanner(file);
-		String line = scanner.nextLine();
+		String[] cell = scanner.nextLine().split(" ");
+		String[] button = scanner.nextLine().split(" ");
+		String line = "";
 
-		this.root = new ScenarioNode("Root", "");
+		this.root = new ScenarioNode("Root", cell[1] + " " + button[1]);
 		current = root;
-		root.setCellNumber(Integer.parseInt("" + line.charAt(7)));
 
 		line = scanner.nextLine();
-		root.setButtonNumber(Integer.parseInt("" + line.charAt(8)));
-
 		while (scanner.hasNextLine()) {
 
 			if (current.getOnlyParent().nodeType != "Text-To-Speech") {
@@ -231,19 +224,25 @@ public class ScenarioGraph {
 			if (current2.hasOneChild()) {
 
 				scenario.append(current2.toString());
+				scenario.append(System.getProperty("line.separator"));
 				current2 = current2.getOnlyChild();
 
 			} else if (current2.hasTwoChildren()) {
 				ScenarioNode leftChild = current2.getTwoChildren().get(0);
 				ScenarioNode rightChild = current2.getTwoChildren().get(1);
 				scenario.append(leftChild.toString());
+				scenario.append(System.getProperty("line.separator"));
 				current2 = getBranchScenario(leftChild, scenario);
 				scenario.append(rightChild.toString());
+				scenario.append(System.getProperty("line.separator"));
 				getBranchScenario(rightChild, scenario);
 				scenario.append("/~mainBranch\n");
+				scenario.append(System.getProperty("line.separator"));
 
 			}
 		}
+		scenario.append(current2.toString());
+		scenario.append(System.getProperty("line.separator"));
 
 		return scenario.toString();
 	}
@@ -257,6 +256,7 @@ public class ScenarioGraph {
 			if (current2.hasOneChild()) {
 
 				scenario.append(current2.toString());
+				scenario.append(System.getProperty("line.separator"));
 				current2 = current2.getOnlyChild();
 
 			} else if (current2.hasTwoChildren()) {
@@ -264,10 +264,13 @@ public class ScenarioGraph {
 				ScenarioNode leftChild = current2.getTwoChildren().get(0);
 				ScenarioNode rightChild = current2.getTwoChildren().get(1);
 				scenario.append(leftChild.toString());
+				scenario.append(System.getProperty("line.separator"));
 				current2 = getBranchScenario(leftChild, scenario);
 				scenario.append(rightChild.toString());
+				scenario.append(System.getProperty("line.separator"));
 				getBranchScenario(rightChild, scenario);
 				scenario.append("/~mainBranch\n");
+				scenario.append(System.getProperty("line.separator"));
 
 			}
 		}
@@ -275,8 +278,7 @@ public class ScenarioGraph {
 	}
 
 	public void addOneToCurrent(ScenarioNode node) {
-		if (current==null)
-		{
+		if (current == null) {
 			return;
 		}
 		// if it has no children
@@ -305,8 +307,7 @@ public class ScenarioGraph {
 	}
 
 	public void addTwoToCurrent(ScenarioNode leftNode, ScenarioNode rightNode) {
-		if (current==null)
-		{
+		if (current == null) {
 			return;
 		}
 		// if it has no children
@@ -354,6 +355,7 @@ public class ScenarioGraph {
 		current2 = root;
 		Object mxRoot;
 		graph.getModel().beginUpdate();
+
 		graph.getModel().beginUpdate();
 		try
 		{
@@ -362,6 +364,7 @@ public class ScenarioGraph {
 		}finally
 		{
 			graph.getModel().endUpdate();			
+
 		}
 
 		graphMap.put((mxCell) mxRoot, root);
@@ -373,7 +376,6 @@ public class ScenarioGraph {
 					current2Cell = i.getKey();
 				}
 			}
-			
 
 			if (current2.hasOneChild()) {
 
@@ -382,7 +384,7 @@ public class ScenarioGraph {
 					Object v1 = graph.insertVertex(parent, null, current2.getOnlyChild().nodeType, 0, 0, 50, 50);
 					graphMap.put((mxCell) v1, current2.getOnlyChild());
 					Object e1 = graph.insertEdge(parent, null, null, current2Cell, v1);
-					//DEBUG LINE BELOW
+					// DEBUG LINE BELOW
 					System.out.println(graphMap.get(current2Cell).nodeType + "->" + graphMap.get(v1).nodeType);
 					layout.execute(graph.getDefaultParent());
 				} finally {
@@ -500,8 +502,6 @@ public class ScenarioGraph {
 		this.current = node;
 	}
 
-	
-
 	public void removeCurrent() {
 		if (current != null && current.nodeType != "Main Branch") {
 
@@ -526,7 +526,5 @@ public class ScenarioGraph {
 
 		}
 	}
-	
-
 
 }
