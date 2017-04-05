@@ -198,7 +198,7 @@ public class SoundPlayer
 				dispCellLower(fileLine.substring(18));
 			}
 			//The key phrase to clear a Braille cell.
-			else if (fileLine.length () >= 18 && fileLine.substring(0, 18).equals("/~disp-clear-cell:"))
+			else if (fileLine.length () >= 18 && fileLine.substring(0, 18).equals("/~disp-cell-clear:"))
 			{
 				dispCellClear (fileLine.substring(18));
 			}
