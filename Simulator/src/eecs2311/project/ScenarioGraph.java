@@ -37,18 +37,14 @@ public class ScenarioGraph {
 		current = root;
 
 		line = scanner.nextLine();
-		line = scanner.nextLine();
-		line = scanner.nextLine();
 		
 		//System.out.println(line);
 
 		while (scanner.hasNextLine()) {
 			ttsFlag = false;
 			
-			while(scanner.hasNextLine() && line.isEmpty()) {
+			while(scanner.hasNextLine() && line.equals("")) {
 				line = scanner.nextLine();
-				System.out.println(line);
-
 			} 
 			if (line.length() >= 8 && line.substring(0, 8).equals("/~pause:")) {
 				ScenarioNode node = new ScenarioNode("Pause", ("" + line.charAt(8)));
@@ -96,7 +92,7 @@ public class ScenarioGraph {
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
 
-			} else if (line.length() >= 15 && line.substring(0, 15).equals("/~disp-clearAll")) {
+			} else if (line.length() >= 15 && line.substring(0, 15).equals("/~disp-clearALL")) {
 				ScenarioNode node = new ScenarioNode("Clear All", "");
 				addOneToCurrent(node);
 				current = current.getOnlyChild();
@@ -118,7 +114,7 @@ public class ScenarioGraph {
 
 			} else if (!line.isEmpty() && line.charAt(0) != '/') {
 				StringBuilder audio = new StringBuilder();
-				while (line.charAt(0) != '/') {
+				while (!line.isEmpty() && line.charAt(0) != '/') {
 					audio.append(line + System.getProperty("line.separator"));
 					line = scanner.nextLine();
 				}
@@ -130,7 +126,6 @@ public class ScenarioGraph {
 			
 			if (!ttsFlag && scanner.hasNextLine()) {
 				line = scanner.nextLine();
-				System.out.println(line);
 			}
 		}
 
@@ -228,7 +223,6 @@ public class ScenarioGraph {
 			
 			if (!ttsFlag) {
 				line = scanner.nextLine();
-				System.out.println(line);
 			}
 
 		}
