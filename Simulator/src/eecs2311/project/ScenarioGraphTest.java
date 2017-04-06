@@ -223,6 +223,5 @@ public class ScenarioGraphTest {
 		
 		//test method now
 		twoCh.getGraph();
-		twoCh.graphMap.
 	}
 }
