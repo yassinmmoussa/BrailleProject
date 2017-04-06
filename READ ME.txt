@@ -1,0 +1,1 @@
+1. Run BrailleSimulator.jar file to run the App
