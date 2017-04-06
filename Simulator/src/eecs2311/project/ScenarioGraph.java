@@ -30,24 +30,24 @@ public class ScenarioGraph {
 		String[] cell = scanner.nextLine().split(" ");
 		String[] button = scanner.nextLine().split(" ");
 		String line = "";
-		
+
 		boolean ttsFlag;
-		
+
 		root = new ScenarioNode("Root", cell[1] + " " + button[1]);
 		current = root;
 
 		line = scanner.nextLine();
-		
-		//System.out.println(line);
+
+		// System.out.println(line);
 
 		while (scanner.hasNextLine()) {
 			ttsFlag = false;
-			
-			while(scanner.hasNextLine() && line.isEmpty()) {
+
+			while (scanner.hasNextLine() && line.isEmpty()) {
 				line = scanner.nextLine();
 				System.out.println(line);
 
-			} 
+			}
 			if (line.length() >= 8 && line.substring(0, 8).equals("/~pause:")) {
 				ScenarioNode node = new ScenarioNode("Pause", ("" + line.charAt(8)));
 				addOneToCurrent(node);
@@ -71,7 +71,7 @@ public class ScenarioGraph {
 				ScenarioNode rightNode = new ScenarioNode("Branch 2", "");
 				addTwoToCurrent(leftNode, rightNode);
 				current = leftNode;
-				scanner.findWithinHorizon("/~Branch1\n",  0);
+				scanner.findWithinHorizon("/~Branch1" + System.getProperty("line.separator"), 0);
 				parseBranch(scanner);
 				ScenarioNode resumeNode = new ScenarioNode("Resume", "");
 				addOneToCurrent(resumeNode);
@@ -79,7 +79,7 @@ public class ScenarioGraph {
 				ScenarioNode mainBranch = new ScenarioNode("Main Branch", "");
 				current.setOnlyChild(mainBranch);
 				current = rightNode;
-				scanner.findWithinHorizon("/~Branch2\n",  0);
+				scanner.findWithinHorizon("/~Branch2" + System.getProperty("line.separator"), 0);
 				parseBranch(scanner);
 				ScenarioNode resumeNode2 = new ScenarioNode("Resume", "");
 				addOneToCurrent(resumeNode2);
@@ -116,7 +116,7 @@ public class ScenarioGraph {
 
 			} else if (!line.isEmpty() && line.charAt(0) != '/') {
 				StringBuilder audio = new StringBuilder();
-				while (line.charAt(0) != '/') {
+				while (!line.isEmpty() && line.charAt(0) != '/') {
 					audio.append(line + System.getProperty("line.separator"));
 					line = scanner.nextLine();
 				}
@@ -125,7 +125,7 @@ public class ScenarioGraph {
 				current = current.getOnlyChild();
 				ttsFlag = true;
 			}
-			
+
 			if (!ttsFlag && scanner.hasNextLine()) {
 				line = scanner.nextLine();
 				System.out.println(line);
@@ -140,12 +140,11 @@ public class ScenarioGraph {
 		boolean ttsFlag;
 		while (line.length() >= 17 && !line.substring(0, 17).equals("/~skip:mainBranch")) {
 			ttsFlag = false;
-			
 
 			while (line.isEmpty()) {
 				line = scanner.nextLine();
 
-			} 
+			}
 			if (line.length() >= 8 && line.substring(0, 8).equals("/~pause:")) {
 				ScenarioNode node = new ScenarioNode("Pause", ("" + line.charAt(8)));
 				addOneToCurrent(node);
@@ -169,7 +168,7 @@ public class ScenarioGraph {
 				ScenarioNode rightNode = new ScenarioNode("Branch 2", "");
 				addTwoToCurrent(leftNode, rightNode);
 				current = leftNode;
-				scanner.findWithinHorizon("/~Branch1\n",  0);
+				scanner.findWithinHorizon("/~Branch1" + System.getProperty("line.separator"), 0);
 				parseBranch(scanner);
 				ScenarioNode resumeNode = new ScenarioNode("Resume", "");
 				addOneToCurrent(resumeNode);
@@ -177,7 +176,7 @@ public class ScenarioGraph {
 				ScenarioNode mainBranch = new ScenarioNode("Main Branch", "");
 				current.setOnlyChild(mainBranch);
 				current = rightNode;
-				scanner.findWithinHorizon("/~Branch2\n",  0);
+				scanner.findWithinHorizon("/~Branch2" + System.getProperty("line.separator"), 0);
 				parseBranch(scanner);
 				ScenarioNode resumeNode2 = new ScenarioNode("Resume", "");
 				addOneToCurrent(resumeNode2);
@@ -223,7 +222,7 @@ public class ScenarioGraph {
 				current = current.getOnlyChild();
 				ttsFlag = true;
 			}
-			
+
 			if (!ttsFlag) {
 				line = scanner.nextLine();
 				System.out.println(line);
@@ -518,12 +517,12 @@ public class ScenarioGraph {
 	}
 
 	public void setCurrent(ScenarioNode node) {
-		
+
 		this.current = node;
 	}
 
 	public void removeCurrent() {
-		if (current != null && current.nodeType != "Main Branch") {
+		if (current != null && current.nodeType != "Main Branch" && current.nodeType != "Root") {
 
 			if (current.nodeType == "Branch on User Input") {
 				ScenarioNode parent = current.getOnlyParent();
@@ -536,11 +535,20 @@ public class ScenarioGraph {
 				child.setParent(parent);
 				current = null;
 			} else {
-				ScenarioNode parent = current.getOnlyParent();
-				ScenarioNode child = current.getOnlyChild();
-				parent.setOnlyChild(child);
-				child.setParent(parent);
-				current = null;
+				
+				if (!current.hasNoChildren()) {
+					ScenarioNode parent = current.getOnlyParent();
+					ScenarioNode child = current.getOnlyChild();
+					parent.setOnlyChild(child);
+					child.setParent(parent);
+					current = null;
+				}
+				else
+				{
+					ScenarioNode parent = current.getOnlyParent();
+					parent.onlyChild = null;
+					current.setParent(null);
+				}
 
 			}
 

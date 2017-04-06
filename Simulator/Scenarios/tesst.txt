@@ -1,0 +1,27 @@
+Cells 2
+Button 2
+
+/~skip-button:0 Branch1
+/~skip-button:1 Branch2
+/~user-input
+
+
+/~Branch1
+
+
+/~disp-clearALL
+
+/~skip:mainBranch
+
+
+/~Branch2
+
+
+/~disp-clear-cell:1
+
+/~skip:mainBranch
+
+
+/~mainBranch
+
+

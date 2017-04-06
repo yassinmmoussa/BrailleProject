@@ -48,6 +48,7 @@ public class AuthoringApp {
 	public static JPanel graphPanel, btnPanel;
 	static mxGraphComponent graphComponent;
 	public static String text;
+	private static JLabel currentLabel;
 
 	public static void main(String[] args) {
 
@@ -161,6 +162,16 @@ public class AuthoringApp {
 		JLabel lblNodes = new JLabel("Nodes:");
 		lblNodes.setBounds(0, 148, 56, 16);
 		btnPanel.add(lblNodes);
+		
+		JLabel staticCurrentLabel = new JLabel("Current:");
+		staticCurrentLabel.setBounds(417, 75, 56, 16);
+		staticCurrentLabel.setVisible(true);
+		frame.getContentPane().add(staticCurrentLabel);
+		
+		currentLabel = new JLabel("No current set");
+		currentLabel.setBounds(417, 93, 81, 41);
+		currentLabel.setVisible(true);
+		frame.getContentPane().add(currentLabel);
 
 		try {
 			mouseListener = new MouseAdapter() {
@@ -170,7 +181,9 @@ public class AuthoringApp {
 					if (clickedCell != null) {
 						x = (String) clickedCell.getValue();
 						if (x != null && !x.equals("Branch on User Input") && !x.equals("Resume"))
-							scenarioGraph.setCurrent(scenarioGraph.graphMap.get(clickedCell));
+							{scenarioGraph.setCurrent(scenarioGraph.graphMap.get(clickedCell));
+							currentLabel.setText((String) clickedCell.getValue());
+							}
 
 					}
 				}
@@ -179,6 +192,8 @@ public class AuthoringApp {
 		} catch (Exception e) {
 
 		}
+		frame.revalidate();
+		frame.repaint();
 
 	}
 
@@ -197,6 +212,11 @@ public class AuthoringApp {
 				String content = JOptionPane.showInputDialog(frame,
 						"Please enter the number of Cells, followed by the number of Buttons separated by whitespace",
 						"Root Node", JOptionPane.PLAIN_MESSAGE);
+				if (!content.matches("\\d\\s\\d"))
+				{
+					JOptionPane.showMessageDialog(frame, "Invalid arguments, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+					content = "";
+				}
 
 				if (content != null && content.length() > 0) {
 					scenarioGraph = new ScenarioGraph(new ScenarioNode("Root", content));
@@ -223,6 +243,11 @@ public class AuthoringApp {
 							"Please enter the duration, in seconds, that you would like the scenario to pause for.\n"
 									+ "Example:4",
 							"Pause Node", JOptionPane.PLAIN_MESSAGE);
+					if (content == null || !content.matches("\\d"))
+					{
+						JOptionPane.showMessageDialog(frame, "Invalid arguments, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+						content = "";
+					}
 
 					if (content != null && content.length() > 0) {
 						scenarioGraph.addOneToCurrent(new ScenarioNode("Pause", content));
@@ -254,6 +279,11 @@ public class AuthoringApp {
 							"Please enter index of the voice you would like to use.\n"
 									+ "1 = Male #1\n2 = Female\n3 = Male #2\n4 = Male#3\nExample:1",
 							"Set Voice Node", JOptionPane.PLAIN_MESSAGE);
+					if(content == null || !content.matches("\\d"))
+					{
+						JOptionPane.showMessageDialog(frame, "Invalid arguments, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+						content = "";
+					}
 
 					if (content != null && content.length() > 0) {
 						scenarioGraph.addOneToCurrent(new ScenarioNode("Set Voice", content));
@@ -285,6 +315,11 @@ public class AuthoringApp {
 							"Please enter the string you want to be displayed on the BrailleCells\n"
 									+ "Example:A String",
 							"Set Display String Node", JOptionPane.PLAIN_MESSAGE);
+					if (content == null || !content.matches("\\D+"))
+					{
+						JOptionPane.showMessageDialog(frame, "Invalid arguments, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+						content = "";
+					}
 
 					if (content != null && content.length() > 0) {
 						scenarioGraph.addOneToCurrent(new ScenarioNode("Display String", content));
@@ -342,6 +377,11 @@ public class AuthoringApp {
 					String content = JOptionPane.showInputDialog(frame,
 							"Please enter the index of the Cell you would like to clear.\nExample:2",
 							"Set Clear Cell Node", JOptionPane.PLAIN_MESSAGE);
+					if(content == null || !content.matches("\\d"))
+					{
+						JOptionPane.showMessageDialog(frame, "Invalid arguments, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+						content = "";
+					}
 
 					if (content != null && content.length() > 0) {
 						scenarioGraph.addOneToCurrent(new ScenarioNode("Clear Cell", content));
@@ -374,6 +414,11 @@ public class AuthoringApp {
 							"Please enter the index of the Cell whose Pins you want to set, followed by a space,"
 									+ "\nfollowed by the 8 character string defining the state of the pins.\nExample:1 11111101",
 							"Set Pins Node", JOptionPane.PLAIN_MESSAGE);
+					if (content == null || !content.matches("\\d [0-1]{8}"))
+					{
+						JOptionPane.showMessageDialog(frame, "Invalid arguments, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+						content = null;
+					}
 
 					if (content != null && content.length() > 0) {
 						scenarioGraph.addOneToCurrent(new ScenarioNode("Set Pins", content));
@@ -406,6 +451,11 @@ public class AuthoringApp {
 							"Please enter the index of the cell on which you want the Character\ndisplayed,"
 									+ " followed by a whitespace, followed by the character itself\nExample:1 P",
 							"Display Character Node", JOptionPane.PLAIN_MESSAGE);
+					if(content == null || !content.matches("\\d [a-zA-Z]"))
+					{
+						JOptionPane.showMessageDialog(frame, "Invalid arguments, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+						content = "";
+					}
 
 					if (content != null && content.length() > 0) {
 						scenarioGraph.addOneToCurrent(new ScenarioNode("Display Character", content));
@@ -713,6 +763,7 @@ public class AuthoringApp {
 							graphPanel.repaint();
 							frame.revalidate();
 							scenarioGraph.setCurrent(null);
+							currentLabel.setText("No current set");
 						}
 						
 						
