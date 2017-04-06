@@ -1,9 +1,14 @@
 Cells 1
 Button 1
 
+/~disp-cell-pins:1 11111111
+
 /~disp-cell-char:3 D
 
 /~disp-clearALL
+
+HALLOOOOOOOOO
+
 
 /~disp-clearALL
 

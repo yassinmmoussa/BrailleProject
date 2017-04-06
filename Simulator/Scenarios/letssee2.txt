@@ -19,6 +19,14 @@ Button 1
 /~Branch1
 
 
+/~skip-button:0 Branch1
+/~skip-button:1 Branch2
+/~user-input
+
+
+/~Branch1
+
+
 /~skip:mainBranch
 
 
@@ -29,6 +37,26 @@ Button 1
 
 
 /~mainBranch
+/~Branch2
+
+
+/~skip:mainBranch
+
+
+/~mainBranch
+
+
+/~skip:mainBranch
+
+
+
+
+/~skip-button:0 Branch1
+/~skip-button:1 Branch2
+/~user-input
+
+
+/~Branch1
 
 
 /~skip-button:0 Branch1
@@ -49,5 +77,17 @@ Button 1
 
 
 /~mainBranch
+/~Branch2
+
+
+/~skip:mainBranch
+
+
+/~mainBranch
+
+
+/~skip:mainBranch
+
+
 
 
