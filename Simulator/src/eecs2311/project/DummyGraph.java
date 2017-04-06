@@ -140,8 +140,7 @@ public class DummyGraph implements ActionListener {
 			chooser.setFileFilter(filter);
 
 			if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-				// System.out.println("getCurrentDirectory(): " +
-				// chooser.getCurrentDirectory());
+				
 				JOptionPane.showMessageDialog(chooser, "Added file '" + chooser.getSelectedFile().getName() + "'");
 				lastpath = chooser.getSelectedFile().getParentFile();
 				filepath = chooser.getSelectedFile().getAbsolutePath();

@@ -78,7 +78,7 @@ public class ScenarioNode {
 		labelMap.put("Branch 1", "/~Branch1\n");
 		labelMap.put("Branch 2", "/~Branch2\n");
 		labelMap.put("Main Branch", "");
-		labelMap.put("Clear All", "/~disp-clearALL\n");
+		labelMap.put("Clear All", "/~disp-clearALL");
 		labelMap.put("Clear Cell", "/~disp-clear-cell:");
 		labelMap.put("Set Pins", "/~disp-cell-pins:");
 		labelMap.put("Display Character", "/~disp-cell-char:");
