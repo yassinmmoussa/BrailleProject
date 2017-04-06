@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -112,6 +113,13 @@ public class ScenarioGraphTest {
 	 */
 	@Test
 	public void TestAddTwoToCurrent() {
+
+		// when current node has no children
+		ScenarioGraph empty = new ScenarioGraph(new ScenarioNode(null, null));
+		empty.setCurrent(null);
+		empty.addTwoToCurrent(t1, t2);
+		assertNull(empty.current);
+
 		// when current node has no children
 		ScenarioGraph noCh = new ScenarioGraph(root);
 		noCh.setCurrent(root);
@@ -122,7 +130,7 @@ public class ScenarioGraphTest {
 		noCh.setCurrent(root.rightChild);
 		assertEquals(t2, noCh.current);
 
-		// when currentnode has one child
+		// when current node has one child
 		ScenarioGraph oneCh = new ScenarioGraph(root);
 		oneCh.setCurrent(root);
 		oneCh.addOneToCurrent(node);
@@ -164,6 +172,12 @@ public class ScenarioGraphTest {
 	@Test
 	public void TestAddOneToCurrent() {
 		// when current node has no children
+		ScenarioGraph empty = new ScenarioGraph(new ScenarioNode(null, null));
+		empty.setCurrent(null);
+		empty.addOneToCurrent(node);
+		assertNull(empty.current);
+
+		// when current node has no children
 		ScenarioGraph noCh = new ScenarioGraph(root);
 		noCh.setCurrent(root);
 		noCh.addOneToCurrent(node);
@@ -202,26 +216,85 @@ public class ScenarioGraphTest {
 	}
 
 	/*
-	 * Tests getGraph() method
+	 * Tests getGraph() method Also includes processBranchGraph() method
 	 */
 	@Test
 	public void testGetGraph() {
+
+		// when current node has no children
+		ScenarioGraph noCh = new ScenarioGraph(root);
+		noCh.setCurrent(root);
+
+		// when current node has one child
+		ScenarioGraph oneCh = new ScenarioGraph(root);
+		oneCh.setCurrent(root);
+		oneCh.addOneToCurrent(node);
+
 		// when current node has two child
 		ScenarioGraph twoCh = new ScenarioGraph(root);
 		twoCh.setCurrent(root);
 		twoCh.addTwoToCurrent(t1, t2);
-		twoCh.addTwoToCurrent(node, node2);
 
-		twoCh.setCurrent(root.leftChild.onlyChild);
-		assertEquals(t1, twoCh.current);
-		twoCh.setCurrent(root.rightChild.onlyChild);
-		assertEquals(t2, twoCh.current);
-		twoCh.setCurrent(root.leftChild);
-		assertEquals(node, twoCh.current);
-		twoCh.setCurrent(root.rightChild);
-		assertEquals(node2, twoCh.current);
-		
-		//test method now
+		// test graph with two children
 		twoCh.getGraph();
+		for (Map.Entry<mxCell, ScenarioNode> entry : twoCh.graphMap.entrySet()) {
+			assertNotNull(entry.getKey());
+			assertNotNull(entry.getValue());
+		}
+
+		// test graph with one children
+		oneCh.getGraph();
+		for (Map.Entry<mxCell, ScenarioNode> entry : oneCh.graphMap.entrySet()) {
+			assertNotNull(entry.getKey());
+			assertNotNull(entry.getValue());
+		}
+
+		// test graph with no children
+		noCh.getGraph();
+		for (Map.Entry<mxCell, ScenarioNode> entry : noCh.graphMap.entrySet()) {
+			assertNotNull(entry.getKey());
+			assertNotNull(entry.getValue());
+		}
+
+	}
+
+	/*
+	 * Tests setCurrent() method
+	 */
+	@Test
+	public void testSetCurrent() {
+		assertEquals(null, x.current);
+		x.setCurrent(node);
+		assertEquals(node, x.current);
+
+		/*
+		 * This is sufficient because we just need to check before calling
+		 * method and after calling method to see if it sets the current node
+		 */
+	}
+
+	/*
+	 * Tests setCurrent() method
+	 */
+	@Test
+	public void testRemoveCurrent() {
+		x.setCurrent(root);
+		x.addOneToCurrent(node);
+		x.setCurrent(root.onlyChild);
+		x.addOneToCurrent(t1);
+		x.setCurrent(root.onlyChild.onlyChild);
+
+		assertEquals(t1, x.current);
+		x.setCurrent(root.onlyChild);
+		x.removeCurrent();
+		assertEquals(null, x.current);
+		x.setCurrent(root);
+		x.removeCurrent();
+		assertEquals(root, x.current);
+
+		/*
+		 * This is sufficient because we some nodes are removable such as TTS
+		 * node, but some nodes are not such as the root node
+		 */
 	}
 }

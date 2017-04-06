@@ -45,7 +45,7 @@ public class ScenarioGraph {
 
 			while (scanner.hasNextLine() && line.isEmpty()) {
 				line = scanner.nextLine();
-				System.out.println(line);
+				//System.out.println(line);
 
 			}
 			if (line.length() >= 8 && line.substring(0, 8).equals("/~pause:")) {
@@ -128,7 +128,7 @@ public class ScenarioGraph {
 
 			if (!ttsFlag && scanner.hasNextLine()) {
 				line = scanner.nextLine();
-				System.out.println(line);
+				//System.out.println(line);
 			}
 		}
 
@@ -225,7 +225,7 @@ public class ScenarioGraph {
 
 			if (!ttsFlag) {
 				line = scanner.nextLine();
-				System.out.println(line);
+				//System.out.println(line);
 			}
 
 		}
@@ -332,7 +332,7 @@ public class ScenarioGraph {
 		}
 		// if it has no children
 		if (current.hasNoChildren()) {
-			System.out.println(current);
+			//System.out.println(current);
 			current.setLeft(leftNode);
 			current.setRight(rightNode);
 			leftNode.setParent(current);
@@ -538,16 +538,14 @@ public class ScenarioGraph {
 				child.setParent(parent);
 				current = null;
 			} else {
-				
+
 				if (!current.hasNoChildren()) {
 					ScenarioNode parent = current.getOnlyParent();
 					ScenarioNode child = current.getOnlyChild();
 					parent.setOnlyChild(child);
 					child.setParent(parent);
 					current = null;
-				}
-				else
-				{
+				} else {
 					ScenarioNode parent = current.getOnlyParent();
 					parent.onlyChild = null;
 					current.setParent(null);
