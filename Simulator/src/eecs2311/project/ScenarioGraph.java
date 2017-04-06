@@ -42,12 +42,21 @@ public class ScenarioGraph {
 
 		while (scanner.hasNextLine()) {
 			ttsFlag = false;
+<<<<<<< HEAD
 
 			while (scanner.hasNextLine() && line.isEmpty()) {
+=======
+			
+			while(scanner.hasNextLine() && line.equals("")) {
+>>>>>>> branch 'master' of https://github.com/yassinmmoussa/BrailleProject.git
 				line = scanner.nextLine();
+<<<<<<< HEAD
 				System.out.println(line);
 
 			}
+=======
+			} 
+>>>>>>> branch 'master' of https://github.com/yassinmmoussa/BrailleProject.git
 			if (line.length() >= 8 && line.substring(0, 8).equals("/~pause:")) {
 				ScenarioNode node = new ScenarioNode("Pause", ("" + line.charAt(8)));
 				addOneToCurrent(node);
@@ -128,7 +137,6 @@ public class ScenarioGraph {
 
 			if (!ttsFlag && scanner.hasNextLine()) {
 				line = scanner.nextLine();
-				System.out.println(line);
 			}
 		}
 
@@ -225,7 +233,6 @@ public class ScenarioGraph {
 
 			if (!ttsFlag) {
 				line = scanner.nextLine();
-				System.out.println(line);
 			}
 
 		}
