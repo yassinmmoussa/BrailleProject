@@ -1,0 +1,53 @@
+Cells 1
+Button 1
+
+/~disp-cell-pins:1 11111111
+
+/~disp-cell-char:3 D
+
+/~disp-clearALL
+
+/~disp-clearALL
+
+/~disp-clearALL
+
+/~skip-button:0 Branch1
+/~skip-button:1 Branch2
+/~user-input
+
+
+/~Branch1
+
+
+/~skip:mainBranch
+
+
+/~Branch2
+
+
+/~skip:mainBranch
+
+
+/~mainBranch
+
+
+/~skip-button:0 Branch1
+/~skip-button:1 Branch2
+/~user-input
+
+
+/~Branch1
+
+
+/~skip:mainBranch
+
+
+/~Branch2
+
+
+/~skip:mainBranch
+
+
+/~mainBranch
+
+

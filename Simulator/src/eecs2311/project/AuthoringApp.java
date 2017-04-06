@@ -691,6 +691,34 @@ public class AuthoringApp {
 			}
 
 		});
+		
+		removeCurrent.addActionListener(new ActionListener()
+				{
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+						if (scenarioGraph != null && scenarioGraph.current != null) {
+							scenarioGraph.removeCurrent();
+							graphPanel.removeAll();
+							graph = scenarioGraph.getGraph();
+							graphComponent = new mxGraphComponent(graph);
+							mxGraphLayout layout = new mxHierarchicalLayout(graph);
+							graph.getModel().beginUpdate();
+							layout.execute(graph.getDefaultParent());
+							graph.getModel().endUpdate();
+							graphPanel.revalidate();
+							graphPanel.add(graphComponent);
+							graphComponent.getGraphControl().addMouseListener(mouseListener);
+							graphPanel.repaint();
+							frame.revalidate();
+							scenarioGraph.setCurrent(null);
+						}
+						
+						
+					}
+			
+				});
 
 	}
 }

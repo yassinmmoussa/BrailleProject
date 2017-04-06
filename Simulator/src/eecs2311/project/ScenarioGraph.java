@@ -64,10 +64,10 @@ public class ScenarioGraph {
 			} else if (line.length() >= 14 && line.substring(0, 14).equals("/~skip-button:")) {
 				ScenarioNode node = new ScenarioNode("Branch on User Input", "");
 				addOneToCurrent(node);
+				current = node;
 				ScenarioNode leftNode = new ScenarioNode("Branch 1", "");
 				ScenarioNode rightNode = new ScenarioNode("Branch 2", "");
-				current.setLeft(leftNode);
-				current.setRight(rightNode);
+				addTwoToCurrent(leftNode, rightNode);
 				current = leftNode;
 				scanner.findWithinHorizon("/~Branch1\n",  0);
 				parseBranch(scanner);
@@ -161,10 +161,10 @@ public class ScenarioGraph {
 			} else if (line.length() >= 14 && line.substring(0, 14).equals("/~skip-button:")) {
 				ScenarioNode node = new ScenarioNode("Branch on User Input", "");
 				addOneToCurrent(node);
+				current = node;
 				ScenarioNode leftNode = new ScenarioNode("Branch 1", "");
 				ScenarioNode rightNode = new ScenarioNode("Branch 2", "");
-				current.setLeft(leftNode);
-				current.setRight(rightNode);
+				addTwoToCurrent(leftNode, rightNode);
 				current = leftNode;
 				scanner.findWithinHorizon("/~Branch1\n",  0);
 				parseBranch(scanner);
