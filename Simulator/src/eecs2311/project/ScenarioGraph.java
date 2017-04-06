@@ -329,6 +329,7 @@ public class ScenarioGraph {
 		}
 		// if it has no children
 		if (current.hasNoChildren()) {
+			System.out.println(current);
 			current.setLeft(leftNode);
 			current.setRight(rightNode);
 			leftNode.setParent(current);
@@ -353,7 +354,9 @@ public class ScenarioGraph {
 			tempChildren.add(current.getTwoChildren().get(0));
 			tempChildren.add(current.getTwoChildren().get(1));
 			current.getTwoChildren().set(0, leftNode);
+			current.setLeft(leftNode);
 			current.getTwoChildren().set(1, rightNode);
+			current.setRight(rightNode);
 			leftNode.setOnlyChild(tempChildren.get(0));
 			rightNode.setOnlyChild(tempChildren.get(1));
 			tempChildren.get(0).setParent(leftNode);

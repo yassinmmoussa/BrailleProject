@@ -81,10 +81,10 @@ public class ScenarioNodeTest {
 	@Test
 	public void TestToString() {
 		// test for a node that is not root
-		assertEquals(content + "\n", node.toString());
+		assertEquals(content + System.getProperty("line.separator"), node.toString());
 
 		// test for a root node
-		assertEquals("Cells 0\n" + "Button 0\n" + "null\n", root.toString());
+		assertEquals("Cells 2" + + System.getProperty("line.separator") + "Button 2" + System.getProperty("line.separator"), root.toString());
 
 		/*
 		 * This is sufficient because all the other nodes represented by

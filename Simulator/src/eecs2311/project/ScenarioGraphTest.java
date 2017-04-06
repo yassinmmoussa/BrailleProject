@@ -14,7 +14,7 @@ import com.mxgraph.model.mxCell;
 
 public class ScenarioGraphTest {
 	private static ScenarioGraph x, notExists, exists;
-	private static ScenarioNode root, node, t1, t2;
+	private static ScenarioNode root, node, node2, t1, t2;
 	private static String test;
 
 	@Before
@@ -24,6 +24,9 @@ public class ScenarioGraphTest {
 
 		root = new ScenarioNode("Root", "2 3");
 		node = new ScenarioNode("Text-To-Speech", "testing TTS system");
+		node2 = new ScenarioNode("Display String", "testing display");
+		t1 = new ScenarioNode("Pause", "1");
+		t2 = new ScenarioNode("Text-To-Speech", "testing TTS system");
 
 		try {
 			notExists = new ScenarioGraph(new File(test + "notexist.txt"));
@@ -63,37 +66,163 @@ public class ScenarioGraphTest {
 
 	}
 
+	/*
+	 * Tests the getScenario() method
+	 */
 	@Test
 	public void TestGetScenario() {
-		String fileScenario="";
+
+		// first append everything in our scenario file to a string
+		String fileScenario = "";
 		try {
 			Scanner file = new Scanner(new File(test + "test.txt"));
 			fileScenario = file.nextLine();
 			while (file.hasNextLine()) {
-				//System.out.println(fileScenario);
-				fileScenario = fileScenario +"\n"+ file.nextLine();
+				// System.out.println(fileScenario);
+				fileScenario = fileScenario + file.nextLine();
 			}
 			file.close();
-			
+
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			fail("file should exist");
 		}
-		System.out.println(fileScenario);
-		
+		// System.out.println(fileScenario);
+
+		// Then get the string created by getScenario() method for the same file
 		String getScenario = "";
 		Scanner read = new Scanner(exists.getScenario());
+		getScenario = read.nextLine();
+		while (read.hasNextLine()) {
+			getScenario = getScenario + read.nextLine();
+		}
+		// System.out.println(getScenario);
+		read.close();
 
-		append = read.nextLine();
-		
-		 while(read.hasNextLine()){
-		 if(read.hasNext() && appendTo.equals(""))
-		 {
-		 appendTo = read.nextLine();
-		 }
-		 getScenario = getScenario + appendTo;
-		
-		 }
-		 System.out.println(getScenario);
+		// compare the strings to see if they are the same
+		assertEquals(getScenario, fileScenario);
 
+		/*
+		 * This is sufficient because we simply need to check if the string is
+		 * the same as our scenario file.
+		 */
+	}
+
+	/*
+	 * Tests the addTwoToCurrent() method
+	 */
+	@Test
+	public void TestAddTwoToCurrent() {
+		// when current node has no children
+		ScenarioGraph noCh = new ScenarioGraph(root);
+		noCh.setCurrent(root);
+		noCh.addTwoToCurrent(t1, t2);
+
+		noCh.setCurrent(root.leftChild);
+		assertEquals(t1, noCh.current);
+		noCh.setCurrent(root.rightChild);
+		assertEquals(t2, noCh.current);
+
+		// when currentnode has one child
+		ScenarioGraph oneCh = new ScenarioGraph(root);
+		oneCh.setCurrent(root);
+		oneCh.addOneToCurrent(node);
+		oneCh.addTwoToCurrent(t1, t2);
+
+		oneCh.setCurrent(root.leftChild);
+		assertEquals(t1, oneCh.current);
+		oneCh.setCurrent(root.rightChild);
+		assertEquals(t2, oneCh.current);
+		oneCh.setCurrent(root.leftChild.onlyChild);
+		assertEquals(node, oneCh.current);
+		oneCh.setCurrent(root.rightChild.onlyChild);
+		assertEquals(node, oneCh.current);
+
+		// when current node has two child
+		ScenarioGraph twoCh = new ScenarioGraph(root);
+		twoCh.setCurrent(root);
+		twoCh.addTwoToCurrent(t1, t2);
+		twoCh.addTwoToCurrent(node, node2);
+
+		twoCh.setCurrent(root.leftChild.onlyChild);
+		assertEquals(t1, twoCh.current);
+		twoCh.setCurrent(root.rightChild.onlyChild);
+		assertEquals(t2, twoCh.current);
+		twoCh.setCurrent(root.leftChild);
+		assertEquals(node, twoCh.current);
+		twoCh.setCurrent(root.rightChild);
+		assertEquals(node2, twoCh.current);
+
+		/*
+		 * This is sufficient because all cases are covered in the method
+		 */
+
+	}
+
+	/*
+	 * Tests the addTwoToCurrent() method
+	 */
+	@Test
+	public void TestAddOneToCurrent() {
+		// when current node has no children
+		ScenarioGraph noCh = new ScenarioGraph(root);
+		noCh.setCurrent(root);
+		noCh.addOneToCurrent(node);
+
+		noCh.setCurrent(root.onlyChild);
+		assertEquals(node, noCh.current);
+
+		// when current node has one child
+		ScenarioGraph oneCh = new ScenarioGraph(root);
+		oneCh.setCurrent(root);
+		oneCh.addOneToCurrent(node);
+		oneCh.addOneToCurrent(t1);
+
+		oneCh.setCurrent(root.onlyChild);
+		assertEquals(t1, oneCh.current);
+		oneCh.setCurrent(root.onlyChild.onlyChild);
+		assertEquals(node, oneCh.current);
+
+		// when current node has two child
+		ScenarioGraph twoCh = new ScenarioGraph(root);
+		twoCh.setCurrent(root);
+		twoCh.addTwoToCurrent(t1, t2);
+		twoCh.addOneToCurrent(node);
+
+		twoCh.setCurrent(root.onlyChild);
+		assertEquals(node, twoCh.current);
+		twoCh.setCurrent(root.onlyChild.leftChild);
+		assertEquals(t1, twoCh.current);
+		twoCh.setCurrent(root.onlyChild.rightChild);
+		assertEquals(t2, twoCh.current);
+
+		/*
+		 * This is sufficient because all cases are covered in the method
+		 */
+
+	}
+
+	/*
+	 * Tests getGraph() method
+	 */
+	@Test
+	public void testGetGraph() {
+		// when current node has two child
+		ScenarioGraph twoCh = new ScenarioGraph(root);
+		twoCh.setCurrent(root);
+		twoCh.addTwoToCurrent(t1, t2);
+		twoCh.addTwoToCurrent(node, node2);
+
+		twoCh.setCurrent(root.leftChild.onlyChild);
+		assertEquals(t1, twoCh.current);
+		twoCh.setCurrent(root.rightChild.onlyChild);
+		assertEquals(t2, twoCh.current);
+		twoCh.setCurrent(root.leftChild);
+		assertEquals(node, twoCh.current);
+		twoCh.setCurrent(root.rightChild);
+		assertEquals(node2, twoCh.current);
+		
+		//test method now
+		twoCh.getGraph();
+		twoCh.graphMap.
 	}
 }

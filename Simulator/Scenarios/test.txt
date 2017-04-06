@@ -1,4 +1,4 @@
-Cell 5
+Cells 5
 Button 3
 
 /~disp-cell-pins:1 11111111
